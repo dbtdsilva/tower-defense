@@ -15,7 +15,13 @@ SET(CMAKE_CXX_EXTENSIONS OFF)
 FIND_PACKAGE(SDL2 REQUIRED)
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 
-ADD_EXECUTABLE(towerdefense main.cpp WorldState.cpp WorldState.h Tower.cpp Tower.h Monster.cpp Monster.h Position.h SimpleTower.cpp SimpleTower.h)
+ADD_EXECUTABLE(towerdefense
+        main.cpp
+        logic/WorldState.cpp logic/WorldState.h
+        logic/tower/Tower.cpp logic/tower/Tower.h
+        logic/tower/SimpleTower.cpp logic/tower/SimpleTower.h
+        logic/monster/Monster.cpp logic/monster/Monster.h
+        logic/helpers/Position.h)
 TARGET_LINK_LIBRARIES(towerdefense ${SDL2_LIBRARIES})
 SET_TARGET_PROPERTIES(towerdefense PROPERTIES COMPILE_FLAGS "-std=c++14")
 

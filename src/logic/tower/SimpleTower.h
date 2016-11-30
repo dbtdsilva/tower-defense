@@ -9,7 +9,7 @@
 #include "Tower.h"
 
 class SimpleTower : public Tower {
-    SimpleTower(const Position& pos);
+    SimpleTower(const Position<double>& pos);
 };
 
 
