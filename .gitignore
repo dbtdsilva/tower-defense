@@ -1,5 +1,5 @@
 
-# Created by https://www.gitignore.io/api/git,jetbrains,c++
+# Created by https://www.gitignore.io/api/git,jetbrains,c++,autotools,cmake,c++
 
 ### Git ###
 *.orig
@@ -10,10 +10,13 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
+.idea/
 .idea/workspace.xml
 .idea/tasks.xml
+cmake-build-debug
 
 # Sensitive or high-churn files:
+.idea/dataSources/
 .idea/dataSources.ids
 .idea/dataSources.xml
 .idea/dataSources.local.xml
@@ -53,7 +56,7 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# .idea/misc.xml 
+# .idea/misc.xml
 # *.ipr
 
 
@@ -91,3 +94,64 @@ fabric.properties
 *.out
 *.app
 
+
+### Autotools ###
+# http://www.gnu.org/software/automake
+
+Makefile.in
+/ar-lib
+/mdate-sh
+/py-compile
+/test-driver
+/ylwrap
+
+# http://www.gnu.org/software/autoconf
+
+/autom4te.cache
+/autoscan.log
+/autoscan-*.log
+/aclocal.m4
+/compile
+/config.guess
+/config.h.in
+/config.sub
+/configure
+/configure.scan
+/depcomp
+/install-sh
+/missing
+/stamp-h1
+
+# https://www.gnu.org/software/libtool/
+
+/ltmain.sh
+
+# http://www.gnu.org/software/texinfo
+
+/texinfo.tex
+
+
+### CMake ###
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+
+
+### C++ ###
+# Prerequisites
+
+# Compiled Object files
+
+# Precompiled Headers
+
+# Compiled Dynamic libraries
+
+# Fortran module files
+
+# Compiled Static libraries
+
+# Executables
