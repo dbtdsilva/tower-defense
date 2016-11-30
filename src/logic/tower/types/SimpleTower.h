@@ -6,9 +6,10 @@
 #define TOWERDEFENSE_SIMPLETOWER_H
 
 
-#include "Tower.h"
+#include "../Tower.h"
 
 class SimpleTower : public Tower {
+public:
     SimpleTower(const Position<double>& pos);
 };
 
