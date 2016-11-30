@@ -1,7 +1,3 @@
-//
-// Created by myrddin on 30/11/16.
-//
-
 #ifndef TOWERDEFENSE_SIMPLETOWER_H
 #define TOWERDEFENSE_SIMPLETOWER_H
 

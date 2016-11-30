@@ -1,10 +1,5 @@
-//
-// Created by myrddin on 30/11/16.
-//
-
 #ifndef TOWERDEFENSE_TOWERAGENT_H
 #define TOWERDEFENSE_TOWERAGENT_H
-
 
 #include "Tower.h"
 
