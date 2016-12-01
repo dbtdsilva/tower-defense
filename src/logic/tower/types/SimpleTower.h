@@ -6,7 +6,7 @@
 
 class SimpleTower : public Tower {
 public:
-    SimpleTower(const Position<double>& pos);
+    SimpleTower(WorldState& world_ref, const Position<double>& pos);
 };
 
 

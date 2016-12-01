@@ -8,7 +8,7 @@ class WorldUserInteractions {
 public:
     WorldUserInteractions(WorldState& ref);
 
-    bool add_tower();
+    bool add_tower(const TowerType& type, const Position<double>& pos);
 private:
     WorldState& world_ref_;
 };

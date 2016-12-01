@@ -4,14 +4,25 @@
 #include <vector>
 #include "tower/Tower.h"
 #include "monster/Monster.h"
+#include "tower/Bullet.h"
+
+class Tower;
+class Monster;
+class Bullet;
 
 class WorldState {
 public:
+    WorldState();
 
+    bool add_tower(Tower& tower);
+    void tower_shoot(const Bullet& bullet);
 private:
     std::vector<Tower> towers_;
     std::vector<Monster> monsters_;
+    std::vector<Bullet> flying_bullets;
+
     unsigned int simulation_time_;
+    unsigned int player_currency;
 };
 
 
