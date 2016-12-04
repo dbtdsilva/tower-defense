@@ -7,12 +7,14 @@
 #include "../WorldState.h"
 
 enum TowerType { SIMPLE, COMPLEX };
+enum TowerDirection {LEFT, RIGHT};
 class WorldState;
 
 class Tower {
     public:
         static Tower create_tower(WorldState& world_ref, const TowerType& ref, const Position<double>& position);
         void shoot();
+        std::vector<Monster> radar();
 
         const int& get_cost() const;
     protected:

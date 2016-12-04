@@ -22,7 +22,10 @@ void Tower::shoot() {
     world_ref_.tower_shoot(Bullet(pos_, damage_));
 }
 
+std::vector<Monster> Tower::radar() {
+    return world_ref_.tower_radar();
+}
+
 const int& Tower::get_cost() const {
     return cost_;
 }
-

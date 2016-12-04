@@ -20,3 +20,11 @@ bool WorldState::add_tower(Tower& tower) {
 void WorldState::tower_shoot(const Bullet& bullet) {
     flying_bullets.push_back(bullet);
 }
+
+void WorldState::update_world_state() {
+	
+}
+
+std::vector<Monster> WorldState::tower_radar() {
+    return monsters_;
+}
