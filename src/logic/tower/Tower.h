@@ -3,6 +3,7 @@
 
 #include <tuple>
 #include <memory>
+#include "../monster/Monster.h"
 #include "../helpers/Position.h"
 #include "../WorldState.h"
 

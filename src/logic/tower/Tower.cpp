@@ -7,7 +7,6 @@ Tower Tower::create_tower(WorldState& world_ref, const TowerType& ref, const Pos
     switch (ref) {
         case SIMPLE:
             return SimpleTower(world_ref, position);
-            break;
     }
 }
 
