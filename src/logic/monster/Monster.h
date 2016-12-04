@@ -5,6 +5,7 @@
 #include "../WorldState.h"
 
 enum MonsterType { BASIC, INSANE };
+class WorldState;
 
 class Monster {
 public:

@@ -9,7 +9,9 @@
 
 enum TowerType { SIMPLE, COMPLEX };
 enum TowerDirection {LEFT, RIGHT};
+
 class WorldState;
+class Monster;
 
 class Tower {
     public:
