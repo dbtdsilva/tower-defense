@@ -1,15 +1,15 @@
 #ifndef TOWERDEFENSE_TOWERAGENT_H
 #define TOWERDEFENSE_TOWERAGENT_H
 
-#include "Tower.h"
+#include "TowerInterface.h"
 
 class TowerAgent {
 public:
-    TowerAgent(Tower&);
+    TowerAgent(TowerInterface*);
 
     void take_action();
 private:
-    Tower& tower_ref_;
+    TowerInterface* tower_ref_;
 };
 
 

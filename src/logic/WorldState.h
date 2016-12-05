@@ -2,7 +2,7 @@
 #define RAZERNAGA_WORLDSTATE_H
 
 #include <vector>
-#include "tower/Tower.h"
+#include "tower/TowerData.h"
 #include "monster/Monster.h"
 #include "tower/Bullet.h"
 
@@ -14,13 +14,13 @@ class WorldState {
 public:
     WorldState();
 
-    bool add_tower(Tower& tower);
+    /*bool add_tower(Tower& tower);
     void tower_shoot(const Bullet& bullet);
     std::vector<Monster> tower_radar();
-
+*/
     void update_world_state();
 private:
-    std::vector<Tower> towers_;
+    std::vector<TowerData> towers_;
     std::vector<Monster> monsters_;
     std::vector<Bullet> flying_bullets;
 
