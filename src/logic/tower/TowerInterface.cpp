@@ -2,18 +2,18 @@
 
 using namespace std;
 
-TowerInterface::TowerInterface(WorldState* reference) : world_state_ref_(reference) {
+TowerInterface::TowerInterface(Tower* reference) : tower_reference_(reference) {
 
 }
 
 void TowerInterface::shoot() {
-
+    tower_reference_->shoot();
 }
 
 void TowerInterface::radar() {
-
+    tower_reference_->radar();
 }
 
 void TowerInterface::rotate() {
-
+    tower_reference_->rotate();
 }

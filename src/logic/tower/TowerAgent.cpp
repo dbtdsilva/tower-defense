@@ -1,6 +1,6 @@
 #include "TowerAgent.h"
 
-TowerAgent::TowerAgent(TowerInterface* ref) : tower_ref_(ref) {
+TowerAgent::TowerAgent(std::unique_ptr<TowerInterface> ref) : tower_ref_(std::move(ref)) {
 }
 
 void TowerAgent::take_action() {
