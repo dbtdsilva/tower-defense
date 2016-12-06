@@ -1,5 +1,10 @@
-//
-// Created by myrddin on 06/12/16.
-//
-
 #include "UserInteraction.h"
+
+UserInteraction::UserInteraction(std::unique_ptr<UserInteractionInterface> interface) :
+        interface_(std::move(interface)) {
+
+}
+
+void UserInteraction::take_action() {
+
+}
