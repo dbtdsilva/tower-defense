@@ -1,7 +1,3 @@
-//
-// Created by myrddin on 06/12/16.
-//
-
 #ifndef TOWERDEFENSE_MONSTERINTERFACE_H
 #define TOWERDEFENSE_MONSTERINTERFACE_H
 
