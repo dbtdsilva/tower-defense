@@ -25,7 +25,8 @@ ADD_EXECUTABLE(towerdefense
         logic/tower/types/SimpleTower.h
         logic/monster/Monster.cpp logic/monster/Monster.h
         logic/monster/MonsterAgent.cpp logic/monster/MonsterAgent.h
-        logic/monster/types/BasicMonster.cpp logic/monster/types/BasicMonster.h)
+        logic/monster/types/BasicMonster.h
+        logic/monster/MonsterInterface.cpp logic/monster/MonsterInterface.h)
 TARGET_LINK_LIBRARIES(towerdefense ${SDL2_LIBRARIES})
 SET_TARGET_PROPERTIES(towerdefense PROPERTIES COMPILE_FLAGS "-std=c++14")
 

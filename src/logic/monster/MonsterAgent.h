@@ -1,15 +1,17 @@
 #ifndef TOWERDEFENSE_MONSTERAGENT_H
 #define TOWERDEFENSE_MONSTERAGENT_H
 
-#include "Monster.h"
+#include "MonsterInterface.h"
+
+class MonsterInterface;
 
 class MonsterAgent {
 public:
-    MonsterAgent(Monster&);
+    MonsterAgent(std::unique_ptr<MonsterInterface>);
 
     void take_action();
 private:
-    Monster& monster_ref_;
+    std::unique_ptr<MonsterInterface> monster_ref_;
 };
 
 #endif //TOWERDEFENSE_MONSTERAGENT_H

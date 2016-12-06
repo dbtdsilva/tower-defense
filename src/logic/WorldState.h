@@ -12,11 +12,6 @@ class Bullet;
 class WorldState {
 public:
     WorldState();
-
-    bool add_tower(Tower& tower);
-    /*void tower_shoot(const Bullet& bullet);
-    std::vector<Monster> tower_radar();*/
-
     void update_world_state();
 private:
     std::vector<Tower> towers_;
