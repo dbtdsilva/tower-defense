@@ -1,13 +1,17 @@
-//
-// Created by myrddin on 06/12/16.
-//
-
 #ifndef TOWERDEFENSE_USERINTERACTIONINTERFACE_H
 #define TOWERDEFENSE_USERINTERACTIONINTERFACE_H
 
+#include "../WorldState.h"
+
+class WorldState;
 
 class UserInteractionInterface {
+public:
+    UserInteractionInterface(WorldState* reference);
 
+    void add_tower();
+private:
+    WorldState* world_reference_;
 };
 
 

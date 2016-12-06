@@ -1,5 +1,9 @@
-//
-// Created by myrddin on 06/12/16.
-//
-
 #include "UserInteractionInterface.h"
+
+UserInteractionInterface::UserInteractionInterface(WorldState* reference) : world_reference_(reference) {
+
+}
+
+void UserInteractionInterface::add_tower() {
+
+}
