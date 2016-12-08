@@ -13,6 +13,11 @@ class Bullet;
 
 enum PositionState { EMPTY, PATH, TOWER };
 
+typedef struct {
+    Position position;
+    double angle;
+} Bullet;
+
 class WorldState {
 public:
     WorldState(size_t width, size_t height);
@@ -31,6 +36,7 @@ private:
 
     std::vector<Tower> towers_;
     std::vector<Monster> monsters_;
+    std::vector<Bullet> bullets_;
 
     unsigned int simulation_time_;
     unsigned int player_currency;

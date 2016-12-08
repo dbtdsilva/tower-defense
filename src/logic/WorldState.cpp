@@ -50,11 +50,34 @@ void WorldState::append_line_to_path(Position<int> src, Position<int> dst) {
 }
 
 void WorldState::update_world_state() {
-	for (Monster& monster : monsters_) {
+    // Update bullets in the world
+	for (Bullet& bullet : bullets_) {
 
     }
-    for (Tower& tower : towers_) {
 
+    // Update monster state
+    for (Monster& monster : monsters_) {
+
+    }
+
+    // Update tower state
+    for (Tower& tower : towers_) {
+        // Check for shoots
+        const vector<double>& requested_shoots = tower.get_requested_shoots();
+        if (!requested_shoots.empty()) {
+            bullets_.push_back({tower.get_position(), requested_shoots[0]});
+        }
+        // Check for rotations
+        const vector<TowerRotation>& requested_rotations = tower.get_requested_rotations();
+        if (!requested_rotations.empty()) {
+            const double& rotational_speed = tower.get_rotational_speed();
+            double& angle = tower.get_angle();
+            if (requested_rotations[0] == LEFT)
+                angle += rotational_speed;
+            else
+                angle -= rotational_speed;
+        }
+        tower.clear_requests();
     }
 }
 

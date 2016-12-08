@@ -27,8 +27,33 @@ const int& Tower::get_cost() const {
     return cost_;
 }
 
-void Tower::shoot() {
+const Position& Tower::get_position() const {
+    return pos_;
+}
 
+const std::vector<TowerRotation>& Tower::get_requested_rotations() const {
+    return requested_rotations_;
+}
+
+const std::vector<double>& Tower::get_requested_shoots() const {
+    return requested_shoots_;
+}
+
+const double& Tower::get_rotational_speed() const {
+    return rotational_speed_;
+}
+
+double& Tower::get_angle() const {
+    return angle_;
+}
+
+void Tower::clear_requests() {
+    requested_rotations_.clear();
+    requested_shoots_.clear();
+}
+
+void Tower::shoot() {
+    requested_shoots_.push_back(angle_);
 }
 
 vector<Position<double>> Tower::radar() {
@@ -46,6 +71,6 @@ vector<Position<double>> Tower::radar() {
     return monsters_in_range;
 }
 
-void Tower::rotate() {
-
+void Tower::rotate(TowerRotation rotation) {
+    requested_rotations_.push_back(rotation);
 }
