@@ -43,6 +43,7 @@ vector<Position<double>> Tower::radar() {
             monsters_in_range.push_back(monster_position);
         }
     }
+    return monsters_in_range;
 }
 
 void Tower::rotate() {
