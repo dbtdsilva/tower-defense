@@ -12,8 +12,8 @@ public:
 
     void set_x(const T& x) { this->x_ = x; }
     void set_y(const T& y) { this->y_ = y; }
-    T& get_x() { return x_; }
-    T& get_y() { return y_; }
+    const T& get_x() const { return x_; }
+    const T& get_y() const { return y_; }
 
     Position& operator=(const Position& other) {
         if (this != &other) {

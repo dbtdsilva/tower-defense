@@ -17,6 +17,10 @@ Monster::Monster(WorldState* state, const int& health, const double& movement_sp
 {
 }
 
+const Position<double>& Monster::get_position() const {
+    return pos_;
+}
+
 void Monster::move() {
 
 }

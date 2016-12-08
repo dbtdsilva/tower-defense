@@ -18,7 +18,7 @@ public:
 
     const int& get_cost() const;
     void shoot();
-    void radar();
+    std::vector<Position<double>> radar();
     void rotate();
 protected:
     Tower(WorldState*, const int& damage, const int& radar_load_time, const int& cost, const int& range,

@@ -4,7 +4,8 @@
 using namespace std;
 
 WorldState::WorldState(size_t width, size_t height) : width_(width), height_(height),
-                                                      map_(width, std::vector<PositionState>(height, EMPTY))
+                                                      map_(width, std::vector<PositionState>(height, EMPTY)),
+                                                      units_per_cell(500)
 {
     append_line_to_path(Position<int>(0, 1), Position<int>(width_ - 2, 1));
     append_line_to_path(Position<int>(width_ - 2, 1), Position<int>(width_ - 2, height_ - 2));
@@ -49,7 +50,16 @@ void WorldState::append_line_to_path(Position<int> src, Position<int> dst) {
 }
 
 void WorldState::update_world_state() {
-	
+	for (Monster& monster : monsters_) {
+
+    }
+    for (Tower& tower : towers_) {
+
+    }
+}
+
+const std::vector<Monster>& WorldState::get_monsters() const {
+    return monsters_;
 }
 
 ostream& operator<<(ostream& os, const WorldState& obj)
@@ -60,11 +70,11 @@ ostream& operator<<(ostream& os, const WorldState& obj)
         }
         os << endl;
     }
-    os << "Path: ";
+    /*os << "Path: ";
     for (const Position<int>& pos : obj.path_) {
         os << "(" << pos << "); ";
     }
-    os << endl;
+    os << endl;*/
     return os;
 }
 

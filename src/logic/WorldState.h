@@ -17,12 +17,14 @@ class WorldState {
 public:
     WorldState(size_t width, size_t height);
     void update_world_state();
+    const std::vector<Monster>& get_monsters() const;
 
     friend std::ostream& operator<<(std::ostream& os, const WorldState& obj);
 private:
     void append_line_to_path(Position<int> src, Position<int> dst);
 
     const size_t width_, height_;
+    const int units_per_cell;
     std::vector<std::vector<PositionState>> map_;
     std::list<Position<int>> path_;
 

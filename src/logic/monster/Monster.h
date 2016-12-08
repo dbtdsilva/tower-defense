@@ -14,6 +14,7 @@ class Monster {
 public:
     static Monster add_monster(WorldState* world_ref, const MonsterType& ref, const Position<double>& position);
 
+    const Position<double>& get_position() const;
     void move();
     void left_eye();
     void middle_eye();
