@@ -1,10 +1,14 @@
 #include "UserInteraction.h"
 
-UserInteraction::UserInteraction(std::unique_ptr<UserInteractionInterface> interface) :
-        interface_(std::move(interface)) {
+using namespace std;
+
+UserInteraction::UserInteraction(WorldState* ref) :
+        world_state_(ref), interface_(make_unique<UserInteractionInterface>(this)),
+        agent_(make_unique<UserInteractionAgent>(interface_.get()))
+{
 
 }
 
-void UserInteraction::take_action() {
-
+void UserInteraction::add_tower(const TowerType& type) {
+    //world_state_->add_tower(type);
 }

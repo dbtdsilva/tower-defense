@@ -3,14 +3,20 @@
 
 #include <memory>
 #include "UserInteractionInterface.h"
+#include "UserInteractionAgent.h"
+
+class WorldState;
 
 class UserInteraction {
 public:
-    UserInteraction(std::unique_ptr<UserInteractionInterface>);
+    UserInteraction(WorldState*);
 
-    void take_action();
+    void add_tower(const TowerType& type);
 private:
     std::unique_ptr<UserInteractionInterface> interface_;
+    std::unique_ptr<UserInteractionAgent> agent_;
+
+    WorldState* world_state_;
 };
 
 

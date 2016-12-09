@@ -1,17 +1,17 @@
 #ifndef TOWERDEFENSE_USERINTERACTIONINTERFACE_H
 #define TOWERDEFENSE_USERINTERACTIONINTERFACE_H
 
-#include "../WorldState.h"
+#include "../helpers/Definitions.h"
 
-class WorldState;
+class UserInteraction;
 
 class UserInteractionInterface {
 public:
-    UserInteractionInterface(WorldState* reference);
+    UserInteractionInterface(UserInteraction* reference);
 
-    void add_tower();
+    void add_tower(const TowerType& type);
 private:
-    WorldState* world_reference_;
+    UserInteraction* user_interaction_;
 };
 
 

@@ -1,9 +1,10 @@
 #include "UserInteractionInterface.h"
+#include "UserInteraction.h"
 
-UserInteractionInterface::UserInteractionInterface(WorldState* reference) : world_reference_(reference) {
+UserInteractionInterface::UserInteractionInterface(UserInteraction* reference) : user_interaction_(reference) {
 
 }
 
-void UserInteractionInterface::add_tower() {
-
+void UserInteractionInterface::add_tower(const TowerType& type) {
+    user_interaction_->add_tower(type);
 }

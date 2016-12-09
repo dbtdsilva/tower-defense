@@ -17,36 +17,8 @@ WorldState::WorldState(size_t width, size_t height) : width_(width), height_(hei
     append_line_to_path(Position<int>(1, 3), Position<int>(1, height_ - 1));
 }
 
-void WorldState::append_line_to_path(Position<int> src, Position<int> dst) {
-    if (src.get_x() != dst.get_x()) {
-        if (src.get_x() < dst.get_x()) {
-            for (size_t i = src.get_x(); i <= dst.get_x(); i++) {
-                if (map_[i][src.get_y()] != PATH)
-                    path_.push_back(Position<int>(i, src.get_y()));
-                map_[i][src.get_y()] = PATH;
-            }
-        } else {
-            for (size_t i = src.get_x(); i >= dst.get_x(); i--) {
-                if (map_[i][src.get_y()] != PATH)
-                    path_.push_back(Position<int>(i, src.get_y()));
-                map_[i][src.get_y()] = PATH;
-            }
-        }
-    } else if (src.get_y() != dst.get_y()) {
-        if (src.get_y() < dst.get_y()) {
-            for (size_t i = src.get_y(); i <= dst.get_y(); i++) {
-                if (map_[src.get_x()][i] != PATH)
-                    path_.push_back(Position<int>(src.get_x(), i));
-                map_[src.get_x()][i] = PATH;
-            }
-        } else {
-            for (size_t i = src.get_y(); i >= dst.get_y(); i--) {
-                if (map_[src.get_x()][i] != PATH)
-                    path_.push_back(Position<int>(src.get_x(), i));
-                map_[src.get_x()][i] = PATH;
-            }
-        }
-    }
+void WorldState::add_tower(const TowerType &) {
+
 }
 
 void WorldState::update_world_state() {
@@ -83,6 +55,38 @@ void WorldState::update_world_state() {
 
 const std::vector<Monster>& WorldState::get_monsters() const {
     return monsters_;
+}
+
+void WorldState::append_line_to_path(Position<int> src, Position<int> dst) {
+    if (src.get_x() != dst.get_x()) {
+        if (src.get_x() < dst.get_x()) {
+            for (size_t i = src.get_x(); i <= dst.get_x(); i++) {
+                if (map_[i][src.get_y()] != PATH)
+                    path_.push_back(Position<int>(i, src.get_y()));
+                map_[i][src.get_y()] = PATH;
+            }
+        } else {
+            for (size_t i = src.get_x(); i >= dst.get_x(); i--) {
+                if (map_[i][src.get_y()] != PATH)
+                    path_.push_back(Position<int>(i, src.get_y()));
+                map_[i][src.get_y()] = PATH;
+            }
+        }
+    } else if (src.get_y() != dst.get_y()) {
+        if (src.get_y() < dst.get_y()) {
+            for (size_t i = src.get_y(); i <= dst.get_y(); i++) {
+                if (map_[src.get_x()][i] != PATH)
+                    path_.push_back(Position<int>(src.get_x(), i));
+                map_[src.get_x()][i] = PATH;
+            }
+        } else {
+            for (size_t i = src.get_y(); i >= dst.get_y(); i--) {
+                if (map_[src.get_x()][i] != PATH)
+                    path_.push_back(Position<int>(src.get_x(), i));
+                map_[src.get_x()][i] = PATH;
+            }
+        }
+    }
 }
 
 ostream& operator<<(ostream& os, const WorldState& obj)
