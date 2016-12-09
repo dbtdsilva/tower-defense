@@ -1,6 +1,7 @@
 #include "WorldState.h"
 #include "interaction/UserInteraction.h"
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -18,18 +19,19 @@ WorldState::WorldState(size_t width, size_t height) : width_(width), height_(hei
     append_line_to_path(Position<int>(1, 3), Position<int>(1, height_ - 1));
 }
 
-void WorldState::add_tower(const TowerType &) {
-
-}
-
 void WorldState::update_world_state() {
     for (const TowerAddRequest& request : user_interaction_.get_tower_add_requests()) {
         towers_.push_back(Tower::create_tower(this, request.type, request.position));
+        map_[request.position.get_x()][request.position.get_y()] = TOWER;
     }
 
     // Update bullets in the world
 	for (Bullet& bullet : bullets_) {
+        double new_x = bullet.position.get_x() + cos(bullet.angle) * bullet.speed;
+        double new_y = bullet.position.get_y() + sin(bullet.angle) * bullet.speed;
 
+        bullet.position.set_x(new_x);
+        bullet.position.set_y(new_y);
     }
 
     // Update monster state
@@ -42,7 +44,7 @@ void WorldState::update_world_state() {
         // Check for shoots
         const vector<double>& requested_shoots = tower.get_requested_shoots();
         if (!requested_shoots.empty()) {
-            bullets_.push_back({tower.get_position(), requested_shoots[0]});
+            bullets_.push_back({tower.get_position(), requested_shoots[0], 0.1});
         }
         // Check for rotations
         const vector<TowerRotation>& requested_rotations = tower.get_requested_rotations();

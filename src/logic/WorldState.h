@@ -15,13 +15,13 @@ enum PositionState { EMPTY, PATH, TOWER };
 typedef struct {
     Position<double> position;
     const double angle;
+    const double speed;
 } Bullet;
 
 class WorldState {
 public:
     WorldState(size_t width, size_t height);
     void update_world_state();
-    void add_tower(const TowerType&);
 
     const std::vector<Monster>& get_monsters() const;
 
