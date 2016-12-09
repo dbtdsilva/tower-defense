@@ -24,6 +24,7 @@ public:
     void update_world_state();
 
     const std::vector<Monster>& get_monsters() const;
+    UserInteractionAgent* get_user_interaction_agent();
 
     friend std::ostream& operator<<(std::ostream& os, const WorldState& obj);
 private:

@@ -1,6 +1,4 @@
 #include "WorldState.h"
-#include "interaction/UserInteraction.h"
-#include <iostream>
 #include <cmath>
 
 using namespace std;
@@ -62,6 +60,10 @@ void WorldState::update_world_state() {
 
 const std::vector<Monster>& WorldState::get_monsters() const {
     return monsters_;
+}
+
+UserInteractionAgent* WorldState::get_user_interaction_agent() {
+    return user_interaction_.get_user_interaction_agent();
 }
 
 void WorldState::append_line_to_path(Position<int> src, Position<int> dst) {

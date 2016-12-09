@@ -15,8 +15,12 @@ void UserInteraction::add_tower(const TowerType& type, const Position<double>& p
     requests.push_back({type, position});
 }
 
-const std::vector<TowerAddRequest> &UserInteraction::get_tower_add_requests() {
+const std::vector<TowerAddRequest> &UserInteraction::get_tower_add_requests() const {
     return requests;
+}
+
+UserInteractionAgent* UserInteraction::get_user_interaction_agent() {
+    return agent_.get();
 }
 
 void UserInteraction::clear_requests() {

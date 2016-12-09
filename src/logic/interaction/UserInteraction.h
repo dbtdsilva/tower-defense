@@ -18,7 +18,8 @@ class UserInteraction {
 public:
     UserInteraction(WorldState*);
 
-    const std::vector<TowerAddRequest>& get_tower_add_requests();
+    const std::vector<TowerAddRequest>& get_tower_add_requests() const;
+    UserInteractionAgent* get_user_interaction_agent();
     void clear_requests();
     void add_tower(const TowerType& type, const Position<double>& position);
 private:
