@@ -1,8 +1,6 @@
 #ifndef TOWERDEFENSE_MONSTERINTERFACE_H
 #define TOWERDEFENSE_MONSTERINTERFACE_H
 
-#include "Monster.h"
-
 class Monster;
 
 class MonsterInterface {

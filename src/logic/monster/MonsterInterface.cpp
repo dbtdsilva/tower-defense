@@ -1,4 +1,5 @@
 #include "MonsterInterface.h"
+#include "Monster.h"
 
 MonsterInterface::MonsterInterface(Monster* reference) : monster_reference_(reference) {
 

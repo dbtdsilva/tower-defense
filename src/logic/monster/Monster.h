@@ -1,13 +1,13 @@
 #ifndef TOWERDEFENSE_MONSTER_H
 #define TOWERDEFENSE_MONSTER_H
 
+#include <memory>
 #include "../helpers/Position.h"
 #include "../helpers/Definitions.h"
-#include "../WorldState.h"
+#include "MonsterInterface.h"
 #include "MonsterAgent.h"
 
 class WorldState;
-class MonsterAgent;
 
 class Monster {
 public:
@@ -30,6 +30,7 @@ private:
     double angle_;
 
     std::unique_ptr<MonsterAgent> agent_;
+    std::unique_ptr<MonsterInterface> interface_;
     WorldState* world_ref_;
 };
 

@@ -3,6 +3,7 @@
 #include <cmath>
 #include "types/SimpleTower.h"
 #include "../monster/Monster.h"
+#include "../WorldState.h"
 
 using namespace std;
 

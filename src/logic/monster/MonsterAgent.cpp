@@ -1,6 +1,7 @@
 #include "MonsterAgent.h"
+#include "MonsterInterface.h"
 
-MonsterAgent::MonsterAgent(std::unique_ptr<MonsterInterface> ref) : monster_ref_(std::move(ref)) {
+MonsterAgent::MonsterAgent(MonsterInterface * ref) : monster_ref_(ref) {
 }
 
 void MonsterAgent::take_action() {
