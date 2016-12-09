@@ -3,9 +3,9 @@
 
 using namespace std;
 
-WorldState::WorldState(size_t width, size_t height) : width_(width), height_(height),
-                                                      map_(width, std::vector<PositionState>(height, EMPTY)),
-                                                      units_per_cell(500), user_interaction_(this)
+WorldState::WorldState(size_t width, size_t height) :
+        width_(width), height_(height), map_(width, std::vector<PositionState>(height, EMPTY)),
+        units_per_cell(500), user_interaction_(this), player_currency(10000)
 {
     append_line_to_path(Position<int>(0, 1), Position<int>(width_ - 2, 1));
     append_line_to_path(Position<int>(width_ - 2, 1), Position<int>(width_ - 2, height_ - 2));
@@ -20,6 +20,9 @@ WorldState::WorldState(size_t width, size_t height) : width_(width), height_(hei
 void WorldState::update_world_state() {
     for (const TowerAddRequest& request : user_interaction_.get_tower_add_requests()) {
         Tower ref = Tower::create_tower(this, request.type, request.position);
+        if (ref.get_cost() > player_currency)
+            continue;
+        player_currency -= ref.get_cost();
         towers_.push_back(std::move(ref));
         map_[request.position.get_x()][request.position.get_y()] = TOWER;
 

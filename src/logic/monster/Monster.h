@@ -11,6 +11,12 @@ class WorldState;
 class Monster {
 public:
     static Monster add_monster(WorldState* world_ref, const MonsterType& ref, const Position<double>& position);
+    ~Monster();
+    // No copies or assignments are allowed (only moves)
+    Monster(const Monster&) = delete;
+    Monster& operator=(const Monster& other) = delete;
+    Monster& operator=(Monster&& other) = delete;
+    Monster(Monster&&);
 
     const Position<double>& get_position() const;
     void move();

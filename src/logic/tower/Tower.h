@@ -13,10 +13,11 @@ class Tower {
 public:
     static Tower create_tower(WorldState* world_ref, const TowerType& ref, const Position<double>& position);
     ~Tower();
-    Tower(const Tower&);
+    // No copies or assignments are allowed (only moves)
+    Tower(const Tower&) = delete;
+    Tower& operator=(const Tower& other) = delete;
+    Tower& operator=(Tower&& other) = delete;
     Tower(Tower&&);
-    Tower& operator=(const Tower& other);
-    Tower& operator=(Tower&& other);
 
     const int& get_cost() const;
     const std::vector<TowerRotation>& get_requested_rotations() const;

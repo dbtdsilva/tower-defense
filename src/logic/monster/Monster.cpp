@@ -17,6 +17,18 @@ Monster::Monster(WorldState* state, const int& health, const double& movement_sp
 {
 }
 
+Monster::~Monster() {
+}
+
+Monster::Monster(Monster&& other) :
+        world_ref_(other.world_ref_), health_(other.health_), movement_speed_(movement_speed_),
+        rotational_speed_(other.rotational_speed_), pos_(other.pos_), angle_(0),
+        interface_(std::move(other.interface_))
+{
+    other.interface_ = nullptr;
+}
+
+
 const Position<double>& Monster::get_position() const {
     return pos_;
 }

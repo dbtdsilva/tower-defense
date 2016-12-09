@@ -29,28 +29,12 @@ Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, c
     Tower::instance_counter++;
 }
 
-Tower::Tower(const Tower& other) : cost_(other.cost_), pos_(other.pos_), range_(other.range_),
-                                   rotational_speed_(other.rotational_speed_), damage_(other.damage_),
-                                   radar_load_time_(other.radar_load_time_), id_(0)
+Tower::Tower(Tower&& other)  :
+        cost_(other.cost_), pos_(other.pos_), range_(other.range_), rotational_speed_(other.rotational_speed_),
+        damage_(other.damage_), radar_load_time_(other.radar_load_time_), angle_(other.angle_), id_(other.id_),
+        interface_(std::move(interface_)), world_ref_(other.world_ref_)
 {
-    cout << "Copy" << endl;
-}
-
-Tower::Tower(Tower&& other)  : cost_(other.cost_), pos_(other.pos_), range_(other.range_),
-                                     rotational_speed_(other.rotational_speed_), damage_(other.damage_),
-                                     radar_load_time_(other.radar_load_time_),
-                                     id_(0)
-{
-    cout << "Move" << endl;
-}
-
-
-Tower& Tower::operator=(const Tower& other) {
-
-}
-
-Tower& Tower::operator=(Tower&& other) {
-
+    other.interface_ = nullptr;
 }
 
 const int& Tower::get_cost() const {
