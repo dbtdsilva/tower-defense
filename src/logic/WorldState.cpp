@@ -40,7 +40,38 @@ void WorldState::update_world_state() {
 
     // Update monster state
     for (Monster& monster : monsters_) {
-
+        const vector<MonsterMovement>& movements = monster.get_requested_movements();
+        if (!movements.empty()) {
+            const Position<double>& position = monster.get_position();
+            double& angle = monster.get_angle();
+            switch (movements[0]) {
+                case MonsterMovement::FRONT:
+                    monster.set_position(position.get_x() + cos(angle) * monster.get_movement_speed(),
+                                         position.get_y() + sin(angle) * monster.get_movement_speed());
+                    break;
+                case MonsterMovement::BACK:
+                    monster.set_position(position.get_x() + cos(angle - M_PI) * monster.get_movement_speed(),
+                                         position.get_y() + sin(angle - M_PI) * monster.get_movement_speed());
+                    break;
+                case MonsterMovement::LEFT:
+                    monster.set_position(position.get_x() + cos(angle + M_PI_2) * monster.get_movement_speed(),
+                                         position.get_y() + sin(angle + M_PI_2) * monster.get_movement_speed());
+                    break;
+                case MonsterMovement::RIGHT:
+                    monster.set_position(position.get_x() + cos(angle - M_PI_2) * monster.get_movement_speed(),
+                                         position.get_y() + sin(angle - M_PI_2) * monster.get_movement_speed());
+                    break;
+            }
+        }
+        const vector<MonsterRotation>& rotations = monster.get_requested_rotations();
+        if (!rotations.empty()) {
+            double& angle = monster.get_angle();
+            if (rotations[0] == MonsterRotation ::LEFT)
+                angle += monster.get_rotational_speed();
+            else
+                angle -= monster.get_rotational_speed();
+        }
+        monster.clear_requests();
     }
 
     // Update tower state

@@ -3,7 +3,7 @@
 
 enum class TowerRotation { LEFT, RIGHT };
 enum class MonsterRotation { LEFT, RIGHT };
-enum class MonsterMovement { UP, LEFT, DOWN, RIGHT };
+enum class MonsterMovement { FRONT, LEFT, BACK, RIGHT };
 enum class TowerType { SIMPLE, COMPLEX };
 enum class MonsterType { BASIC, INSANE };
 

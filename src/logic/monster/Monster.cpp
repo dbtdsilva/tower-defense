@@ -28,9 +28,25 @@ Monster::Monster(Monster&& other) :
     other.interface_ = nullptr;
 }
 
+void Monster::set_position(const double& x, const double& y) {
+    pos_.set_x(x);
+    pos_.set_y(y);
+}
 
 const Position<double>& Monster::get_position() const {
     return pos_;
+}
+
+double& Monster::get_angle() {
+    return angle_;
+}
+
+const double& Monster::get_rotational_speed() const {
+    return rotational_speed_;
+}
+
+const double& Monster::get_movement_speed() const {
+    return movement_speed_;
 }
 
 std::vector<MonsterEye> Monster::eyes() {
@@ -46,9 +62,22 @@ std::vector<MonsterEye> Monster::eyes() {
 }
 
 void Monster::move(const MonsterMovement& movement) {
-
+    requested_movements_.push_back(movement);
 }
 
 void Monster::rotate(const MonsterRotation& rotation) {
+    requested_rotations_.push_back(rotation);
+}
 
+const std::vector<MonsterMovement>& Monster::get_requested_movements() const {
+    return requested_movements_;
+}
+
+const std::vector<MonsterRotation>& Monster::get_requested_rotations() const {
+    return requested_rotations_;
+}
+
+void Monster::clear_requests() {
+    requested_movements_.clear();
+    requested_rotations_.clear();
 }
