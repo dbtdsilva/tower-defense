@@ -30,7 +30,8 @@ ADD_EXECUTABLE(towerdefense
         logic/monster/types/BasicMonster.h
         logic/monster/MonsterInterface.cpp logic/monster/MonsterInterface.h
         logic/interaction/UserInteractionInterface.cpp logic/interaction/UserInteractionInterface.h
-        logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h logic/helpers/Definitions.h)
+        logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h logic/helpers/Definitions.h
+        logic/monster/MonsterEye.h)
 
 ADD_EXECUTABLE(towerdefense_viewer
         main_viewer.cpp
@@ -42,8 +43,7 @@ ADD_EXECUTABLE(towerdefense_viewer
         viewer/objects/Monster.h viewer/objects/Monster.cpp
         viewer/objects/Tower.h viewer/objects/Tower.cpp
         viewer/objects/Tower.h viewer/objects/Tower.cpp
-        viewer/MapDrawer.h viewer/MapDrawer.cpp
-        logic/monster/MonsterEye.h))
+        viewer/MapDrawer.h viewer/MapDrawer.cpp)
 
 TARGET_LINK_LIBRARIES(towerdefense ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})
 SET_TARGET_PROPERTIES(towerdefense PROPERTIES COMPILE_FLAGS "-std=c++14")
