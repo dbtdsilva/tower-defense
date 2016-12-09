@@ -1,5 +1,7 @@
 #include "UserInteraction.h"
 
+#include "../WorldState.h"
+
 using namespace std;
 
 UserInteraction::UserInteraction(WorldState* ref) :
@@ -9,6 +11,14 @@ UserInteraction::UserInteraction(WorldState* ref) :
 
 }
 
-void UserInteraction::add_tower(const TowerType& type) {
-    //world_state_->add_tower(type);
+void UserInteraction::add_tower(const TowerType& type, const Position<double>& position) {
+    requests.push_back({type, position});
+}
+
+const std::vector<TowerAddRequest> &UserInteraction::get_tower_add_requests() {
+    return requests;
+}
+
+void UserInteraction::clear_requests() {
+    requests.clear();
 }

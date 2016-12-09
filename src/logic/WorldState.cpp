@@ -1,11 +1,12 @@
 #include "WorldState.h"
+#include "interaction/UserInteraction.h"
 #include <iostream>
 
 using namespace std;
 
 WorldState::WorldState(size_t width, size_t height) : width_(width), height_(height),
                                                       map_(width, std::vector<PositionState>(height, EMPTY)),
-                                                      units_per_cell(500)
+                                                      units_per_cell(500), user_interaction_(this)
 {
     append_line_to_path(Position<int>(0, 1), Position<int>(width_ - 2, 1));
     append_line_to_path(Position<int>(width_ - 2, 1), Position<int>(width_ - 2, height_ - 2));
@@ -22,6 +23,10 @@ void WorldState::add_tower(const TowerType &) {
 }
 
 void WorldState::update_world_state() {
+    for (const TowerAddRequest& request : user_interaction_.get_tower_add_requests()) {
+        towers_.push_back(Tower::create_tower(this, request.type, request.position));
+    }
+
     // Update bullets in the world
 	for (Bullet& bullet : bullets_) {
 

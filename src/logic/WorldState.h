@@ -6,6 +6,7 @@
 #include "tower/Tower.h"
 #include "monster/Monster.h"
 #include "helpers/Position.h"
+#include "interaction/UserInteraction.h"
 
 class Monster;
 
@@ -36,6 +37,7 @@ private:
     std::vector<Tower> towers_;
     std::vector<Monster> monsters_;
     std::vector<Bullet> bullets_;
+    UserInteraction user_interaction_;
 
     unsigned int simulation_time_;
     unsigned int player_currency;

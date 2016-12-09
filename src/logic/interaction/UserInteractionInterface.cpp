@@ -5,6 +5,6 @@ UserInteractionInterface::UserInteractionInterface(UserInteraction* reference) :
 
 }
 
-void UserInteractionInterface::add_tower(const TowerType& type) {
-    user_interaction_->add_tower(type);
+void UserInteractionInterface::add_tower(const TowerType& type, const Position<double>& position) {
+    user_interaction_->add_tower(type, position);
 }
