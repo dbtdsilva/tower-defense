@@ -30,16 +30,20 @@ ADD_EXECUTABLE(towerdefense
         logic/monster/types/BasicMonster.h
         logic/monster/MonsterInterface.cpp logic/monster/MonsterInterface.h
         logic/interaction/UserInteractionInterface.cpp logic/interaction/UserInteractionInterface.h
-        logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h logic/helpers/Definitions.h
+        logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h logic/helpers/Definitions.h)
+
+ADD_EXECUTABLE(towerdefense_viewer
+        main_viewer.cpp
+        viewer/MapDrawer.h viewer/MapDrawer.cpp
         viewer/aux/Cleanup.h
         viewer/aux/Resources.h
         viewer/map/Map.h viewer/map/Map.cpp
         viewer/objects/Bullet.h viewer/objects/Bullet.cpp
         viewer/objects/Monster.h viewer/objects/Monster.cpp
-        viewer/objects/Tower.h viewer/objects/Tower.cpp
-        viewer/MapDrawer.h viewer/MapDrawer.cpp
-        )
-TARGET_LINK_LIBRARIES(towerdefense ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})
+        viewer/objects/Tower.h viewer/objects/Tower.cpp)
+
+TARGET_LINK_LIBRARIES(towerdefense_viewer ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})
 SET_TARGET_PROPERTIES(towerdefense PROPERTIES COMPILE_FLAGS "-std=c++14")
+SET_TARGET_PROPERTIES(towerdefense_viewer PROPERTIES COMPILE_FLAGS "-std=c++14")
 
 ADD_DEFINITIONS(-DDEBUG)
