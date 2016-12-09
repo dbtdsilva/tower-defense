@@ -2,8 +2,10 @@
 #define TOWERDEFENSE_MONSTER_H
 
 #include <memory>
+#include <vector>
 #include "../helpers/Position.h"
 #include "../helpers/Definitions.h"
+#include "MonsterEye.h"
 #include "MonsterInterface.h"
 
 class WorldState;
@@ -19,11 +21,9 @@ public:
     Monster(Monster&&);
 
     const Position<double>& get_position() const;
-    void move();
-    void left_eye();
-    void middle_eye();
-    void right_eye();
-    void rotate();
+    std::vector<MonsterEye> eyes();
+    void move(const MonsterMovement&);
+    void rotate(const MonsterRotation&);
 protected:
     Monster(WorldState* state, const int& health, const double& movement_speed_, const double& rotational_speed,
             const Position<double>& pos);

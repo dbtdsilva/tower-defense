@@ -33,22 +33,22 @@ const Position<double>& Monster::get_position() const {
     return pos_;
 }
 
-void Monster::move() {
+std::vector<MonsterEye> Monster::eyes() {
+    // Implement cost function
+
+    // Calculate the eyes values
+    vector<MonsterEye> monster_eyes;
+    const vector<double> eyes_direction = {-90.0, 0.0, 90.0};
+    for (double eye_direction : eyes_direction) {
+        monster_eyes.push_back({ eye_direction, world_ref_->get_wall_distance(pos_, angle_ + eye_direction, 0.01) });
+    }
+    return monster_eyes;
+}
+
+void Monster::move(const MonsterMovement& movement) {
 
 }
 
-void Monster::left_eye() {
-
-}
-
-void Monster::middle_eye() {
-
-}
-
-void Monster::right_eye() {
-
-}
-
-void Monster::rotate() {
+void Monster::rotate(const MonsterRotation& rotation) {
 
 }

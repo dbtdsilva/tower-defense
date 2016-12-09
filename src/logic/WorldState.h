@@ -24,6 +24,7 @@ public:
     void update_world_state();
 
     const std::vector<Monster>& get_monsters() const;
+    const double get_wall_distance(const Position<double>&, const double&, const double&) const;
     UserInteractionInterface* get_user_interaction_interface();
 
     friend std::ostream& operator<<(std::ostream& os, const WorldState& obj);

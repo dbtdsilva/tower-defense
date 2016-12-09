@@ -69,6 +69,24 @@ const std::vector<Monster>& WorldState::get_monsters() const {
     return monsters_;
 }
 
+const double WorldState::get_wall_distance(const Position<double>& position, const double& direction,
+                                            const double& sensor_precision) const {
+    unsigned int index = 0;
+
+    Position<int> next_position = {
+            static_cast<int>(floor(position.get_x() + cos(direction) * index * sensor_precision)),
+            static_cast<int>(floor(position.get_y() + sin(direction) * index * sensor_precision))};
+    while (next_position.get_x() >= 0 && next_position.get_y() >= 0 &&
+            next_position.get_x() < width_ && next_position.get_y() < height_ &&
+            map_[next_position.get_x()][next_position.get_y()] == PATH) {
+        index++;
+        next_position = {
+                static_cast<int>(floor(position.get_x() + cos(direction) * index * sensor_precision)),
+                static_cast<int>(floor(position.get_y() + sin(direction) * index * sensor_precision))};
+    }
+    return sqrt(pow(next_position.get_x() - position.get_x(), 2) + pow(next_position.get_y() - position.get_y(), 2));
+}
+
 UserInteractionInterface* WorldState::get_user_interaction_interface() {
     return user_interaction_.get_user_interaction_interface();
 }
