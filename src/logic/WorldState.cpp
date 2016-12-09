@@ -72,7 +72,7 @@ void WorldState::update_world_state() {
         if (!requested_rotations.empty()) {
             const double& rotational_speed = tower.get_rotational_speed();
             double& angle = tower.get_angle();
-            if (requested_rotations[0] == LEFT)
+            if (requested_rotations[0] == TowerRotation::LEFT)
                 angle += rotational_speed;
             else
                 angle -= rotational_speed;

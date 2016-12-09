@@ -1,18 +1,14 @@
-#ifndef TOWERDEFENSE_TOWERDATA_H
-#define TOWERDEFENSE_TOWERDATA_H
+#ifndef TOWERDEFENSE_TOWER_H
+#define TOWERDEFENSE_TOWER_H
 
 #include <memory>
-#include <queue>
-#include "../WorldState.h"
+#include <vector>
 #include "../helpers/Position.h"
-#include "TowerInterface.h"
+#include "../helpers/Definitions.h"
 #include "TowerAgent.h"
-
-enum TowerType { SIMPLE, COMPLEX };
-enum TowerRotation { LEFT, RIGHT };
+#include "TowerInterface.h"
 
 class WorldState;
-class TowerAgent;
 
 class Tower {
 public:
@@ -21,13 +17,13 @@ public:
     const int& get_cost() const;
     const std::vector<TowerRotation>& get_requested_rotations() const;
     const std::vector<double>& get_requested_shoots() const;
-    const Position& get_position() const;
+    const Position<double>& get_position() const;
     const double& get_rotational_speed() const;
-    double& get_angle() const;
+    double& get_angle();
 
     void shoot();
     std::vector<Position<double>> radar();
-    void rotate(TowerRotation rotation);
+    void rotate(const TowerRotation& rotation);
     void clear_requests();
 protected:
     Tower(WorldState*, const int& damage, const int& radar_load_time, const int& cost, const int& range,
@@ -43,6 +39,7 @@ private:
     double angle_;
     std::vector<double> requested_shoots_;
     std::vector<TowerRotation> requested_rotations_;
+    std::unique_ptr<TowerInterface> interface_;
     std::unique_ptr<TowerAgent> agent_;
     WorldState* world_ref_;
 };

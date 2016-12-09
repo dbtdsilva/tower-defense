@@ -5,7 +5,7 @@ using namespace std;
 
 Monster Monster::add_monster(WorldState* world_ref, const MonsterType& ref, const Position<double>& position) {
     switch (ref) {
-        case BASIC:
+        case MonsterType::BASIC:
             return BasicMonster(world_ref, position);
     }
 }

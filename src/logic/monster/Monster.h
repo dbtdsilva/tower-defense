@@ -2,10 +2,9 @@
 #define TOWERDEFENSE_MONSTER_H
 
 #include "../helpers/Position.h"
+#include "../helpers/Definitions.h"
 #include "../WorldState.h"
 #include "MonsterAgent.h"
-
-enum MonsterType { BASIC, INSANE };
 
 class WorldState;
 class MonsterAgent;

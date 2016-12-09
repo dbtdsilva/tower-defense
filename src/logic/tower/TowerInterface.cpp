@@ -1,4 +1,5 @@
 #include "TowerInterface.h"
+#include "Tower.h"
 
 using namespace std;
 
@@ -14,6 +15,6 @@ void TowerInterface::radar() {
     tower_reference_->radar();
 }
 
-void TowerInterface::rotate() {
-    tower_reference_->rotate();
+void TowerInterface::rotate(const TowerRotation& rotation) {
+    tower_reference_->rotate(rotation);
 }

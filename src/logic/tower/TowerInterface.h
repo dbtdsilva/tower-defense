@@ -1,7 +1,7 @@
 #ifndef TOWERDEFENSE_TOWERINTERFACE_H
 #define TOWERDEFENSE_TOWERINTERFACE_H
 
-#include "Tower.h"
+#include "../helpers/Definitions.h"
 
 class Tower;
 
@@ -11,7 +11,7 @@ public:
 
     void shoot();
     void radar();
-    void rotate();
+    void rotate(const TowerRotation& rotation);
 private:
     Tower* tower_reference_;
 };

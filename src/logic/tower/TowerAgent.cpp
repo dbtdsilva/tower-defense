@@ -1,10 +1,12 @@
 #include "TowerAgent.h"
 
-TowerAgent::TowerAgent(std::unique_ptr<TowerInterface> ref) : tower_ref_(std::move(ref)) {
+#include "TowerInterface.h"
+
+TowerAgent::TowerAgent(TowerInterface* ref) : tower_interface_(ref) {
 }
 
 void TowerAgent::take_action() {
-    tower_ref_->radar();
-    tower_ref_->rotate();
-    tower_ref_->shoot();
+    tower_interface_->radar();
+    tower_interface_->rotate(TowerRotation::LEFT);
+    tower_interface_->shoot();
 }

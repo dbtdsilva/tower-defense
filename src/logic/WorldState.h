@@ -7,15 +7,13 @@
 #include "monster/Monster.h"
 #include "helpers/Position.h"
 
-class Tower;
 class Monster;
-class Bullet;
 
 enum PositionState { EMPTY, PATH, TOWER };
 
 typedef struct {
-    Position position;
-    double angle;
+    Position<double> position;
+    const double angle;
 } Bullet;
 
 class WorldState {
