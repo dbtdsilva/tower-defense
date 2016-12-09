@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 #include "UserInteractionInterface.h"
-#include "UserInteractionAgent.h"
 #include "../helpers/Position.h"
 
 class WorldState;
@@ -19,12 +18,11 @@ public:
     UserInteraction(WorldState*);
 
     const std::vector<TowerAddRequest>& get_tower_add_requests() const;
-    UserInteractionAgent* get_user_interaction_agent();
+    UserInteractionInterface* get_user_interaction_interface();
     void clear_requests();
     void add_tower(const TowerType& type, const Position<double>& position);
 private:
     std::unique_ptr<UserInteractionInterface> interface_;
-    std::unique_ptr<UserInteractionAgent> agent_;
 
     std::vector<TowerAddRequest> requests;
     WorldState* world_state_;

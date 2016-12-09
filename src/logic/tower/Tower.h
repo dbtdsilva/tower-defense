@@ -5,7 +5,6 @@
 #include <vector>
 #include "../helpers/Position.h"
 #include "../helpers/Definitions.h"
-#include "TowerAgent.h"
 #include "TowerInterface.h"
 
 class WorldState;
@@ -13,6 +12,11 @@ class WorldState;
 class Tower {
 public:
     static Tower create_tower(WorldState* world_ref, const TowerType& ref, const Position<double>& position);
+    ~Tower();
+    Tower(const Tower&);
+    Tower(Tower&&);
+    Tower& operator=(const Tower& other);
+    Tower& operator=(Tower&& other);
 
     const int& get_cost() const;
     const std::vector<TowerRotation>& get_requested_rotations() const;
@@ -40,7 +44,6 @@ private:
     std::vector<double> requested_shoots_;
     std::vector<TowerRotation> requested_rotations_;
     std::unique_ptr<TowerInterface> interface_;
-    std::unique_ptr<TowerAgent> agent_;
     WorldState* world_ref_;
 };
 

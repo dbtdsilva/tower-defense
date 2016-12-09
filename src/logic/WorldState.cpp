@@ -19,9 +19,12 @@ WorldState::WorldState(size_t width, size_t height) : width_(width), height_(hei
 
 void WorldState::update_world_state() {
     for (const TowerAddRequest& request : user_interaction_.get_tower_add_requests()) {
-        towers_.push_back(Tower::create_tower(this, request.type, request.position));
+        Tower ref = Tower::create_tower(this, request.type, request.position);
+        towers_.push_back(std::move(ref));
         map_[request.position.get_x()][request.position.get_y()] = TOWER;
+
     }
+    user_interaction_.clear_requests();
 
     // Update bullets in the world
 	for (Bullet& bullet : bullets_) {
@@ -62,8 +65,8 @@ const std::vector<Monster>& WorldState::get_monsters() const {
     return monsters_;
 }
 
-UserInteractionAgent* WorldState::get_user_interaction_agent() {
-    return user_interaction_.get_user_interaction_agent();
+UserInteractionInterface* WorldState::get_user_interaction_interface() {
+    return user_interaction_.get_user_interaction_interface();
 }
 
 void WorldState::append_line_to_path(Position<int> src, Position<int> dst) {

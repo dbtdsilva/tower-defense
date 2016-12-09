@@ -5,7 +5,6 @@
 #include "../helpers/Position.h"
 #include "../helpers/Definitions.h"
 #include "MonsterInterface.h"
-#include "MonsterAgent.h"
 
 class WorldState;
 
@@ -29,7 +28,6 @@ private:
     Position<double> pos_;
     double angle_;
 
-    std::unique_ptr<MonsterAgent> agent_;
     std::unique_ptr<MonsterInterface> interface_;
     WorldState* world_ref_;
 };

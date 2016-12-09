@@ -19,16 +19,14 @@ ADD_EXECUTABLE(towerdefense
         main.cpp
         logic/WorldState.cpp logic/WorldState.h
         logic/helpers/Position.h
-        logic/tower/TowerAgent.cpp logic/tower/TowerAgent.h
         logic/tower/TowerInterface.h logic/tower/TowerInterface.cpp
         logic/tower/Tower.cpp logic/tower/Tower.h
         logic/tower/types/SimpleTower.h
         logic/monster/Monster.cpp logic/monster/Monster.h
-        logic/monster/MonsterAgent.cpp logic/monster/MonsterAgent.h
         logic/monster/types/BasicMonster.h
         logic/monster/MonsterInterface.cpp logic/monster/MonsterInterface.h
         logic/interaction/UserInteractionInterface.cpp logic/interaction/UserInteractionInterface.h
-        logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h logic/helpers/Definitions.h logic/interaction/UserInteractionAgent.cpp logic/interaction/UserInteractionAgent.h)
+        logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h logic/helpers/Definitions.h)
 TARGET_LINK_LIBRARIES(towerdefense ${SDL2_LIBRARIES})
 SET_TARGET_PROPERTIES(towerdefense PROPERTIES COMPILE_FLAGS "-std=c++14")
 

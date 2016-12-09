@@ -16,14 +16,41 @@ Tower Tower::create_tower(WorldState* world_ref, const TowerType& ref, const Pos
     }
 }
 
+Tower::~Tower() {
+    // Only smart pointers are used
+}
+
 Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, const int& cost, const int& range,
              const double& rotational_speed, const Position<double>& pos) :
         damage_(damage), radar_load_time_(radar_load_time), cost_(cost), range_(range),
         rotational_speed_(rotational_speed), pos_(pos), angle_(0), world_ref_(state),
-        interface_(make_unique<TowerInterface>(this)),
-        agent_(make_unique<TowerAgent>(interface_.get())), id_(instance_counter)
+        interface_(make_unique<TowerInterface>(this)), id_(Tower::instance_counter)
 {
     Tower::instance_counter++;
+}
+
+Tower::Tower(const Tower& other) : cost_(other.cost_), pos_(other.pos_), range_(other.range_),
+                                   rotational_speed_(other.rotational_speed_), damage_(other.damage_),
+                                   radar_load_time_(other.radar_load_time_), id_(0)
+{
+    cout << "Copy" << endl;
+}
+
+Tower::Tower(Tower&& other)  : cost_(other.cost_), pos_(other.pos_), range_(other.range_),
+                                     rotational_speed_(other.rotational_speed_), damage_(other.damage_),
+                                     radar_load_time_(other.radar_load_time_),
+                                     id_(0)
+{
+    cout << "Move" << endl;
+}
+
+
+Tower& Tower::operator=(const Tower& other) {
+
+}
+
+Tower& Tower::operator=(Tower&& other) {
+
 }
 
 const int& Tower::get_cost() const {

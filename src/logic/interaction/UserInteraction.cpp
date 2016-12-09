@@ -5,8 +5,7 @@
 using namespace std;
 
 UserInteraction::UserInteraction(WorldState* ref) :
-        world_state_(ref), interface_(make_unique<UserInteractionInterface>(this)),
-        agent_(make_unique<UserInteractionAgent>(interface_.get()))
+        world_state_(ref), interface_(make_unique<UserInteractionInterface>(this))
 {
 
 }
@@ -19,8 +18,8 @@ const std::vector<TowerAddRequest> &UserInteraction::get_tower_add_requests() co
     return requests;
 }
 
-UserInteractionAgent* UserInteraction::get_user_interaction_agent() {
-    return agent_.get();
+UserInteractionInterface* UserInteraction::get_user_interaction_interface() {
+    return interface_.get();
 }
 
 void UserInteraction::clear_requests() {
