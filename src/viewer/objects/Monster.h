@@ -1,0 +1,8 @@
+#ifndef TOWERDEFENSE_VIEWER_MONSTER_H
+#define TOWERDEFENSE_VIEWER_MONSTER_H
+
+class Monster {
+
+};
+
+#endif

@@ -2,6 +2,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
 
 PROJECT(towerdefense)
 
+INCLUDE(FindPkgConfig)
+
 SET(CMAKE_C_COMPILER "gcc-5")
 SET(CMAKE_CXX_COMPILER "g++-5")
 
@@ -12,8 +14,10 @@ SET(CMAKE_CXX_STANDARD 14)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 SET(CMAKE_CXX_EXTENSIONS OFF)
 
-FIND_PACKAGE(SDL2 REQUIRED)
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIR} ${SDL2IMAGE_INCLUDE_DIR})
 
 ADD_EXECUTABLE(towerdefense
         main.cpp
@@ -26,8 +30,16 @@ ADD_EXECUTABLE(towerdefense
         logic/monster/types/BasicMonster.h
         logic/monster/MonsterInterface.cpp logic/monster/MonsterInterface.h
         logic/interaction/UserInteractionInterface.cpp logic/interaction/UserInteractionInterface.h
-        logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h logic/helpers/Definitions.h)
-TARGET_LINK_LIBRARIES(towerdefense ${SDL2_LIBRARIES})
+        logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h logic/helpers/Definitions.h
+        viewer/aux/Cleanup.h
+        viewer/aux/Resources.h
+        viewer/map/Map.h viewer/map/Map.cpp
+        viewer/objects/Bullet.h viewer/objects/Bullet.cpp
+        viewer/objects/Monster.h viewer/objects/Monster.cpp
+        viewer/objects/Tower.h viewer/objects/Tower.cpp
+        viewer/MapDrawer.h viewer/MapDrawer.cpp
+        )
+TARGET_LINK_LIBRARIES(towerdefense ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})
 SET_TARGET_PROPERTIES(towerdefense PROPERTIES COMPILE_FLAGS "-std=c++14")
 
 ADD_DEFINITIONS(-DDEBUG)
