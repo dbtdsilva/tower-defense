@@ -9,7 +9,7 @@ using namespace std;
 
 unsigned int Tower::instance_counter = 0;
 
-Tower Tower::create_tower(WorldState* world_ref, const TowerType& ref, const Position<double>& position) {
+Tower Tower::create_tower(WorldState* world_ref, const TowerType& ref, const Position<int>& position) {
     switch (ref) {
         case TowerType::SIMPLE:
             return SimpleTower(world_ref, position);
@@ -21,7 +21,7 @@ Tower::~Tower() {
 }
 
 Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, const int& cost, const int& range,
-             const double& rotational_speed, const Position<double>& pos) :
+             const double& rotational_speed, const Position<int>& pos) :
         damage_(damage), radar_load_time_(radar_load_time), cost_(cost), range_(range),
         rotational_speed_(rotational_speed), pos_(pos), angle_(0), world_ref_(state),
         interface_(make_unique<TowerInterface>(this)), id_(Tower::instance_counter)
@@ -41,7 +41,7 @@ const int& Tower::get_cost() const {
     return cost_;
 }
 
-const Position<double>& Tower::get_position() const {
+const Position<int>& Tower::get_position() const {
     return pos_;
 }
 

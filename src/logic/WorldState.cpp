@@ -48,7 +48,8 @@ void WorldState::update_world_state() {
         // Check for shoots
         const vector<double>& requested_shoots = tower.get_requested_shoots();
         if (!requested_shoots.empty()) {
-            bullets_.push_back({tower.get_position(), requested_shoots[0], 0.1});
+            bullets_.push_back({ Position<double>(tower.get_position().get_x(), tower.get_position().get_y()),
+                                requested_shoots[0], 0.1 });
         }
         // Check for rotations
         const vector<TowerRotation>& requested_rotations = tower.get_requested_rotations();

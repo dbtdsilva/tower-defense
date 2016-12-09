@@ -10,7 +10,7 @@ UserInteraction::UserInteraction(WorldState* ref) :
 
 }
 
-void UserInteraction::add_tower(const TowerType& type, const Position<double>& position) {
+void UserInteraction::add_tower(const TowerType& type, const Position<int>& position) {
     requests.push_back({type, position});
 }
 
