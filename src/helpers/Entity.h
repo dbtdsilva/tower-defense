@@ -1,7 +1,10 @@
 #ifndef TOWERDEFENSE_ENTITY_H
 #define TOWERDEFENSE_ENTITY_H
 
-class EntityInterface {};
+class EntityInterface {
+public:
+    virtual ~EntityInterface() {};
+};
 
 enum class EntityAction { ADD, REMOVE };
 
