@@ -32,7 +32,7 @@ Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, c
 Tower::Tower(Tower&& other)  :
         cost_(other.cost_), pos_(other.pos_), range_(other.range_), rotational_speed_(other.rotational_speed_),
         damage_(other.damage_), radar_load_time_(other.radar_load_time_), angle_(other.angle_), id_(other.id_),
-        interface_(std::move(interface_)), world_ref_(other.world_ref_)
+        interface_(std::move(other.interface_)), world_ref_(other.world_ref_)
 {
     other.interface_ = nullptr;
 }
@@ -59,6 +59,14 @@ const double& Tower::get_rotational_speed() const {
 
 double& Tower::get_angle() {
     return angle_;
+}
+
+const unsigned int& Tower::get_identifier() const {
+    return id_;
+}
+
+TowerInterface* Tower::get_interface() {
+    return interface_.get();
 }
 
 void Tower::clear_requests() {

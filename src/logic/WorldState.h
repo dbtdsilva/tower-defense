@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include "tower/Tower.h"
+#include "tower/Bullet.h"
 #include "monster/Monster.h"
 #include "helpers/Position.h"
 #include "interaction/UserInteraction.h"
@@ -12,16 +13,11 @@ class Monster;
 
 enum PositionState { EMPTY, PATH, TOWER };
 
-typedef struct {
-    Position<double> position;
-    const double angle;
-    const double speed;
-} Bullet;
-
 class WorldState {
 public:
     WorldState(size_t width, size_t height);
-    void update_world_state();
+
+    std::vector<EntityModification> update_world_state();
 
     const std::vector<Monster>& get_monsters() const;
     const double get_wall_distance(const Position<double>&, const double&, const double&) const;

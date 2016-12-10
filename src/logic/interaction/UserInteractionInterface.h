@@ -3,10 +3,11 @@
 
 #include "../helpers/Definitions.h"
 #include "../helpers/Position.h"
+#include "../helpers/Entity.h"
 
 class UserInteraction;
 
-class UserInteractionInterface {
+class UserInteractionInterface : public EntityInterface {
 public:
     UserInteractionInterface(UserInteraction* reference);
 

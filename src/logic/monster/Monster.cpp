@@ -22,7 +22,7 @@ Monster::~Monster() {
 
 Monster::Monster(Monster&& other) :
         world_ref_(other.world_ref_), health_(other.health_), movement_speed_(movement_speed_),
-        rotational_speed_(other.rotational_speed_), pos_(other.pos_), angle_(0),
+        rotational_speed_(other.rotational_speed_), pos_(other.pos_), angle_(other.angle_),
         interface_(std::move(other.interface_))
 {
     other.interface_ = nullptr;

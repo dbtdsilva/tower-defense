@@ -24,6 +24,8 @@ public:
     const std::vector<double>& get_requested_shoots() const;
     const Position<int>& get_position() const;
     const double& get_rotational_speed() const;
+    const unsigned int& get_identifier() const;
+    TowerInterface* get_interface();
     double& get_angle();
 
     void shoot();

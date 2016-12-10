@@ -2,10 +2,11 @@
 #define TOWERDEFENSE_TOWERINTERFACE_H
 
 #include "../helpers/Definitions.h"
+#include "../helpers/Entity.h"
 
 class Tower;
 
-class TowerInterface {
+class TowerInterface : public EntityInterface {
 public:
     TowerInterface(Tower* reference);
 

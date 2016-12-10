@@ -17,15 +17,18 @@ WorldState::WorldState(size_t width, size_t height) :
     append_line_to_path(Position<int>(1, 3), Position<int>(1, height_ - 1));
 }
 
-void WorldState::update_world_state() {
+std::vector<EntityModification> WorldState::update_world_state() {
+    std::vector<EntityModification> entity_modifications;
+
     for (const TowerAddRequest& request : user_interaction_.get_tower_add_requests()) {
         Tower ref = Tower::create_tower(this, request.type, request.position);
         if (ref.get_cost() > player_currency)
             continue;
         player_currency -= ref.get_cost();
+
+        entity_modifications.push_back(EntityModification(ref.get_interface(), ref.get_identifier(), EntityAction::ADD));
         towers_.push_back(std::move(ref));
         map_[request.position.get_x()][request.position.get_y()] = TOWER;
-
     }
     user_interaction_.clear_requests();
 
@@ -94,6 +97,8 @@ void WorldState::update_world_state() {
         }
         tower.clear_requests();
     }
+
+    return entity_modifications;
 }
 
 const std::vector<Monster>& WorldState::get_monsters() const {

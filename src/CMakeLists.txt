@@ -31,7 +31,7 @@ ADD_EXECUTABLE(towerdefense
         logic/monster/MonsterInterface.cpp logic/monster/MonsterInterface.h
         logic/interaction/UserInteractionInterface.cpp logic/interaction/UserInteractionInterface.h
         logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h logic/helpers/Definitions.h
-        logic/monster/MonsterEye.h)
+        logic/monster/MonsterEye.h logic/tower/Bullet.h logic/helpers/Entity.h)
 
 ADD_EXECUTABLE(towerdefense_viewer
         main_viewer.cpp

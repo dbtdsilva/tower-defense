@@ -4,10 +4,11 @@
 #include <vector>
 #include "../helpers/Definitions.h"
 #include "MonsterEye.h"
+#include "../helpers/Entity.h"
 
 class Monster;
 
-class MonsterInterface {
+class MonsterInterface : public EntityInterface {
 public:
     MonsterInterface(Monster* reference);
 
