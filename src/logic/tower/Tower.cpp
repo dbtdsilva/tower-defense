@@ -21,10 +21,10 @@ Tower::~Tower() {
 }
 
 Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, const int& cost, const int& range,
-             const double& rotational_speed, const Position<int>& pos) :
+             const double& rotational_speed, const Position<int>& pos, const TowerType& type) :
         damage_(damage), radar_load_time_(radar_load_time), cost_(cost), range_(range),
         rotational_speed_(rotational_speed), pos_(pos), angle_(0), world_ref_(state),
-        interface_(make_unique<TowerInterface>(this)), id_(Tower::instance_counter)
+        interface_(make_unique<TowerInterface>(this)), id_(Tower::instance_counter), type_(type)
 {
     Tower::instance_counter++;
 }
@@ -32,7 +32,7 @@ Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, c
 Tower::Tower(Tower&& other)  :
         cost_(other.cost_), pos_(other.pos_), range_(other.range_), rotational_speed_(other.rotational_speed_),
         damage_(other.damage_), radar_load_time_(other.radar_load_time_), angle_(other.angle_), id_(other.id_),
-        interface_(std::move(other.interface_)), world_ref_(other.world_ref_)
+        interface_(std::move(other.interface_)), world_ref_(other.world_ref_), type_(other.type_)
 {
     other.interface_ = nullptr;
 }
@@ -55,6 +55,10 @@ const std::vector<double>& Tower::get_requested_shoots() const {
 
 const double& Tower::get_rotational_speed() const {
     return rotational_speed_;
+}
+
+const double &Tower::get_angle() const {
+    return angle_;
 }
 
 double& Tower::get_angle() {
@@ -95,4 +99,12 @@ vector<Position<double>> Tower::radar() {
 
 void Tower::rotate(const TowerRotation& rotation) {
     requested_rotations_.push_back(rotation);
+}
+
+const TowerType &Tower::get_type() const {
+    return type_;
+}
+
+const int &Tower::get_damage() const {
+    return damage_;
 }

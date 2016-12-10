@@ -8,7 +8,6 @@
 #include "logic/WorldState.h"
 #include "serializer/WorldDataSerializer.h"
 
-
 using namespace std;
 
 int main(int argc, char** argv) {
@@ -22,15 +21,23 @@ int main(int argc, char** argv) {
     cout << state << endl;
 
 
-    Position<double> pos(2.1,3.4);
+    cout << state.get_data_serialized() << endl;
+
+    WorldData world;
+    world.bullets_.push_back(BulletData(Position<double>(2.1, 3.4), 10));
+    world.bullets_.push_back(BulletData(Position<double>(4.1, 5.5), 25));
     ostringstream stream;
     cereal::BinaryOutputArchive archive(stream);
-    archive(pos);
+    archive(world);
 
-    Position<double> pos2(0,0);
+    WorldData world2;
     std::stringstream stream2(stream.str());
     cereal::BinaryInputArchive archive2(stream2);
-    archive2(pos2);
-    cout << "String: " << pos2;
+    archive2(world2);
+    cout << "String: " << world2.bullets_.size();
+    cout << world2.bullets_[0].position_ << endl;
+    cout << world2.bullets_[0].damage_ << endl;
+    cout << world2.bullets_[1].position_ << endl;
+    cout << world2.bullets_[1].damage_ << endl;
     return EXIT_SUCCESS;
 }

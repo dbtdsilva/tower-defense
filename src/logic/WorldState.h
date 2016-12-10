@@ -11,8 +11,6 @@
 
 class Monster;
 
-enum PositionState { EMPTY, PATH, TOWER };
-
 class WorldState {
 public:
     WorldState(size_t width, size_t height);
@@ -22,6 +20,7 @@ public:
     const std::vector<Monster>& get_monsters() const;
     const double get_wall_distance(const Position<double>&, const double&, const double&) const;
     UserInteractionInterface* get_user_interaction_interface();
+    const std::string get_data_serialized() const;
 
     friend std::ostream& operator<<(std::ostream& os, const WorldState& obj);
 private:

@@ -42,10 +42,10 @@ private:
 class TowerData {
 public:
     TowerData() : position_(0,0), type_(TowerType::SIMPLE), angle_(0) {}
-    TowerData(const Position<double>& position, const TowerType& type, const double& angle) :
+    TowerData(const Position<int>& position, const TowerType& type, const double& angle) :
             position_(position), type_(type), angle_(angle) {}
 
-    Position<double> position_;
+    Position<int> position_;
     TowerType type_;
     double angle_;
 private:
@@ -63,11 +63,12 @@ public:
     std::vector<TowerData> towers_;
     std::vector<MonsterData> monsters_;
     std::vector<BulletData> bullets_;
+    std::vector<std::vector<PositionState>> map_;
 private:
     friend class cereal::access;
     template<typename Archive>
     void serialize(Archive &archive) {
-        archive(bullets_, towers_, monsters_);
+        archive(bullets_, towers_, monsters_, map_);
     }
 };
 

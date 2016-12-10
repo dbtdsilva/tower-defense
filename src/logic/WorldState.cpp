@@ -1,10 +1,16 @@
 #include "WorldState.h"
+
 #include <cmath>
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/string.hpp>
+
+#include "../serializer/WorldDataSerializer.h"
 
 using namespace std;
 
 WorldState::WorldState(size_t width, size_t height) :
-        width_(width), height_(height), map_(width, std::vector<PositionState>(height, EMPTY)),
+        width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
         units_per_cell(500), user_interaction_(this), player_currency(10000)
 {
     append_line_to_path(Position<int>(0, 1), Position<int>(width_ - 2, 1));
@@ -28,7 +34,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
 
         entity_modifications.push_back(EntityModification(ref.get_interface(), ref.get_identifier(), EntityAction::ADD));
         towers_.push_back(std::move(ref));
-        map_[request.position.get_x()][request.position.get_y()] = TOWER;
+        map_[request.position.get_x()][request.position.get_y()] = PositionState::TOWER;
     }
     user_interaction_.clear_requests();
 
@@ -83,7 +89,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
         const vector<double>& requested_shoots = tower.get_requested_shoots();
         if (!requested_shoots.empty()) {
             bullets_.push_back({ Position<double>(tower.get_position().get_x(), tower.get_position().get_y()),
-                                requested_shoots[0], 0.1 });
+                                requested_shoots[0], 0.1, tower.get_damage() });
         }
         // Check for rotations
         const vector<TowerRotation>& requested_rotations = tower.get_requested_rotations();
@@ -101,6 +107,23 @@ std::vector<EntityModification> WorldState::update_world_state() {
     return entity_modifications;
 }
 
+const std::string WorldState::get_data_serialized() const {
+    WorldData data_to_serialize;
+    for (const Tower& tower : towers_)
+        data_to_serialize.towers_.push_back(TowerData(tower.get_position(), tower.get_type(), tower.get_angle()));
+    for (const Bullet& bullet : bullets_)
+        data_to_serialize.bullets_.push_back(BulletData(bullet.position, bullet.damage));
+    for (const Monster& monster : monsters_)
+        data_to_serialize.monsters_.push_back(MonsterData(monster.get_position(), monster.get_type(),
+                                                          monster.get_health(), monster.get_angle()));
+    data_to_serialize.map_ = map_;
+    ostringstream stream;
+    cereal::BinaryOutputArchive archive(stream);
+    archive(data_to_serialize);
+
+    return stream.str();
+}
+
 const std::vector<Monster>& WorldState::get_monsters() const {
     return monsters_;
 }
@@ -114,7 +137,7 @@ const double WorldState::get_wall_distance(const Position<double>& position, con
             static_cast<int>(floor(position.get_y() + sin(direction) * index * sensor_precision))};
     while (next_position.get_x() >= 0 && next_position.get_y() >= 0 &&
             next_position.get_x() < width_ && next_position.get_y() < height_ &&
-            map_[next_position.get_x()][next_position.get_y()] == PATH) {
+            map_[next_position.get_x()][next_position.get_y()] == PositionState::PATH) {
         index++;
         next_position = {
                 static_cast<int>(floor(position.get_x() + cos(direction) * index * sensor_precision)),
@@ -131,29 +154,29 @@ void WorldState::append_line_to_path(Position<int> src, Position<int> dst) {
     if (src.get_x() != dst.get_x()) {
         if (src.get_x() < dst.get_x()) {
             for (size_t i = src.get_x(); i <= dst.get_x(); i++) {
-                if (map_[i][src.get_y()] != PATH)
+                if (map_[i][src.get_y()] != PositionState::PATH)
                     path_.push_back(Position<int>(i, src.get_y()));
-                map_[i][src.get_y()] = PATH;
+                map_[i][src.get_y()] = PositionState::PATH;
             }
         } else {
             for (size_t i = src.get_x(); i >= dst.get_x(); i--) {
-                if (map_[i][src.get_y()] != PATH)
+                if (map_[i][src.get_y()] != PositionState::PATH)
                     path_.push_back(Position<int>(i, src.get_y()));
-                map_[i][src.get_y()] = PATH;
+                map_[i][src.get_y()] = PositionState::PATH;
             }
         }
     } else if (src.get_y() != dst.get_y()) {
         if (src.get_y() < dst.get_y()) {
             for (size_t i = src.get_y(); i <= dst.get_y(); i++) {
-                if (map_[src.get_x()][i] != PATH)
+                if (map_[src.get_x()][i] != PositionState::PATH)
                     path_.push_back(Position<int>(src.get_x(), i));
-                map_[src.get_x()][i] = PATH;
+                map_[src.get_x()][i] = PositionState::PATH;
             }
         } else {
             for (size_t i = src.get_y(); i >= dst.get_y(); i--) {
-                if (map_[src.get_x()][i] != PATH)
+                if (map_[src.get_x()][i] != PositionState::PATH)
                     path_.push_back(Position<int>(src.get_x(), i));
-                map_[src.get_x()][i] = PATH;
+                map_[src.get_x()][i] = PositionState::PATH;
             }
         }
     }
@@ -163,7 +186,7 @@ ostream& operator<<(ostream& os, const WorldState& obj)
 {
     for (int y = 0; y < obj.height_; y++) {
         for (int x = 0; x < obj.width_; x++) {
-            os << obj.map_[x][y] << " ";
+            os << (int)obj.map_[x][y] << " ";
         }
         os << endl;
     }

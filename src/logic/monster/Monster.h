@@ -24,9 +24,12 @@ public:
     void move(const MonsterMovement&);
     void rotate(const MonsterRotation&);
 
-    double& get_angle();
     void set_position(const double& x, const double& y);
     const Position<double>& get_position() const;
+    double& get_angle();
+    const double& get_angle() const;
+    const int& get_health() const;
+    const MonsterType& get_type() const;
     const double& get_rotational_speed() const;
     const double& get_movement_speed() const;
     const std::vector<MonsterMovement>& get_requested_movements() const;
@@ -34,10 +37,11 @@ public:
     void clear_requests();
 protected:
     Monster(WorldState* state, const int& health, const double& movement_speed_, const double& rotational_speed,
-            const Position<double>& pos);
+            const Position<double>& pos, const MonsterType& type);
 private:
     const int health_;
     const double rotational_speed_, movement_speed_;
+    const MonsterType type_;
 
     Position<double> pos_;
     double angle_;
