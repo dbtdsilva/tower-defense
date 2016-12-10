@@ -6,7 +6,7 @@
 #include "tower/Tower.h"
 #include "tower/Bullet.h"
 #include "monster/Monster.h"
-#include "helpers/Position.h"
+#include "../helpers/Position.h"
 #include "interaction/UserInteraction.h"
 
 class Monster;

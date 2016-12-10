@@ -1,9 +1,9 @@
 #ifndef TOWERDEFENSE_USERINTERACTIONINTERFACE_H
 #define TOWERDEFENSE_USERINTERACTIONINTERFACE_H
 
-#include "../helpers/Definitions.h"
-#include "../helpers/Position.h"
-#include "../helpers/Entity.h"
+#include "../../helpers/Definitions.h"
+#include "../../helpers/Position.h"
+#include "../../helpers/Entity.h"
 
 class UserInteraction;
 

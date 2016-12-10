@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 #include "UserInteractionInterface.h"
-#include "../helpers/Position.h"
+#include "../../helpers/Position.h"
 
 class WorldState;
 

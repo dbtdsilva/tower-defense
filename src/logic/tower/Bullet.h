@@ -1,7 +1,7 @@
 #ifndef TOWERDEFENSE_BULLET_H
 #define TOWERDEFENSE_BULLET_H
 
-#include "../helpers/Position.h"
+#include "../../helpers/Position.h"
 
 typedef struct {
     Position<double> position;

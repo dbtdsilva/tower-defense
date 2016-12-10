@@ -2,6 +2,7 @@
 #define TOWERDEFENSE_POSITION_H
 
 #include <iostream>
+#include <cereal/archives/binary.hpp>
 
 template <class T>
 class Position {
@@ -34,6 +35,13 @@ public:
     }
 private:
     T x_, y_;
+
+    friend class cereal::access;
+    template<typename Archive>
+    void serialize(Archive &archive)
+    {
+        archive(x_, y_);
+    }
 };
 
 #endif //TOWERDEFENSE_POSITION_H

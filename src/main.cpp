@@ -22,17 +22,15 @@ int main(int argc, char** argv) {
     cout << state << endl;
 
 
-    std::string sta = "abc";
-    int x = 5;
+    Position<double> pos(2.1,3.4);
     ostringstream stream;
     cereal::BinaryOutputArchive archive(stream);
-    archive(sta, x);
+    archive(pos);
 
-    string b;
-    int y;
+    Position<double> pos2(0,0);
     std::stringstream stream2(stream.str());
     cereal::BinaryInputArchive archive2(stream2);
-    archive2(b, y);
-    cout << "String: " << b << ", y: " << y;
+    archive2(pos2);
+    cout << "String: " << pos2;
     return EXIT_SUCCESS;
 }

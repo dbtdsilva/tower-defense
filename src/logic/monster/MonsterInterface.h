@@ -2,9 +2,9 @@
 #define TOWERDEFENSE_MONSTERINTERFACE_H
 
 #include <vector>
-#include "../helpers/Definitions.h"
+#include "../../helpers/Definitions.h"
+#include "../../helpers/Entity.h"
 #include "MonsterEye.h"
-#include "../helpers/Entity.h"
 
 class Monster;
 

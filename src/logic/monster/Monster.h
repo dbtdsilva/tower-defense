@@ -3,8 +3,8 @@
 
 #include <memory>
 #include <vector>
-#include "../helpers/Position.h"
-#include "../helpers/Definitions.h"
+#include "../../helpers/Position.h"
+#include "../../helpers/Definitions.h"
 #include "MonsterEye.h"
 #include "MonsterInterface.h"
 

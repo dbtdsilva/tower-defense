@@ -35,17 +35,17 @@ INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIR} ${SDL2IMAGE_INCLUDE_DIR})
 ADD_EXECUTABLE(towerdefense
         main.cpp
         logic/WorldState.cpp logic/WorldState.h
-        logic/helpers/Position.h
         logic/tower/TowerInterface.h logic/tower/TowerInterface.cpp
         logic/tower/Tower.cpp logic/tower/Tower.h
         logic/tower/types/SimpleTower.h
+        logic/tower/Bullet.h
         logic/monster/Monster.cpp logic/monster/Monster.h
         logic/monster/types/BasicMonster.h
         logic/monster/MonsterInterface.cpp logic/monster/MonsterInterface.h
+        logic/monster/MonsterEye.h
         logic/interaction/UserInteractionInterface.cpp logic/interaction/UserInteractionInterface.h
         logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h
-        logic/helpers/Definitions.h
-        logic/monster/MonsterEye.h logic/tower/Bullet.h logic/helpers/Entity.h
+        helpers/Definitions.h helpers/Entity.h helpers/Position.h
         serializer/WorldDataSerializer.h)
 
 ADD_EXECUTABLE(towerdefense_viewer
