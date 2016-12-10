@@ -29,6 +29,7 @@ Monster::Monster(Monster&& other) :
         rotational_speed_(other.rotational_speed_), pos_(other.pos_), angle_(other.angle_),
         interface_(std::move(other.interface_)), type_(other.type_), id_(other.id_)
 {
+    interface_->reference_moved(this);
     other.interface_ = nullptr;
 }
 

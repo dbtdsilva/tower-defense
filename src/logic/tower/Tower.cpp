@@ -34,6 +34,7 @@ Tower::Tower(Tower&& other)  :
         damage_(other.damage_), radar_load_time_(other.radar_load_time_), angle_(other.angle_), id_(other.id_),
         interface_(std::move(other.interface_)), world_ref_(other.world_ref_), type_(other.type_)
 {
+    interface_->reference_moved(this);
     other.interface_ = nullptr;
 }
 

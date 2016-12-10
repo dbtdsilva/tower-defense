@@ -9,6 +9,7 @@ class Tower;
 class TowerInterface : public EntityInterface {
 public:
     TowerInterface(Tower* reference);
+    void reference_moved(Tower* reference);
 
     void shoot();
     void radar();

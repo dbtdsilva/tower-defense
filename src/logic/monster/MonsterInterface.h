@@ -11,6 +11,7 @@ class Monster;
 class MonsterInterface : public EntityInterface {
 public:
     MonsterInterface(Monster* reference);
+    void reference_moved(Monster* reference);
 
     std::vector<MonsterEye> eyes();
     void move(const MonsterMovement&);

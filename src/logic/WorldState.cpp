@@ -54,8 +54,9 @@ std::vector<EntityModification> WorldState::update_world_state() {
             continue;
         player_currency_ -= ref.get_cost();
 
-        entity_modifications.push_back(EntityModification(ref.get_interface(), ref.get_identifier(), EntityAction::ADD));
         towers_.push_back(std::move(ref));
+        entity_modifications.push_back(EntityModification(towers_.back().get_interface(),
+                                                          towers_.back().get_identifier(), EntityAction::ADD));
         map_[request.position.get_x()][request.position.get_y()] = PositionState::TOWER;
     }
     user_interaction_.clear_requests();
