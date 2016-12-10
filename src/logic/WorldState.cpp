@@ -11,8 +11,12 @@ using namespace std;
 
 WorldState::WorldState(size_t width, size_t height) :
         width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
-        units_per_cell(500), user_interaction_(this), player_currency(10000)
+        user_interaction_(this), player_currency_(10000),
+        game_level_(0), monsters_per_level_(20), monsters_left_to_spawn_(0), idle_cycles_(0),
+        idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0)
 {
+    start_position.set_x(0);
+    start_position.set_y(1.5);
     append_line_to_path(Position<int>(0, 1), Position<int>(width_ - 2, 1));
     append_line_to_path(Position<int>(width_ - 2, 1), Position<int>(width_ - 2, height_ - 2));
     append_line_to_path(Position<int>(width_ - 2, height_ - 2), Position<int>(3, height_ - 2));
@@ -21,16 +25,34 @@ WorldState::WorldState(size_t width, size_t height) :
     append_line_to_path(Position<int>(width_ - 4, height_ - 4), Position<int>(width_ - 4, 3));
     append_line_to_path(Position<int>(width_ - 4, 3), Position<int>(1, 3));
     append_line_to_path(Position<int>(1, 3), Position<int>(1, height_ - 1));
+    end_position.set_x(1.5);
+    end_position.set_y(height);
 }
 
 std::vector<EntityModification> WorldState::update_world_state() {
     std::vector<EntityModification> entity_modifications;
+    if (monsters_left_to_spawn_ == 0) {
+        idle_cycles_++;
+        if (idle_cycles_ > 2) {
+            game_level_++;
+            monsters_left_to_spawn_ = monsters_per_level_ + game_level_ * 3;
+            idle_cycles_ = 0;
+        }
+    } else if (idle_cycles_before_spawn_ > 5){
+        Monster ref = Monster::add_monster(this, MonsterType::BASIC, start_position);
+        entity_modifications.push_back(EntityModification(ref.get_interface(), ref.get_identifier(), EntityAction::ADD));
+        monsters_.push_back(std::move(ref));
+        monsters_left_to_spawn_--;
+        idle_cycles_before_spawn_ = 0;
+    } else {
+        idle_cycles_before_spawn_++;
+    }
 
     for (const TowerAddRequest& request : user_interaction_.get_tower_add_requests()) {
         Tower ref = Tower::create_tower(this, request.type, request.position);
-        if (ref.get_cost() > player_currency)
+        if (ref.get_cost() > player_currency_)
             continue;
-        player_currency -= ref.get_cost();
+        player_currency_ -= ref.get_cost();
 
         entity_modifications.push_back(EntityModification(ref.get_interface(), ref.get_identifier(), EntityAction::ADD));
         towers_.push_back(std::move(ref));

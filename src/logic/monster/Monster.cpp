@@ -3,6 +3,8 @@
 
 using namespace std;
 
+unsigned int Monster::instance_counter = 0;
+
 Monster Monster::add_monster(WorldState* world_ref, const MonsterType& ref, const Position<double>& position) {
     switch (ref) {
         case MonsterType::BASIC:
@@ -13,8 +15,10 @@ Monster Monster::add_monster(WorldState* world_ref, const MonsterType& ref, cons
 Monster::Monster(WorldState* state, const int& health, const double& movement_speed_, const double& rotational_speed,
     const Position<double>& pos, const MonsterType& type) :
         world_ref_(state), health_(health), movement_speed_(movement_speed_), rotational_speed_(rotational_speed),
-        pos_(pos), angle_(0), interface_(make_unique<MonsterInterface>(this)), type_(type)
+        pos_(pos), angle_(0), interface_(make_unique<MonsterInterface>(this)), type_(type),
+        id_(Monster::instance_counter)
 {
+    Monster::instance_counter++;
 }
 
 Monster::~Monster() {
@@ -23,7 +27,7 @@ Monster::~Monster() {
 Monster::Monster(Monster&& other) :
         world_ref_(other.world_ref_), health_(other.health_), movement_speed_(other.movement_speed_),
         rotational_speed_(other.rotational_speed_), pos_(other.pos_), angle_(other.angle_),
-        interface_(std::move(other.interface_)), type_(other.type_)
+        interface_(std::move(other.interface_)), type_(other.type_), id_(other.id_)
 {
     other.interface_ = nullptr;
 }
@@ -90,6 +94,14 @@ const int &Monster::get_health() const {
     return health_;
 }
 
-const MonsterType &Monster::get_type() const {
+MonsterInterface* Monster::get_interface() {
+    return interface_.get();
+}
+
+const MonsterType& Monster::get_type() const {
     return type_;
+}
+
+const unsigned int& Monster::get_identifier() const {
+    return id_;
 }

@@ -34,11 +34,16 @@ public:
     const double& get_movement_speed() const;
     const std::vector<MonsterMovement>& get_requested_movements() const;
     const std::vector<MonsterRotation>& get_requested_rotations() const;
+    const unsigned int& get_identifier() const;
+    MonsterInterface* get_interface();
     void clear_requests();
 protected:
     Monster(WorldState* state, const int& health, const double& movement_speed_, const double& rotational_speed,
             const Position<double>& pos, const MonsterType& type);
 private:
+    static unsigned int instance_counter;
+
+    const unsigned int id_;
     const int health_;
     const double rotational_speed_, movement_speed_;
     const MonsterType type_;

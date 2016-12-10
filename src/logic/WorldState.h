@@ -27,9 +27,9 @@ private:
     void append_line_to_path(Position<int> src, Position<int> dst);
 
     const size_t width_, height_;
-    const int units_per_cell;
     std::vector<std::vector<PositionState>> map_;
     std::list<Position<int>> path_;
+    Position<double> start_position, end_position;
 
     std::vector<Tower> towers_;
     std::vector<Monster> monsters_;
@@ -37,7 +37,13 @@ private:
     UserInteraction user_interaction_;
 
     unsigned int simulation_time_;
-    unsigned int player_currency;
+    unsigned int player_currency_;
+
+    const unsigned int monsters_per_level_;
+    unsigned int game_level_;
+    unsigned int monsters_left_to_spawn_;
+    unsigned int idle_cycles_;
+    unsigned int idle_cycles_before_spawn_;
 };
 
 
