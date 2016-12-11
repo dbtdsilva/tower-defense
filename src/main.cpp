@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <iostream>
+#include <fstream>
 
 #include "logic/WorldState.h"
+#include "serializer/WorldDataSerializer.h"
 
 using namespace std;
 
@@ -26,7 +28,11 @@ int main(int argc, char** argv) {
             }
         }
     }
-    state.get_data_serialized()
+
+    ofstream world_serialize;
+    world_serialize.open("world_serialized.bin", ios::binary);
+    state.serialize_data(world_serialize);
+    world_serialize.close();
 
     return EXIT_SUCCESS;
 }

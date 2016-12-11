@@ -130,7 +130,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
     return entity_modifications;
 }
 
-const std::string WorldState::get_data_serialized() const {
+void WorldState::serialize_data(ostream& stream) const {
     WorldData data_to_serialize;
     for (const Tower& tower : towers_)
         data_to_serialize.towers_.push_back(TowerData(tower.get_position(), tower.get_type(), tower.get_angle()));
@@ -140,11 +140,9 @@ const std::string WorldState::get_data_serialized() const {
         data_to_serialize.monsters_.push_back(MonsterData(monster.get_position(), monster.get_type(),
                                                           monster.get_health(), monster.get_angle()));
     data_to_serialize.map_ = map_;
-    ostringstream stream;
+
     cereal::BinaryOutputArchive archive(stream);
     archive(data_to_serialize);
-
-    return stream.str();
 }
 
 const std::vector<Monster>& WorldState::get_monsters() const {
