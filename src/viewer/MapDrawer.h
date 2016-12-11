@@ -17,6 +17,7 @@ private:
     int width;
     int height;
     int tileSize;
+    int menuWidth;
 
     // SDL Objects
     bool initStatus;
@@ -39,6 +40,9 @@ private:
     bool init();
     bool loadTextures();
     void unloadTextures();
+    void drawMenu();
+    void drawScore();
+    void drawMoney();
     void drawField(int x, int y);
     void drawRoadStraight(int x, int y);
     void drawRoadCorner(int x, int y, corner_side corner);

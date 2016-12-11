@@ -1,13 +1,14 @@
 #include <iostream>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include "MapDrawer.h"
 #include "aux/Cleanup.h"
-#include "aux/Resources.h"
 
 MapDrawer::MapDrawer(int width, int height, Map *map) {
     this->width = width;
     this->height = height;
     this->tileSize = 80;
+    this->menuWidth = 100;
     this->map = map;
 
     this->textures = new std::map<std::string, SDL_Texture*>();
@@ -47,7 +48,19 @@ MapDrawer::~MapDrawer() {
 
 bool MapDrawer::init() {
     if(SDL_Init(SDL_INIT_VIDEO) != 0) {
-        std::cout << "SDL_Init error: " << SDL_GetError() << std::endl;
+        std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    int imgFlags = IMG_INIT_PNG;
+    if((IMG_Init(imgFlags) & imgFlags) != imgFlags) {
+        std::cout << "IMG_Init Error: " << IMG_GetError() << std::endl;
+        return false;
+    }
+
+    //Initialize SDL_ttf
+    if( TTF_Init() == -1 ) {
+        std::cout << "TTF_Init Error: " << TTF_GetError() << std::endl;
         return false;
     }
 
@@ -77,7 +90,7 @@ bool MapDrawer::init() {
 }
 
 bool MapDrawer::loadTextures() {
-    std::string folderPath = getResourcePath() + "textures/";
+    std::string folderPath = "/home/ed1000/Documents/tower-defense/textures/";
 
     // Full border
     std::string tilePath = folderPath + "tile01.png";
@@ -351,6 +364,75 @@ bool MapDrawer::loadTextures() {
         this->textures->emplace("bullet_two", tileTex);
     }
 
+    folderPath = "/home/ed1000/Documents/tower-defense/fonts/";
+    std::string fontPath = folderPath + "sans.ttf";
+    TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
+    SDL_Color black = {0, 0, 0};
+
+    // Score text
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, "SCORE", black);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return false;
+    } else {
+        this->textures->emplace("score_text", message);
+    }
+
+    // Money text
+    surfaceMessage = TTF_RenderText_Solid(sans, "MONEY", black);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return false;
+    } else {
+        this->textures->emplace("money_text", message);
+    }
+
+    // Tower one price text
+    surfaceMessage = TTF_RenderText_Solid(sans, "$050", black);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return false;
+    } else {
+        this->textures->emplace("tower_one_price", message);
+    }
+
+    // Money text
+    surfaceMessage = TTF_RenderText_Solid(sans, "$100", black);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return false;
+    } else {
+        this->textures->emplace("tower_two_price", message);
+    }
+
     return true;
 }
 
@@ -409,7 +491,170 @@ void MapDrawer::drawMap() {
             drawBullet(x, y, BULLET_1);
         }
 
+    drawMenu();
+
     SDL_RenderPresent(this->renderer);
+}
+
+void MapDrawer::drawMenu() {
+    SDL_Rect dest;
+
+    // Menu background
+    dest.x = this->width - this->menuWidth;
+    dest.y = 0;
+    dest.w = this->menuWidth;
+    dest.h = this->height;
+
+    SDL_SetRenderDrawColor(this->renderer, 211, 211, 211, 255);
+    SDL_RenderFillRect(this->renderer, &dest);
+
+    // Score text
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 10;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("score_text")->second, nullptr, &dest);
+
+    // Score box
+    dest.x = this->width - this->menuWidth + 5;
+    dest.y = 50;
+    dest.w = this->menuWidth - 10;
+    dest.h = 50;
+
+    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(this->renderer, &dest);
+
+    this->drawScore();
+
+    // Money text
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 110;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("money_text")->second, nullptr, &dest);
+
+    // Money box
+    dest.x = this->width - this->menuWidth + 5;
+    dest.y = 150;
+    dest.w = this->menuWidth - 10;
+    dest.h = 50;
+
+    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(this->renderer, &dest);
+
+    this->drawMoney();
+
+    // Tower one box
+    dest.x = this->width - this->menuWidth + 5;
+    dest.y = 210;
+    dest.w = this->menuWidth - 10;
+    dest.h = 120;
+
+    SDL_RenderDrawRect(this->renderer, &dest);
+
+    // Tower one icon
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 215;
+    dest.w = this->menuWidth - 20;
+    dest.h = this->menuWidth - 20;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("tower_one")->second, nullptr, &dest);
+
+    // Tower one price
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 215 + this->menuWidth - 20;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("tower_one_price")->second, nullptr, &dest);
+
+    // Tower two box
+    dest.x = this->width - this->menuWidth + 5;
+    dest.y = 340;
+    dest.w = this->menuWidth - 10;
+    dest.h = 120;
+
+    SDL_RenderDrawRect(this->renderer, &dest);
+
+    // Tower two icon
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 345;
+    dest.w = this->menuWidth - 20;
+    dest.h = this->menuWidth - 20;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("tower_two")->second, nullptr, &dest);
+
+    // Tower two price
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 345 + this->menuWidth - 20;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("tower_two_price")->second, nullptr, &dest);
+}
+
+void MapDrawer::drawScore() {
+    std::string fontPath = "/home/ed1000/Documents/tower-defense/fonts/sans.ttf";
+    TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
+    SDL_Color red = {255, 0, 0};
+
+    SDL_Rect dest;
+
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 60;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    // Score value text
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, "0000", red);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_RenderCopy(this->renderer, message, nullptr, &dest);
+
+    cleanup(message);
+}
+
+void MapDrawer::drawMoney() {
+    std::string fontPath = "/home/ed1000/Documents/tower-defense/fonts/sans.ttf";
+    TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
+    SDL_Color red = {255, 0, 0};
+
+    SDL_Rect dest;
+
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 160;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    // Score text
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, "$000", red);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_RenderCopy(this->renderer, message, nullptr, &dest);
+
+    cleanup(message);
 }
 
 void MapDrawer::drawField(int x, int y) {
