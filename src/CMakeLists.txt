@@ -46,7 +46,7 @@ ADD_EXECUTABLE(towerdefense
         logic/interaction/UserInteractionInterface.cpp logic/interaction/UserInteractionInterface.h
         logic/interaction/UserInteraction.cpp logic/interaction/UserInteraction.h
         helpers/Definitions.h helpers/Entity.h helpers/Position.h
-        serializer/WorldDataSerializer.h)
+        serializer/WorldDataSerializer.h logic/tower/Bullet.cpp)
 
 ADD_EXECUTABLE(towerdefense_viewer
         main_viewer.cpp

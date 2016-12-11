@@ -6,6 +6,7 @@
 #include <cereal/types/string.hpp>
 
 #include "../serializer/WorldDataSerializer.h"
+#include "tower/Bullet.h"
 
 using namespace std;
 
@@ -62,12 +63,31 @@ std::vector<EntityModification> WorldState::update_world_state() {
     user_interaction_.clear_requests();
 
     // Update bullets in the world
-	for (Bullet& bullet : bullets_) {
-        double new_x = bullet.position.get_x() + cos(bullet.angle) * bullet.speed;
-        double new_y = bullet.position.get_y() + sin(bullet.angle) * bullet.speed;
+    for(auto bullet = bullets_.begin(); bullet != bullets_.end(); ++bullet) {
+        double new_x = bullet->get_position().get_x() + cos(bullet->get_angle()) * bullet->get_speed();
+        double new_y = bullet->get_position().get_y() + sin(bullet->get_angle()) * bullet->get_speed();
 
-        bullet.position.set_x(new_x);
-        bullet.position.set_y(new_y);
+        bool bullet_struck = false;
+        for (auto monster = monsters_.begin(); monster != monsters_.end(); ++monster) {
+            if (sqrt(pow(new_x - monster->get_position().get_x(), 2) + pow(new_y - monster->get_position().get_y(), 2))
+                    < 0.1) {
+                bullet_struck = true;
+                int health_left = monster->bullet_struck(bullet->get_damage());
+                bullets_.erase(bullets_.begin() + 1);
+                if (health_left <= 0) {
+                    entity_modifications.push_back(EntityModification(monster->get_interface(),
+                                                                      monster->get_identifier(),
+                                                                      EntityAction::REMOVE));
+                    //monsters_.erase(monster);
+                    break;
+                }
+            }
+        }
+
+        if (bullet_struck)
+            break;
+        bullet->get_position().set_x(new_x);
+        bullet->get_position().set_y(new_y);
     }
 
     // Update monster state
@@ -135,7 +155,7 @@ void WorldState::serialize_data(ostream& stream) const {
     for (const Tower& tower : towers_)
         data_to_serialize.towers_.push_back(TowerData(tower.get_position(), tower.get_type(), tower.get_angle()));
     for (const Bullet& bullet : bullets_)
-        data_to_serialize.bullets_.push_back(BulletData(bullet.position, bullet.damage));
+        data_to_serialize.bullets_.push_back(BulletData(bullet.get_position(), bullet.get_damage()));
     for (const Monster& monster : monsters_)
         data_to_serialize.monsters_.push_back(MonsterData(monster.get_position(), monster.get_type(),
                                                           monster.get_health(), monster.get_angle()));

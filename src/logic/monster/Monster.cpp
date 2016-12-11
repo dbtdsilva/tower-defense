@@ -106,3 +106,8 @@ const MonsterType& Monster::get_type() const {
 const unsigned int& Monster::get_identifier() const {
     return id_;
 }
+
+const int &Monster::bullet_struck(const int &bullet_damage) {
+    health_ = health_ - bullet_damage <= 0 ? 0 : health_ - bullet_damage;
+    return health_;
+}

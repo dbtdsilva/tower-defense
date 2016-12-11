@@ -35,6 +35,7 @@ public:
     const std::vector<MonsterMovement>& get_requested_movements() const;
     const std::vector<MonsterRotation>& get_requested_rotations() const;
     const unsigned int& get_identifier() const;
+    const int& bullet_struck(const int& bullet_damage);
     MonsterInterface* get_interface();
     void clear_requests();
 protected:
@@ -44,10 +45,10 @@ private:
     static unsigned int instance_counter;
 
     const unsigned int id_;
-    const int health_;
     const double rotational_speed_, movement_speed_;
     const MonsterType type_;
 
+    int health_;
     Position<double> pos_;
     double angle_;
 
