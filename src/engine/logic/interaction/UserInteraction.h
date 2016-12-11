@@ -3,8 +3,8 @@
 
 #include <memory>
 #include <vector>
+#include <helpers/Position.h>
 #include "UserInteractionInterface.h"
-#include "../../helpers/Position.h"
 
 class WorldState;
 

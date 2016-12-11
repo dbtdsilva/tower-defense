@@ -3,12 +3,12 @@
 
 #include <vector>
 #include <SDL2/SDL.h>
+#include <helpers/WorldDataSerializer.h>
 #include <map>
 #include "objects/Monster.h"
 #include "objects/Tower.h"
 #include "map/Map.h"
 #include "objects/Bullet.h"
-#include "../serializer/WorldDataSerializer.h"
 
 class MapDrawer {
 private:

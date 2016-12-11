@@ -4,7 +4,7 @@
 #include <cereal/types/vector.hpp>
 #include <cereal/types/string.hpp>
 
-#include "../serializer/WorldDataSerializer.h"
+#include <helpers/WorldDataSerializer.h>
 
 using namespace std;
 

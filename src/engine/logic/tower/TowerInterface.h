@@ -1,8 +1,8 @@
 #ifndef TOWERDEFENSE_TOWERINTERFACE_H
 #define TOWERDEFENSE_TOWERINTERFACE_H
 
-#include "../../helpers/Definitions.h"
-#include "../../helpers/Entity.h"
+#include <helpers/Definitions.h>
+#include "../Entity.h"
 
 class Tower;
 

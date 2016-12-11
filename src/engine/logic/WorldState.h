@@ -3,10 +3,10 @@
 
 #include <vector>
 #include <list>
+#include <helpers/Position.h>
 #include "tower/Tower.h"
 #include "tower/Bullet.h"
 #include "monster/Monster.h"
-#include "../helpers/Position.h"
 #include "interaction/UserInteraction.h"
 
 class Monster;

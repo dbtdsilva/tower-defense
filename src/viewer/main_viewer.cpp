@@ -3,8 +3,8 @@
 #include <cereal/types/vector.hpp>
 #include <cereal/types/string.hpp>
 
-#include "serializer/WorldDataSerializer.h"
-#include "viewer/MapDrawer.h"
+#include <helpers/WorldDataSerializer.h>
+#include "MapDrawer.h"
 
 using namespace std;
 
