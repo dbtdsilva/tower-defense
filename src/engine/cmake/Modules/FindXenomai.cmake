@@ -50,8 +50,8 @@ if( UNIX )
     find_program(Xenomai_XENO_CONFIG NAMES xeno-config  PATHS ${Xenomai_ROOT_DIR}/bin NO_DEFAULT_PATH)
 
     # Linker flags for the posix wrappers
-    set(Xenomai_LDFLAGS_NATIVE "")#"-lnative -lxenomai -lpthread -lrt")
-    set(Xenomai_LDFLAGS_POSIX "-Wl,@${Xenomai_ROOT_DIR}/lib/posix.wrappers")#-lpthread_rt -lxenomai -lpthread -lrt")
+    set(Xenomai_LDFLAGS_NATIVE "-lnative -lxenomai -lpthread -lrt")
+    set(Xenomai_LDFLAGS_POSIX "-Wl,@${Xenomai_ROOT_DIR}/lib/posix.wrappers -lpthread_rt -lxenomai -lpthread -lrt")
 
     # add compile/preprocess options
     set(Xenomai_DEFINITIONS -D_GNU_SOURCE -D_REENTRANT -pipe -D__XENO__)
