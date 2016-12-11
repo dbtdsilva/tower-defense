@@ -2,6 +2,12 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
 
 PROJECT(towerdefense)
 
+#cmake -DCMAKE_BUILD_TYPE=Debug
+
+IF(NOT CMAKE_BUILD_TYPE)
+   SET(CMAKE_BUILD_TYPE Release ... FORCE)
+ENDIF()
+
 INCLUDE(FindPkgConfig)
 INCLUDE(ExternalProject)
 

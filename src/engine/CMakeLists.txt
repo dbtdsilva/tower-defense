@@ -1,6 +1,8 @@
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 
-#SET(Xenomai_INCLUDE_DIR "xenomai/install_output/include")
+IF(CMAKE_BUILD_TYPE MATCHES Debug)
+  SET(Xenomai_INCLUDE_DIR "xenomai/install_output/include")
+ENDIF()
 FIND_PACKAGE(Xenomai)
 
 IF(Xenomai_INCLUDE_DIR)
@@ -23,9 +25,6 @@ IF(Xenomai_INCLUDE_DIR)
           logic/Entity.h)
 
   ADD_DEPENDENCIES(towerdefense cereal)
+  TARGET_LINK_LIBRARIES(towerdefense ${Xenomai_LIBRARIES_NATIVE})
   SET_TARGET_PROPERTIES(towerdefense PROPERTIES COMPILE_FLAGS "-std=c++14")
-
-  ADD_EXECUTABLE(abc periodic_task_4.c)
-  TARGET_LINK_LIBRARIES(abc ${Xenomai_LIBRARIES_NATIVE} ${Xenomai_LDFLAGS_NATIVE})
-  #ADD_DEPENDENCIES(abc xenomai)
 ENDIF()
