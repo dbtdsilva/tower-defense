@@ -4,13 +4,13 @@
 #include <memory>
 #include <vector>
 #include "UserInteractionInterface.h"
-#include "../helpers/Position.h"
+#include "../../helpers/Position.h"
 
 class WorldState;
 
 typedef struct {
     const TowerType type;
-    const Position<double> position;
+    const Position<int> position;
 } TowerAddRequest;
 
 class UserInteraction {
@@ -20,7 +20,7 @@ public:
     const std::vector<TowerAddRequest>& get_tower_add_requests() const;
     UserInteractionInterface* get_user_interaction_interface();
     void clear_requests();
-    void add_tower(const TowerType& type, const Position<double>& position);
+    void add_tower(const TowerType& type, const Position<int>& position);
 private:
     std::unique_ptr<UserInteractionInterface> interface_;
 

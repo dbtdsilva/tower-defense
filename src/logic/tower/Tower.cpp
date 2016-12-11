@@ -9,7 +9,7 @@ using namespace std;
 
 unsigned int Tower::instance_counter = 0;
 
-Tower Tower::create_tower(WorldState* world_ref, const TowerType& ref, const Position<double>& position) {
+Tower Tower::create_tower(WorldState* world_ref, const TowerType& ref, const Position<int>& position) {
     switch (ref) {
         case TowerType::SIMPLE:
             return SimpleTower(world_ref, position);
@@ -21,43 +21,28 @@ Tower::~Tower() {
 }
 
 Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, const int& cost, const int& range,
-             const double& rotational_speed, const Position<double>& pos) :
+             const double& rotational_speed, const Position<int>& pos, const TowerType& type) :
         damage_(damage), radar_load_time_(radar_load_time), cost_(cost), range_(range),
         rotational_speed_(rotational_speed), pos_(pos), angle_(0), world_ref_(state),
-        interface_(make_unique<TowerInterface>(this)), id_(Tower::instance_counter)
+        interface_(make_unique<TowerInterface>(this)), id_(Tower::instance_counter), type_(type)
 {
     Tower::instance_counter++;
 }
 
-Tower::Tower(const Tower& other) : cost_(other.cost_), pos_(other.pos_), range_(other.range_),
-                                   rotational_speed_(other.rotational_speed_), damage_(other.damage_),
-                                   radar_load_time_(other.radar_load_time_), id_(0)
+Tower::Tower(Tower&& other)  :
+        cost_(other.cost_), pos_(other.pos_), range_(other.range_), rotational_speed_(other.rotational_speed_),
+        damage_(other.damage_), radar_load_time_(other.radar_load_time_), angle_(other.angle_), id_(other.id_),
+        interface_(std::move(other.interface_)), world_ref_(other.world_ref_), type_(other.type_)
 {
-    cout << "Copy" << endl;
-}
-
-Tower::Tower(Tower&& other)  : cost_(other.cost_), pos_(other.pos_), range_(other.range_),
-                                     rotational_speed_(other.rotational_speed_), damage_(other.damage_),
-                                     radar_load_time_(other.radar_load_time_),
-                                     id_(0)
-{
-    cout << "Move" << endl;
-}
-
-
-Tower& Tower::operator=(const Tower& other) {
-
-}
-
-Tower& Tower::operator=(Tower&& other) {
-
+    interface_->reference_moved(this);
+    other.interface_ = nullptr;
 }
 
 const int& Tower::get_cost() const {
     return cost_;
 }
 
-const Position<double>& Tower::get_position() const {
+const Position<int>& Tower::get_position() const {
     return pos_;
 }
 
@@ -73,8 +58,20 @@ const double& Tower::get_rotational_speed() const {
     return rotational_speed_;
 }
 
+const double &Tower::get_angle() const {
+    return angle_;
+}
+
 double& Tower::get_angle() {
     return angle_;
+}
+
+const unsigned int& Tower::get_identifier() const {
+    return id_;
+}
+
+TowerInterface* Tower::get_interface() {
+    return interface_.get();
 }
 
 void Tower::clear_requests() {
@@ -103,4 +100,12 @@ vector<Position<double>> Tower::radar() {
 
 void Tower::rotate(const TowerRotation& rotation) {
     requested_rotations_.push_back(rotation);
+}
+
+const TowerType &Tower::get_type() const {
+    return type_;
+}
+
+const int &Tower::get_damage() const {
+    return damage_;
 }

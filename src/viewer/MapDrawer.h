@@ -8,8 +8,7 @@
 #include "objects/Tower.h"
 #include "map/Map.h"
 #include "objects/Bullet.h"
-
-enum UpdateAction {CREATE, UPDATE, DELETE};
+#include "../serializer/WorldDataSerializer.h"
 
 class MapDrawer {
 private:
@@ -26,10 +25,7 @@ private:
     std::map<std::string, SDL_Texture*>* textures;
 
     // Maps and objects
-    Map* map;
-    std::vector<Monster*>* monsters;
-    std::vector<Tower*>* towers;
-    std::vector<Bullet*>* bullets;
+    WorldData* data;
 
     enum corner_side {LEFT_UP, LEFT_DOWN, RIGHT_UP, RIGHT_DOWN};
     enum marker_type {NORMAL, WRENCH, CROSS, BALL, EXPLOSION};
@@ -44,19 +40,18 @@ private:
     void drawScore();
     void drawMoney();
     void drawField(int x, int y);
-    void drawRoadStraight(int x, int y);
+    void drawRoadStraight(int x, int y, bool vertical);
     void drawRoadCorner(int x, int y, corner_side corner);
     void drawInsertPosition(int x, int y, marker_type marker);
     void drawTower(int x, int y, int angle, tower_type tower);
-    void drawMonster(int x, int y, int angle, monster_type monster);
-    void drawBullet(int x, int y, bullet_type bullet);
+    void drawMonster(double x, double y, int angle, monster_type monster);
+    void drawBullet(double x, double y, bullet_type bullet);
+    int getDegrees(double radians);
 
 public:
-    MapDrawer(int width, int height, Map* map);
+    MapDrawer(int width, int height, WorldData *data);
     bool initSuccessful();
-    void updateMonster(Monster* monster, UpdateAction action);
-    void updateTower(Tower* tower, UpdateAction action);
-    void updateBullet(Bullet* bullet, UpdateAction action);
+    void updateWorldData(WorldData *data);
     void drawMap();
     ~MapDrawer();
 };

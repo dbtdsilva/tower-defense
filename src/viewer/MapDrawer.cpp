@@ -4,17 +4,14 @@
 #include "MapDrawer.h"
 #include "aux/Cleanup.h"
 
-MapDrawer::MapDrawer(int width, int height, Map *map) {
+MapDrawer::MapDrawer(int width, int height, WorldData *data) {
     this->width = width;
     this->height = height;
-    this->tileSize = 80;
+    this->tileSize = 60;
     this->menuWidth = 100;
-    this->map = map;
+    this->data = data;
 
     this->textures = new std::map<std::string, SDL_Texture*>();
-    this->monsters = new std::vector<Monster*>();
-    this->towers = new std::vector<Tower*>();
-    this->bullets = new std::vector<Bullet*>();
 
     this->initStatus = init();
 
@@ -26,14 +23,8 @@ MapDrawer::MapDrawer(int width, int height, Map *map) {
 }
 
 MapDrawer::~MapDrawer() {
-    delete this->map;
-    this->map = nullptr;
-
-    delete this->monsters;
-    this->monsters = nullptr;
-
-    delete this->towers;
-    this->towers = nullptr;
+    delete this->data;
+    this->data = nullptr;
 
     if(initStatus) {
         unloadTextures();
@@ -42,6 +33,9 @@ MapDrawer::~MapDrawer() {
         this->textures = nullptr;
 
         cleanup(this->renderer, this->window);
+
+        TTF_Quit();
+        IMG_Quit();
         SDL_Quit();
     }
 }
@@ -64,7 +58,7 @@ bool MapDrawer::init() {
         return false;
     }
 
-    this->window = SDL_CreateWindow("Hello World!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->width, this->height, SDL_WINDOW_SHOWN);
+    this->window = SDL_CreateWindow("Tower Defense", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->width, this->height, SDL_WINDOW_SHOWN);
     if (this->window == nullptr){
         std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
         SDL_Quit();
@@ -448,50 +442,64 @@ bool MapDrawer::initSuccessful() {
     return this->initStatus;
 }
 
-void MapDrawer::updateMonster(Monster* monster, UpdateAction action) {}
-
-void MapDrawer::updateTower(Tower* tower, UpdateAction action) {}
-
-void MapDrawer::updateBullet(Bullet *bullet, UpdateAction action) {}
+void MapDrawer::updateWorldData(WorldData *data) {
+    this->data = data;
+}
 
 void MapDrawer::drawMap() {
     SDL_RenderClear(this->renderer);
     SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
 
-    for(int x = 0; x < this->width; x += this->tileSize)
-        for(int y = 0; y < this->height; y += this->tileSize) {
-            if(y % (this->tileSize * 2) == 0)
-                drawField(x, y);
-            else
-                drawRoadStraight(x, y);
+    for(int i = 0; i < this->data->map_.size(); ++i)
+        for(int j = 0; j < this->data->map_[i].size(); ++j) {
+            switch (this->data->map_[i][j]) {
+                case PositionState::EMPTY:
+                    this->drawField(i, j);
+                    break;
+                case PositionState::PATH:
+                    if(i-1 >= 0 && j-1 >= 0 &&
+                       this->data->map_[i-1][j] == PositionState::PATH &&
+                       this->data->map_[i][j-1] == PositionState::PATH)
+                        this->drawRoadCorner(i, j, LEFT_UP);
+                    else if(i-1 >= 0 && j+1 >= 0 &&
+                            this->data->map_[i-1][j] == PositionState::PATH &&
+                            this->data->map_[i][j+1] == PositionState::PATH)
+                        this->drawRoadCorner(i, j, LEFT_DOWN);
+                    else if(i+1 >= 0 && j-1 >= 0 &&
+                            this->data->map_[i+1][j] == PositionState::PATH &&
+                            this->data->map_[i][j-1] == PositionState::PATH)
+                        this->drawRoadCorner(i, j, RIGHT_UP);
+                    else if(i+1 >= 0 && j+1 >= 0 &&
+                            this->data->map_[i+1][j] == PositionState::PATH &&
+                            this->data->map_[i][j+1] == PositionState::PATH)
+                        this->drawRoadCorner(i, j, RIGHT_DOWN);
+                    else
+                        this->drawRoadStraight(i, j,
+                                               !((i - 1 >= 0 && this->data->map_[i - 1][j] == PositionState::PATH) ||
+                                                 (i+1 >= 0 && this->data->map_[i+1][j] == PositionState::PATH)));
+                    break;
+                case PositionState::TOWER:
+                    this->drawField(i, j);
+                    this->drawInsertPosition(i, j, NORMAL);
+                    break;
+            }
         }
 
-    for(int x = 0; x < this->width; x += this->tileSize)
-        for(int y = 0; y < this->height; y += this->tileSize * 2)
-            drawInsertPosition(x, y, NORMAL);
+    for(std::vector<TowerData>::iterator it = this->data->towers_.begin(); it != this->data->towers_.end(); ++it) {
+        this->drawTower(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
+                        (it->type_ == TowerType::SIMPLE ? ONE_CANNON : TWO_CANNON));
+    }
 
-    for(int x = 0; x < this->width; x += this->tileSize)
-        for(int y = 0; y < this->height; y += this->tileSize * 2) {
-            if (x % (this->tileSize * 2) == 0)
-                drawTower(x, y, 45, ONE_CANNON);
-            else
-                drawTower(x, y, -45, TWO_CANNON);
-        }
+    for(std::vector<MonsterData>::iterator it = this->data->monsters_.begin(); it != this->data->monsters_.end(); ++it) {
+        this->drawMonster(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
+                          (it->type_ == MonsterType::BASIC ? MONSTER_1 : MONSTER_2));
+    }
 
-    for(int x = 0; x < this->width; x += this->tileSize)
-        for(int y = this->tileSize; y < this->height; y += this->tileSize * 2) {
-            if (x % (this->tileSize * 2) == 0)
-                drawMonster(x, y, 0, MONSTER_1);
-            else
-                drawMonster(x, y, -180, MONSTER_2);
-        }
+    for(std::vector<BulletData>::iterator it = this->data->bullets_.begin(); it != this->data->bullets_.end(); ++it) {
+        this->drawBullet(it->position_.get_x(), it->position_.get_y(), (it->damage_ < 10 ? BULLET_1 : BULLET_2));
+    }
 
-    for(int x = this->tileSize / 2; x < this->width; x += this->tileSize)
-        for(int y = this->tileSize / 2; y < this->height; y += this->tileSize) {
-            drawBullet(x, y, BULLET_1);
-        }
-
-    drawMenu();
+    this->drawMenu();
 
     SDL_RenderPresent(this->renderer);
 }
@@ -660,46 +668,59 @@ void MapDrawer::drawMoney() {
 void MapDrawer::drawField(int x, int y) {
     SDL_Rect dest;
 
-    dest.x = x;
-    dest.y = y;
+    int tmp_x = x * this->tileSize;
+    int tmp_y = y * this->tileSize;
+
+    dest.x = tmp_x;
+    dest.y = tmp_y;
     dest.w = this->tileSize;
     dest.h = this->tileSize;
 
     SDL_RenderCopy(this->renderer, this->textures->find("field")->second, nullptr, &dest);
 }
 
-void MapDrawer::drawRoadStraight(int x, int y) {
+void MapDrawer::drawRoadStraight(int x, int y, bool vertical) {
     SDL_Rect upper_left;
     SDL_Rect upper_right;
     SDL_Rect lower_left;
     SDL_Rect lower_right;
 
-    upper_left.x = x;
-    upper_left.y = y;
+    int tmp_x = x * this->tileSize;
+    int tmp_y = y * this->tileSize;
+
+    upper_left.x = tmp_x;
+    upper_left.y = tmp_y;
     upper_left.h = this->tileSize / 2;
     upper_left.w = this->tileSize / 2;
 
-    upper_right.x = x + this->tileSize / 2;
-    upper_right.y = y;
+    upper_right.x = tmp_x + this->tileSize / 2;
+    upper_right.y = tmp_y;
     upper_right.h = this->tileSize / 2;
     upper_right.w = this->tileSize / 2;
 
-    lower_left.x = x;
-    lower_left.y = y + this->tileSize / 2;
+    lower_left.x = tmp_x;
+    lower_left.y = tmp_y + this->tileSize / 2;
     lower_left.h = this->tileSize / 2;
     lower_left.w = this->tileSize / 2;
 
-    lower_right.x = x + this->tileSize / 2;
-    lower_right.y = y + this->tileSize / 2;
+    lower_right.x = tmp_x + this->tileSize / 2;
+    lower_right.y = tmp_y + this->tileSize / 2;
     lower_right.h = this->tileSize / 2;
     lower_right.w = this->tileSize / 2;
 
-    SDL_Texture* texture = this->textures->find("full_border")->second;
+    SDL_Texture *texture = this->textures->find("full_border")->second;
 
-    SDL_RenderCopyEx(this->renderer, texture, nullptr, &upper_left, 0, nullptr, SDL_FLIP_VERTICAL);
-    SDL_RenderCopyEx(this->renderer, texture, nullptr, &upper_right, 0, nullptr, SDL_FLIP_VERTICAL);
-    SDL_RenderCopy(this->renderer, texture, nullptr, &lower_left);
-    SDL_RenderCopy(this->renderer, texture, nullptr, &lower_right);
+    if (!vertical) {
+        SDL_RenderCopyEx(this->renderer, texture, nullptr, &upper_left, 0, nullptr, SDL_FLIP_VERTICAL);
+        SDL_RenderCopyEx(this->renderer, texture, nullptr, &upper_right, 0, nullptr, SDL_FLIP_VERTICAL);
+        SDL_RenderCopyEx(this->renderer, texture, nullptr, &lower_left, 0, nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(this->renderer, texture, nullptr, &lower_right, 0, nullptr, SDL_FLIP_NONE);
+    } else {
+        SDL_RenderCopyEx(this->renderer, texture, nullptr, &upper_left, 90, nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(this->renderer, texture, nullptr, &upper_right, -90, nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(this->renderer, texture, nullptr, &lower_left, 90, nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(this->renderer, texture, nullptr, &lower_right, -90, nullptr, SDL_FLIP_NONE);
+    }
 }
 
 void MapDrawer::drawRoadCorner(int x, int y, corner_side corner) {
@@ -708,30 +729,32 @@ void MapDrawer::drawRoadCorner(int x, int y, corner_side corner) {
     SDL_Rect lower_left;
     SDL_Rect lower_right;
 
+    int tmp_x = x * this->tileSize;
+    int tmp_y = y * this->tileSize;
+
     SDL_Texture* small_corner = this->textures->find("small_corner_border")->second;
     SDL_Texture* big_corner = this->textures->find("big_corner_border")->second;
     SDL_Texture* full_border = this->textures->find("full_border")->second;
 
-    upper_left.x = x;
-    upper_left.y = y;
+    upper_left.x = tmp_x;
+    upper_left.y = tmp_y;
     upper_left.h = this->tileSize / 2;
     upper_left.w = this->tileSize / 2;
 
-    upper_right.x = x + this->tileSize / 2;
-    upper_right.y = y;
+    upper_right.x = tmp_x + this->tileSize / 2;
+    upper_right.y = tmp_y;
     upper_right.h = this->tileSize / 2;
     upper_right.w = this->tileSize / 2;
 
-    lower_left.x = x;
-    lower_left.y = y + this->tileSize / 2;
+    lower_left.x = tmp_x;
+    lower_left.y = tmp_y + this->tileSize / 2;
     lower_left.h = this->tileSize / 2;
     lower_left.w = this->tileSize / 2;
 
-    lower_right.x = x + this->tileSize / 2;
-    lower_right.y = y + this->tileSize / 2;
+    lower_right.x = tmp_x + this->tileSize / 2;
+    lower_right.y = tmp_y + this->tileSize / 2;
     lower_right.h = this->tileSize / 2;
     lower_right.w = this->tileSize / 2;
-
 
     switch (corner) {
         case LEFT_UP:
@@ -765,8 +788,11 @@ void MapDrawer::drawRoadCorner(int x, int y, corner_side corner) {
 void MapDrawer::drawInsertPosition(int x, int y, marker_type marker) {
     SDL_Rect dest;
 
-    dest.x = x;
-    dest.y = y;
+    int tmp_x = x * this->tileSize;
+    int tmp_y = y * this->tileSize;
+
+    dest.x = tmp_x;
+    dest.y = tmp_y;
     dest.w = this->tileSize;
     dest.h = this->tileSize;
 
@@ -792,8 +818,11 @@ void MapDrawer::drawInsertPosition(int x, int y, marker_type marker) {
 void MapDrawer::drawTower(int x, int y, int angle, tower_type tower) {
     SDL_Rect dest;
 
-    dest.x = x;
-    dest.y = y;
+    int tmp_x = x * this->tileSize;
+    int tmp_y = y * this->tileSize;
+
+    dest.x = tmp_x;
+    dest.y = tmp_y;
     dest.w = this->tileSize;
     dest.h = this->tileSize;
 
@@ -809,11 +838,14 @@ void MapDrawer::drawTower(int x, int y, int angle, tower_type tower) {
     }
 }
 
-void MapDrawer::drawMonster(int x, int y, int angle, monster_type monster) {
+void MapDrawer::drawMonster(double x, double y, int angle, monster_type monster) {
     SDL_Rect dest;
 
-    dest.x = x;
-    dest.y = y;
+    int tmp_x = (int) (rint(x * this->tileSize) - this->tileSize / 2);
+    int tmp_y = (int) (rint(y * this->tileSize) - this->tileSize / 2);
+
+    dest.x = tmp_x;
+    dest.y = tmp_y;
     dest.w = this->tileSize;
     dest.h = this->tileSize;
 
@@ -829,11 +861,14 @@ void MapDrawer::drawMonster(int x, int y, int angle, monster_type monster) {
     }
 }
 
-void MapDrawer::drawBullet(int x, int y, bullet_type bullet) {
+void MapDrawer::drawBullet(double x, double y, bullet_type bullet) {
     SDL_Rect dest;
 
-    dest.x = x;
-    dest.y = y;
+    int tmp_x = (int) (rint(x * this->tileSize) - this->tileSize / 2);
+    int tmp_y = (int) (rint(y * this->tileSize) - this->tileSize / 2);
+
+    dest.x = tmp_x;
+    dest.y = tmp_y;
     dest.w = this->tileSize;
     dest.h = this->tileSize;
 
@@ -845,4 +880,9 @@ void MapDrawer::drawBullet(int x, int y, bullet_type bullet) {
             SDL_RenderCopy(this->renderer, this->textures->find("bullet_two")->second, nullptr, &dest);
             break;
     }
+}
+
+int MapDrawer::getDegrees(double radians) {
+    const double halfC = M_PI / 180;
+    return rint(radians * halfC);
 }

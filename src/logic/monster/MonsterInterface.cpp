@@ -5,22 +5,18 @@ MonsterInterface::MonsterInterface(Monster* reference) : monster_reference_(refe
 
 }
 
-void MonsterInterface::move() {
-    monster_reference_->move();
+void MonsterInterface::reference_moved(Monster* reference) {
+    monster_reference_ = reference;
 }
 
-void MonsterInterface::left_eye() {
-    monster_reference_->left_eye();
+std::vector<MonsterEye> MonsterInterface::eyes() {
+    return monster_reference_->eyes();
 }
 
-void MonsterInterface::middle_eye() {
-    monster_reference_->middle_eye();
+void MonsterInterface::move(const MonsterMovement& movement) {
+    return monster_reference_->move(movement);
 }
 
-void MonsterInterface::right_eye() {
-    monster_reference_->right_eye();
-}
-
-void MonsterInterface::rotate() {
-    monster_reference_->rotate();
+void MonsterInterface::rotate(const MonsterRotation& rotation) {
+    return monster_reference_->rotate(rotation);
 }

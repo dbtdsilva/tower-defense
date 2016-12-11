@@ -1,13 +1,15 @@
 #ifndef TOWERDEFENSE_TOWERINTERFACE_H
 #define TOWERDEFENSE_TOWERINTERFACE_H
 
-#include "../helpers/Definitions.h"
+#include "../../helpers/Definitions.h"
+#include "../../helpers/Entity.h"
 
 class Tower;
 
-class TowerInterface {
+class TowerInterface : public EntityInterface {
 public:
     TowerInterface(Tower* reference);
+    void reference_moved(Tower* reference);
 
     void shoot();
     void radar();

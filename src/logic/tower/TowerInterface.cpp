@@ -7,6 +7,10 @@ TowerInterface::TowerInterface(Tower* reference) : tower_reference_(reference) {
 
 }
 
+void TowerInterface::reference_moved(Tower* reference) {
+    tower_reference_ = reference;
+}
+
 void TowerInterface::shoot() {
     tower_reference_->shoot();
 }
