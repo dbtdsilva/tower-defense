@@ -17,7 +17,7 @@ public:
     // No copies or assignments are allowed (only moves)
     Monster(const Monster&) = delete;
     Monster& operator=(const Monster& other) = delete;
-    Monster& operator=(Monster&& other) = delete;
+    Monster& operator=(Monster&& other);
     Monster(Monster&&);
 
     std::vector<MonsterEye> eyes();

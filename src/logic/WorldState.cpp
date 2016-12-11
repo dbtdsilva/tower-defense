@@ -78,7 +78,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
                     entity_modifications.push_back(EntityModification(monster->get_interface(),
                                                                       monster->get_identifier(),
                                                                       EntityAction::REMOVE));
-                    //monsters_.erase(monster);
+                    monsters_.erase(monster);
                     break;
                 }
             }

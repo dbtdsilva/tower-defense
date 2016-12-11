@@ -33,6 +33,20 @@ Monster::Monster(Monster&& other) :
     other.interface_ = nullptr;
 }
 
+Monster& Monster::operator=(Monster &&other) {
+    if (this != &other) {
+        world_ref_ = other.world_ref_;
+        health_ = other.health_;
+        pos_ = other.pos_;
+        angle_ = other.angle_;
+        interface_ = std::move(other.interface_);
+
+        interface_->reference_moved(this);
+        other.interface_ = nullptr;
+    }
+    return *this;
+}
+
 void Monster::set_position(const double& x, const double& y) {
     pos_.set_x(x);
     pos_.set_y(y);
