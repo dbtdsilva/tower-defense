@@ -12,19 +12,24 @@ const int SCREEN_WIDTH = 700;
 const int SCREEN_HEIGTH = 600;
 
 int main() {
-    ifstream file_serialized("world_serialized.bin", ios::binary);
-    WorldData *world = new WorldData();
-    cereal::BinaryInputArchive archive(file_serialized);
-    archive(*world);
-    file_serialized.close();
+    MapDrawer *drawer = new MapDrawer(SCREEN_WIDTH, SCREEN_HEIGTH);
 
-    MapDrawer *drawer = new MapDrawer(SCREEN_WIDTH, SCREEN_HEIGTH, world);
+    if(drawer->initSuccessful()) {
+        ifstream file_serialized("/dev/rtp0", ios::binary);
 
-    if(drawer->initSuccessful())
         while(!drawer->isQuit()) {
+            //ifstream file_serialized("world_serialized.bin", ios::binary);
+            WorldData *world = new WorldData();
+            cereal::BinaryInputArchive archive(file_serialized);
+            archive(*world);
+
+            drawer->updateWorldData(world);
             drawer->drawMap();
-            drawer->handleEvents();
+            if(drawer->handleEvents()) {
+                std::cout << drawer->getNewTower()->position_.get_x() << std::endl;
+            }
         }
+    }
 
     delete drawer;
 

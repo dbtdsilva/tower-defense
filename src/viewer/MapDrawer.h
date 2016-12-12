@@ -26,6 +26,7 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
     std::map<std::string, SDL_Texture*>* textures;
+    TowerData* nextTower;
 
     // Maps and objects
     WorldData* data;
@@ -54,11 +55,12 @@ private:
     int getDegrees(double radians);
 
 public:
-    MapDrawer(int width, int height, WorldData *data);
+    MapDrawer(int width, int height);
     bool initSuccessful();
     void updateWorldData(WorldData *data);
     void drawMap();
     bool handleEvents();
+    TowerData * getNewTower();
     bool isQuit();
     ~MapDrawer();
 };

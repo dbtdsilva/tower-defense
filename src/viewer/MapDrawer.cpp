@@ -4,15 +4,15 @@
 #include "MapDrawer.h"
 #include "aux/Cleanup.h"
 
-MapDrawer::MapDrawer(int width, int height, WorldData *data) {
+MapDrawer::MapDrawer(int width, int height) {
     this->width = width;
     this->height = height;
     this->tileSize = 60;
     this->menuWidth = 100;
-    this->data = data;
     this->towerOneActive = false;
     this->towerTwoActive = false;
     this->quit = false;
+    this->nextTower = nullptr;
 
     this->textures = new std::map<std::string, SDL_Texture*>();
 
@@ -86,6 +86,7 @@ bool MapDrawer::init() {
 }
 
 void MapDrawer::updateWorldData(WorldData *data) {
+    delete this->data;
     this->data = data;
 }
 
@@ -149,7 +150,6 @@ void MapDrawer::drawMap() {
 
 bool MapDrawer::handleEvents() {
     SDL_Event e;
-    bool newTower = false;
 
     while(SDL_PollEvent(&e)) {
         switch (e.type) {
@@ -190,7 +190,6 @@ bool MapDrawer::handleEvents() {
                     this->towerTwoActive = !this->towerTwoActive;
                     this->towerOneActive = false;
                 } else if(towerPlacement && (this->towerOneActive || this->towerTwoActive)) {
-                    std::cout << "Trying to place tower" << std::endl;
                     bool noTowerPlaced = true;
                     for(std::vector<TowerData>::iterator it = this->data->towers_.begin(); it != this->data->towers_.end(); ++it) {
                         if(it->position_.get_x() == i && it->position_.get_y() == j) {
@@ -200,7 +199,8 @@ bool MapDrawer::handleEvents() {
                     }
 
                     if(noTowerPlaced) {
-                        // TODO: send message to place tower
+                        Position<int> pos(i, j);
+                        this->nextTower = new TowerData(pos, (this->towerOneActive ? TowerType::SIMPLE : TowerType::COMPLEX), 0);
                     }
                 }
 
@@ -208,7 +208,14 @@ bool MapDrawer::handleEvents() {
         }
     }
 
-    return newTower;
+    return nextTower != nullptr;
+}
+
+TowerData* MapDrawer::getNewTower() {
+    TowerData* data = this->nextTower;
+    this->nextTower = nullptr;
+
+    return data;
 }
 
 bool MapDrawer::isQuit() {
