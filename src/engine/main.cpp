@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include <unistd.h>
 #include <signal.h>
@@ -23,8 +24,10 @@ RT_PIPE task_pipe;
 #define TASK_MODE       0       // No flags
 #define TASK_STKSZ      0       // Default stack size
 
-#define TASK_PRIO_GOD   99
-#define TASK_PRIO_USER  80
+#define TASK_PRIO_GOD       99
+#define TASK_PRIO_USER      80
+#define TASK_PRIO_TOWER     70
+#define TASK_PRIO_MONSTER   60
 
 void catch_signal(int sig) {}
 
@@ -45,9 +48,35 @@ void god_task(void *world_state_void) {
     err = rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     WorldState* world = static_cast<WorldState*>(world_state_void);
+    ostringstream stream_serialize;
+    string serialized_string;
+
+    TowerInterface* tower;
+    MonsterInterface* monster;
     for(;;) {
         err = rt_task_wait_period(NULL);
-    }
+
+        vector<EntityModification> changes = world->update_world_state();
+        for (EntityModification& change : changes) {
+            if ((monster = dynamic_cast<MonsterInterface*>(change.entity_)) != nullptr) {
+                // Create/delete monster task
+            } else if ((tower = dynamic_cast<TowerInterface*>(change.entity_)) != nullptr) {
+                // Create/delete tower task
+            }
+        }
+
+        world->serialize_data(stream_serialize);
+        serialized_string = stream_serialize.str();
+        
+        err = rt_pipe_write(&task_pipe, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
+        if(err < 0) {
+            rt_printf("Error sending world state message (error code = %d)\n", err);
+            return;
+        } else {
+            rt_printf("state message sent successfully\n");
+        }
+    }  
+
     return;
 }
 
