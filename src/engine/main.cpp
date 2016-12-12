@@ -67,7 +67,7 @@ void god_task(void *world_state_void) {
 
         world->serialize_data(stream_serialize);
         serialized_string = stream_serialize.str();
-        
+
         err = rt_pipe_write(&task_pipe, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
         if(err < 0) {
             rt_printf("Error sending world state message (error code = %d)\n", err);
@@ -158,30 +158,6 @@ int main(int argc, char** argv) {
 
     /* wait for termination signal */   
     wait_for_ctrl_c();
-
-    /*user->add_tower(TowerType::SIMPLE, Position<int>(2,0));
-    cout << state << endl;
-    for (int i = 0; i < 40; i++) {
-        cout << i << endl;
-        vector<EntityModification> changes = state.update_world_state();
-        for (EntityModification& change : changes) {
-            TowerInterface* tower;
-            MonsterInterface* monster;
-            cout << "Action: " << (int)change.action_ << endl;
-            if ((monster = dynamic_cast<MonsterInterface*>(change.entity_)) != nullptr) {
-                cout << "Monster" << endl;
-            } else if ((tower = dynamic_cast<TowerInterface*>(change.entity_)) != nullptr) {
-                cout << "Tower" << endl;
-                tower->radar();
-                tower->shoot();
-            }
-        }
-    }
-
-    ofstream world_serialize;
-    world_serialize.open("world_serialized.bin", ios::binary);
-    state.serialize_data(world_serialize);
-    world_serialize.close();*/
 
     return EXIT_SUCCESS;
 }
