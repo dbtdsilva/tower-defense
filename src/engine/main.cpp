@@ -40,42 +40,57 @@ void wait_for_ctrl_c(void) {
 }
 
 void god_task(void *world_state_void) {
-    WorldState* world = static_cast<WorldState*>(world_state_void);
+    int err;
+    int task_period = 10000;
+    err = rt_task_set_periodic(NULL, TM_NOW, task_period);
 
-    cout << *world << endl;
+    WorldState* world = static_cast<WorldState*>(world_state_void);
+    for(;;) {
+        err = rt_task_wait_period(NULL);
+    }
+    return;
 }
 
 void user_interaction_task(void *interface) {
+    int err;
+    int task_period = 10000;
+    err = rt_task_set_periodic(NULL, TM_NOW, task_period);
+
     UserInteractionInterface* user_interface = static_cast<UserInteractionInterface*>(interface);
+    for(;;) {
+        err = rt_task_wait_period(NULL);
+    }
+    return;
+}
+
+void tower_task(void *interface) {
+    int err;
+    int task_period = 10000;
+    err = rt_task_set_periodic(NULL, TM_NOW, task_period);
+
+    TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
+    for(;;) {
+        err = rt_task_wait_period(NULL);
+    }
+    return;
+}
+
+void monster_task(void *interface) {
+    int err;
+    int task_period = 10000;
+    err = rt_task_set_periodic(NULL, TM_NOW, task_period);
+
+    MonsterInterface* tower_interface = static_cast<MonsterInterface*>(interface);
+    for(;;) {
+        err = rt_task_wait_period(NULL);
+    }
+    return;
 }
 
 int main(int argc, char** argv) {
     WorldState world(10, 10);
     UserInteractionInterface* user = world.get_user_interaction_interface();
-    /*user->add_tower(TowerType::SIMPLE, Position<int>(2,0));
-    cout << state << endl;
-    for (int i = 0; i < 40; i++) {
-        cout << i << endl;
-        vector<EntityModification> changes = state.update_world_state();
-        for (EntityModification& change : changes) {
-            TowerInterface* tower;
-            MonsterInterface* monster;
-            cout << "Action: " << (int)change.action_ << endl;
-            if ((monster = dynamic_cast<MonsterInterface*>(change.entity_)) != nullptr) {
-                cout << "Monster" << endl;
-            } else if ((tower = dynamic_cast<TowerInterface*>(change.entity_)) != nullptr) {
-                cout << "Tower" << endl;
-                tower->radar();
-                tower->shoot();
-            }
-        }
-    }
-
-    ofstream world_serialize;
-    world_serialize.open("world_serialized.bin", ios::binary);
-    state.serialize_data(world_serialize);
-    world_serialize.close();*/
-
+    
     /* Perform auto-init of rt_print buffers if the task doesn't do so */
     rt_print_auto_init(1);
 
@@ -114,6 +129,30 @@ int main(int argc, char** argv) {
 
     /* wait for termination signal */   
     wait_for_ctrl_c();
+
+    /*user->add_tower(TowerType::SIMPLE, Position<int>(2,0));
+    cout << state << endl;
+    for (int i = 0; i < 40; i++) {
+        cout << i << endl;
+        vector<EntityModification> changes = state.update_world_state();
+        for (EntityModification& change : changes) {
+            TowerInterface* tower;
+            MonsterInterface* monster;
+            cout << "Action: " << (int)change.action_ << endl;
+            if ((monster = dynamic_cast<MonsterInterface*>(change.entity_)) != nullptr) {
+                cout << "Monster" << endl;
+            } else if ((tower = dynamic_cast<TowerInterface*>(change.entity_)) != nullptr) {
+                cout << "Tower" << endl;
+                tower->radar();
+                tower->shoot();
+            }
+        }
+    }
+
+    ofstream world_serialize;
+    world_serialize.open("world_serialized.bin", ios::binary);
+    state.serialize_data(world_serialize);
+    world_serialize.close();*/
 
     return EXIT_SUCCESS;
 }
