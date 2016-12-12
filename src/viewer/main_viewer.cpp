@@ -16,9 +16,9 @@ int main() {
 
     if(drawer->initSuccessful()) {
         ifstream file_serialized("/dev/rtp0", ios::binary);
+        ofstream resp_serialized("/dev/rtp1", ios::binary);
 
         while(!drawer->isQuit()) {
-            //ifstream file_serialized("world_serialized.bin", ios::binary);
             WorldData *world = new WorldData();
             cereal::BinaryInputArchive archive(file_serialized);
             archive(*world);
@@ -26,7 +26,8 @@ int main() {
             drawer->updateWorldData(world);
             drawer->drawMap();
             if(drawer->handleEvents()) {
-                std::cout << drawer->getNewTower()->position_.get_x() << std::endl;
+                cereal::BinaryOutputArchive archive(resp_serialized);
+                archive(*(drawer->getNewTower()));
             }
         }
     }
