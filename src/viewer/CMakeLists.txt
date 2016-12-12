@@ -11,9 +11,7 @@ ADD_EXECUTABLE(towerdefense_viewer
         map/Map.h map/Map.cpp
         objects/Bullet.h objects/Bullet.cpp
         objects/Monster.h objects/Monster.cpp
-        objects/Tower.h objects/Tower.cpp
-        objects/Tower.h objects/Tower.cpp
-        MapDrawer.h MapDrawer.cpp)
+        objects/Tower.h objects/Tower.cpp)
 
 TARGET_LINK_LIBRARIES(towerdefense_viewer ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES})
 ADD_DEPENDENCIES(towerdefense_viewer cereal)

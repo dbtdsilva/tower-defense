@@ -17,10 +17,12 @@ private:
     int height;
     int tileSize;
     int menuWidth;
-
-    // SDL Objects
     bool initStatus;
     bool quit;
+    bool towerOneActive;
+    bool towerTwoActive;
+
+    // SDL Objects
     SDL_Window* window;
     SDL_Renderer* renderer;
     std::map<std::string, SDL_Texture*>* textures;
@@ -40,6 +42,8 @@ private:
     void drawMenu();
     void drawScore();
     void drawMoney();
+    void drawMenuTowerOne();
+    void drawMenuTowerTwo();
     void drawField(int x, int y);
     void drawRoadStraight(int x, int y, bool vertical);
     void drawRoadCorner(int x, int y, corner_side corner);

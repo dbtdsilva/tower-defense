@@ -10,6 +10,8 @@ MapDrawer::MapDrawer(int width, int height, WorldData *data) {
     this->tileSize = 60;
     this->menuWidth = 100;
     this->data = data;
+    this->towerOneActive = false;
+    this->towerTwoActive = false;
     this->quit = false;
 
     this->textures = new std::map<std::string, SDL_Texture*>();
@@ -158,9 +160,46 @@ bool MapDrawer::handleEvents() {
                 if(SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT))
                     leftPressed = true;
 
-                if(x > 0);
-                else if(x > 0)
+                bool towerOne = leftPressed &&
+                        x >= this->width - this->menuWidth + 5 &&
+                        x <= this->width - 10 &&
+                        y >= 210 &&
+                        y <= 210 + 120;
 
+                bool towerTwo = leftPressed &&
+                        x >= this->width - this->menuWidth + 5 &&
+                        x <= this->width - 10 &&
+                        y >= 210 &&
+                        y <= 340 + 120;
+
+                int i = (int) rint(x / this->tileSize);
+                int j = (int) rint(y / this->tileSize);
+
+                bool towerPlacement = leftPressed &&
+                        i >= 0 && i < this->data->map_.size() &&
+                        j >= 0 && j < this->data->map_[i].size() &&
+                        this->data->map_[i][j] == PositionState::TOWER;
+
+                if(towerOne) {
+                    this->towerOneActive = !this->towerOneActive;
+                    this->towerTwoActive = false;
+                } else if(towerTwo) {
+                    this->towerTwoActive = !this->towerTwoActive;
+                    this->towerOneActive = false;
+                } else if(towerPlacement && (this->towerOneActive || this->towerTwoActive)) {
+                    std::cout << "Trying to place tower" << std::endl;
+                    bool noTowerPlaced = true;
+                    for(std::vector<TowerData>::iterator it = this->data->towers_.begin(); it != this->data->towers_.end(); ++it) {
+                        if(it->position_.get_x() == i && it->position_.get_y() == j) {
+                            noTowerPlaced = false;
+                            break;
+                        }
+                    }
+
+                    if(noTowerPlaced) {
+                        // TODO: send message to place tower
+                    }
+                }
 
                 break;
         }
@@ -582,53 +621,9 @@ void MapDrawer::drawMenu() {
 
     this->drawMoney();
 
-    // Tower one box
-    dest.x = this->width - this->menuWidth + 5;
-    dest.y = 210;
-    dest.w = this->menuWidth - 10;
-    dest.h = 120;
+    this->drawMenuTowerOne();
 
-    SDL_RenderDrawRect(this->renderer, &dest);
-
-    // Tower one icon
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 215;
-    dest.w = this->menuWidth - 20;
-    dest.h = this->menuWidth - 20;
-
-    SDL_RenderCopy(this->renderer, this->textures->find("tower_one")->second, nullptr, &dest);
-
-    // Tower one price
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 215 + this->menuWidth - 20;
-    dest.w = this->menuWidth - 20;
-    dest.h = 30;
-
-    SDL_RenderCopy(this->renderer, this->textures->find("tower_one_price")->second, nullptr, &dest);
-
-    // Tower two box
-    dest.x = this->width - this->menuWidth + 5;
-    dest.y = 340;
-    dest.w = this->menuWidth - 10;
-    dest.h = 120;
-
-    SDL_RenderDrawRect(this->renderer, &dest);
-
-    // Tower two icon
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 345;
-    dest.w = this->menuWidth - 20;
-    dest.h = this->menuWidth - 20;
-
-    SDL_RenderCopy(this->renderer, this->textures->find("tower_two")->second, nullptr, &dest);
-
-    // Tower two price
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 345 + this->menuWidth - 20;
-    dest.w = this->menuWidth - 20;
-    dest.h = 30;
-
-    SDL_RenderCopy(this->renderer, this->textures->find("tower_two_price")->second, nullptr, &dest);
+    this->drawMenuTowerTwo();
 }
 
 void MapDrawer::drawScore() {
@@ -693,6 +688,72 @@ void MapDrawer::drawMoney() {
     SDL_RenderCopy(this->renderer, message, nullptr, &dest);
 
     cleanup(message);
+}
+
+void MapDrawer::drawMenuTowerOne() {
+    SDL_Rect dest;
+
+    // Tower one box
+    dest.x = this->width - this->menuWidth + 5;
+    dest.y = 210;
+    dest.w = this->menuWidth - 10;
+    dest.h = 120;
+
+    if(this->towerOneActive)
+        SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
+    else
+        SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+
+    SDL_RenderDrawRect(this->renderer, &dest);
+
+    // Tower one icon
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 215;
+    dest.w = this->menuWidth - 20;
+    dest.h = this->menuWidth - 20;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("tower_one")->second, nullptr, &dest);
+
+    // Tower one price
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 215 + this->menuWidth - 20;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("tower_one_price")->second, nullptr, &dest);
+}
+
+void MapDrawer::drawMenuTowerTwo() {
+    SDL_Rect dest;
+
+    // Tower two box
+    dest.x = this->width - this->menuWidth + 5;
+    dest.y = 340;
+    dest.w = this->menuWidth - 10;
+    dest.h = 120;
+
+    if(this->towerTwoActive)
+        SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
+    else
+        SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+
+    SDL_RenderDrawRect(this->renderer, &dest);
+
+    // Tower two icon
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 345;
+    dest.w = this->menuWidth - 20;
+    dest.h = this->menuWidth - 20;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("tower_two")->second, nullptr, &dest);
+
+    // Tower two price
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 345 + this->menuWidth - 20;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("tower_two_price")->second, nullptr, &dest);
 }
 
 void MapDrawer::drawField(int x, int y) {
@@ -858,11 +919,11 @@ void MapDrawer::drawTower(int x, int y, int angle, tower_type tower) {
 
     switch (tower) {
         case ONE_CANNON:
-            SDL_RenderCopyEx(this->renderer, this->textures->find("tower_one")->second, nullptr, &dest, angle, nullptr,
+            SDL_RenderCopyEx(this->renderer, this->textures->find("tower_one")->second, nullptr, &dest, -angle+90, nullptr,
                              SDL_FLIP_NONE);
             break;
         case TWO_CANNON:
-            SDL_RenderCopyEx(this->renderer, this->textures->find("tower_two")->second, nullptr, &dest, angle, nullptr,
+            SDL_RenderCopyEx(this->renderer, this->textures->find("tower_two")->second, nullptr, &dest, -angle+90, nullptr,
                              SDL_FLIP_NONE);
             break;
     }
