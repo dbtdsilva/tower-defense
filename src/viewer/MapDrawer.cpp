@@ -10,6 +10,7 @@ MapDrawer::MapDrawer(int width, int height, WorldData *data) {
     this->tileSize = 60;
     this->menuWidth = 100;
     this->data = data;
+    this->quit = false;
 
     this->textures = new std::map<std::string, SDL_Texture*>();
 
@@ -23,14 +24,10 @@ MapDrawer::MapDrawer(int width, int height, WorldData *data) {
 }
 
 MapDrawer::~MapDrawer() {
-    delete this->data;
-    this->data = nullptr;
-
     if(initStatus) {
         unloadTextures();
 
         delete this->textures;
-        this->textures = nullptr;
 
         cleanup(this->renderer, this->window);
 
@@ -81,6 +78,99 @@ bool MapDrawer::init() {
     }
 
     return true;
+}
+
+void MapDrawer::updateWorldData(WorldData *data) {
+    this->data = data;
+}
+
+void MapDrawer::drawMap() {
+    SDL_RenderClear(this->renderer);
+    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+
+    for(int i = 0; i < this->data->map_.size(); ++i)
+        for(int j = 0; j < this->data->map_[i].size(); ++j) {
+            switch (this->data->map_[i][j]) {
+                case PositionState::EMPTY:
+                    this->drawField(i, j);
+                    break;
+                case PositionState::PATH:
+                    if(i-1 >= 0 && j-1 >= 0 &&
+                       this->data->map_[i-1][j] == PositionState::PATH &&
+                       this->data->map_[i][j-1] == PositionState::PATH)
+                        this->drawRoadCorner(i, j, LEFT_UP);
+                    else if(i-1 >= 0 && j+1 >= 0 &&
+                            this->data->map_[i-1][j] == PositionState::PATH &&
+                            this->data->map_[i][j+1] == PositionState::PATH)
+                        this->drawRoadCorner(i, j, LEFT_DOWN);
+                    else if(i+1 >= 0 && j-1 >= 0 &&
+                            this->data->map_[i+1][j] == PositionState::PATH &&
+                            this->data->map_[i][j-1] == PositionState::PATH)
+                        this->drawRoadCorner(i, j, RIGHT_UP);
+                    else if(i+1 >= 0 && j+1 >= 0 &&
+                            this->data->map_[i+1][j] == PositionState::PATH &&
+                            this->data->map_[i][j+1] == PositionState::PATH)
+                        this->drawRoadCorner(i, j, RIGHT_DOWN);
+                    else
+                        this->drawRoadStraight(i, j,
+                                               !((i - 1 >= 0 && this->data->map_[i - 1][j] == PositionState::PATH) ||
+                                                 (i+1 >= 0 && this->data->map_[i+1][j] == PositionState::PATH)));
+                    break;
+                case PositionState::TOWER:
+                    this->drawField(i, j);
+                    this->drawInsertPosition(i, j, NORMAL);
+                    break;
+            }
+        }
+
+    for(std::vector<TowerData>::iterator it = this->data->towers_.begin(); it != this->data->towers_.end(); ++it) {
+        this->drawTower(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
+                        (it->type_ == TowerType::SIMPLE ? ONE_CANNON : TWO_CANNON));
+    }
+
+    for(std::vector<MonsterData>::iterator it = this->data->monsters_.begin(); it != this->data->monsters_.end(); ++it) {
+        this->drawMonster(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
+                          (it->type_ == MonsterType::BASIC ? MONSTER_1 : MONSTER_2));
+    }
+
+    for(std::vector<BulletData>::iterator it = this->data->bullets_.begin(); it != this->data->bullets_.end(); ++it) {
+        this->drawBullet(it->position_.get_x(), it->position_.get_y(), (it->damage_ < 10 ? BULLET_1 : BULLET_2));
+    }
+
+    this->drawMenu();
+
+    SDL_RenderPresent(this->renderer);
+}
+
+bool MapDrawer::handleEvents() {
+    SDL_Event e;
+    bool newTower = false;
+
+    while(SDL_PollEvent(&e)) {
+        switch (e.type) {
+            case SDL_QUIT:
+                this->quit = true;
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                bool leftPressed = false;
+                int x, y;
+
+                if(SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT))
+                    leftPressed = true;
+
+                if(x > 0);
+                else if(x > 0)
+
+
+                break;
+        }
+    }
+
+    return newTower;
+}
+
+bool MapDrawer::isQuit() {
+    return this->quit;
 }
 
 bool MapDrawer::loadTextures() {
@@ -442,68 +532,6 @@ bool MapDrawer::initSuccessful() {
     return this->initStatus;
 }
 
-void MapDrawer::updateWorldData(WorldData *data) {
-    this->data = data;
-}
-
-void MapDrawer::drawMap() {
-    SDL_RenderClear(this->renderer);
-    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
-
-    for(int i = 0; i < this->data->map_.size(); ++i)
-        for(int j = 0; j < this->data->map_[i].size(); ++j) {
-            switch (this->data->map_[i][j]) {
-                case PositionState::EMPTY:
-                    this->drawField(i, j);
-                    break;
-                case PositionState::PATH:
-                    if(i-1 >= 0 && j-1 >= 0 &&
-                       this->data->map_[i-1][j] == PositionState::PATH &&
-                       this->data->map_[i][j-1] == PositionState::PATH)
-                        this->drawRoadCorner(i, j, LEFT_UP);
-                    else if(i-1 >= 0 && j+1 >= 0 &&
-                            this->data->map_[i-1][j] == PositionState::PATH &&
-                            this->data->map_[i][j+1] == PositionState::PATH)
-                        this->drawRoadCorner(i, j, LEFT_DOWN);
-                    else if(i+1 >= 0 && j-1 >= 0 &&
-                            this->data->map_[i+1][j] == PositionState::PATH &&
-                            this->data->map_[i][j-1] == PositionState::PATH)
-                        this->drawRoadCorner(i, j, RIGHT_UP);
-                    else if(i+1 >= 0 && j+1 >= 0 &&
-                            this->data->map_[i+1][j] == PositionState::PATH &&
-                            this->data->map_[i][j+1] == PositionState::PATH)
-                        this->drawRoadCorner(i, j, RIGHT_DOWN);
-                    else
-                        this->drawRoadStraight(i, j,
-                                               !((i - 1 >= 0 && this->data->map_[i - 1][j] == PositionState::PATH) ||
-                                                 (i+1 >= 0 && this->data->map_[i+1][j] == PositionState::PATH)));
-                    break;
-                case PositionState::TOWER:
-                    this->drawField(i, j);
-                    this->drawInsertPosition(i, j, NORMAL);
-                    break;
-            }
-        }
-
-    for(std::vector<TowerData>::iterator it = this->data->towers_.begin(); it != this->data->towers_.end(); ++it) {
-        this->drawTower(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
-                        (it->type_ == TowerType::SIMPLE ? ONE_CANNON : TWO_CANNON));
-    }
-
-    for(std::vector<MonsterData>::iterator it = this->data->monsters_.begin(); it != this->data->monsters_.end(); ++it) {
-        this->drawMonster(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
-                          (it->type_ == MonsterType::BASIC ? MONSTER_1 : MONSTER_2));
-    }
-
-    for(std::vector<BulletData>::iterator it = this->data->bullets_.begin(); it != this->data->bullets_.end(); ++it) {
-        this->drawBullet(it->position_.get_x(), it->position_.get_y(), (it->damage_ < 10 ? BULLET_1 : BULLET_2));
-    }
-
-    this->drawMenu();
-
-    SDL_RenderPresent(this->renderer);
-}
-
 void MapDrawer::drawMenu() {
     SDL_Rect dest;
 
@@ -617,6 +645,7 @@ void MapDrawer::drawScore() {
 
     // Score value text
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, "0000", red);
+    TTF_CloseFont(sans);
     if(surfaceMessage == nullptr) {
         std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
         return;
@@ -648,6 +677,7 @@ void MapDrawer::drawMoney() {
 
     // Score text
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, "$000", red);
+    TTF_CloseFont(sans);
     if(surfaceMessage == nullptr) {
         std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
         return;

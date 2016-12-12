@@ -16,12 +16,17 @@ int main() {
     WorldData world;
     cereal::BinaryInputArchive archive(file_serialized);
     archive(world);
+    file_serialized.close();
 
-    MapDrawer drawer(SCREEN_WIDTH, SCREEN_HEIGTH, &world);
+    MapDrawer *drawer = new MapDrawer(SCREEN_WIDTH, SCREEN_HEIGTH, &world);
 
-    if(drawer.initSuccessful())
-        while(1)
-            drawer.drawMap();
+    if(drawer->initSuccessful())
+        while(!drawer->isQuit()) {
+            drawer->drawMap();
+            drawer->handleEvents();
+        }
+
+    delete drawer;
 
     return 0;
 }

@@ -20,6 +20,7 @@ private:
 
     // SDL Objects
     bool initStatus;
+    bool quit;
     SDL_Window* window;
     SDL_Renderer* renderer;
     std::map<std::string, SDL_Texture*>* textures;
@@ -53,6 +54,8 @@ public:
     bool initSuccessful();
     void updateWorldData(WorldData *data);
     void drawMap();
+    bool handleEvents();
+    bool isQuit();
     ~MapDrawer();
 };
 
