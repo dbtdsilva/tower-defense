@@ -13,12 +13,12 @@ const int SCREEN_HEIGTH = 600;
 
 int main() {
     ifstream file_serialized("world_serialized.bin", ios::binary);
-    WorldData world;
+    WorldData *world = new WorldData();
     cereal::BinaryInputArchive archive(file_serialized);
-    archive(world);
+    archive(*world);
     file_serialized.close();
 
-    MapDrawer *drawer = new MapDrawer(SCREEN_WIDTH, SCREEN_HEIGTH, &world);
+    MapDrawer *drawer = new MapDrawer(SCREEN_WIDTH, SCREEN_HEIGTH, world);
 
     if(drawer->initSuccessful())
         while(!drawer->isQuit()) {

@@ -26,6 +26,9 @@ MapDrawer::MapDrawer(int width, int height, WorldData *data) {
 }
 
 MapDrawer::~MapDrawer() {
+    delete this->data;
+    this->data = nullptr;
+
     if(initStatus) {
         unloadTextures();
 
@@ -942,11 +945,11 @@ void MapDrawer::drawMonster(double x, double y, int angle, monster_type monster)
 
     switch (monster) {
         case MONSTER_1:
-            SDL_RenderCopyEx(this->renderer, this->textures->find("monster_one")->second, nullptr, &dest, angle, nullptr,
+            SDL_RenderCopyEx(this->renderer, this->textures->find("monster_one")->second, nullptr, &dest, -angle, nullptr,
                              SDL_FLIP_NONE);
             break;
         case MONSTER_2:
-            SDL_RenderCopyEx(this->renderer, this->textures->find("monster_two")->second, nullptr, &dest, angle, nullptr,
+            SDL_RenderCopyEx(this->renderer, this->textures->find("monster_two")->second, nullptr, &dest, -angle, nullptr,
                              SDL_FLIP_NONE);
             break;
     }
