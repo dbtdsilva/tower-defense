@@ -129,7 +129,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
         // Check for shoots
         const vector<double>& requested_shoots = tower.get_requested_shoots();
         if (!requested_shoots.empty()) {
-            bullets_.push_back({ Position<double>(tower.get_position().get_x(), tower.get_position().get_y()),
+            bullets_.push_back({ Position<double>(tower.get_position().get_x() + 0.5, tower.get_position().get_y() + 0.5),
                                 requested_shoots[0], 0.1, tower.get_damage() });
         }
         // Check for rotations
