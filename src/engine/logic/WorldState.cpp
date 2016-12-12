@@ -159,8 +159,6 @@ void WorldState::serialize_data(ostream& stream) const {
                                                           monster.get_health(), monster.get_angle()));
     data_to_serialize.map_ = map_;
 
-    cout << monsters_.size() << " " << bullets_.size() << " " << towers_.size() << endl;
-
     cereal::BinaryOutputArchive archive(stream);
     archive(data_to_serialize);
 }
