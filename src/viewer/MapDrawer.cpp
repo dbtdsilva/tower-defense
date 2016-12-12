@@ -223,7 +223,7 @@ bool MapDrawer::isQuit() {
 }
 
 bool MapDrawer::loadTextures() {
-    std::string folderPath = "/home/ed1000/Documents/tower-defense/textures/";
+    std::string folderPath = "/home/myrddin-dm/tower-defense/textures/";
 
     // Full border
     std::string tilePath = folderPath + "tile01.png";
@@ -497,7 +497,7 @@ bool MapDrawer::loadTextures() {
         this->textures->emplace("bullet_two", tileTex);
     }
 
-    folderPath = "/home/ed1000/Documents/tower-defense/fonts/";
+    folderPath = "/home/myrddin-dm/tower-defense/fonts/";
     std::string fontPath = folderPath + "sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color black = {0, 0, 0};
@@ -637,7 +637,7 @@ void MapDrawer::drawMenu() {
 }
 
 void MapDrawer::drawScore() {
-    std::string fontPath = "/home/ed1000/Documents/tower-defense/fonts/sans.ttf";
+    std::string fontPath = "/home/myrddin-dm/tower-defense/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color red = {255, 0, 0};
 
@@ -669,7 +669,7 @@ void MapDrawer::drawScore() {
 }
 
 void MapDrawer::drawMoney() {
-    std::string fontPath = "/home/ed1000/Documents/tower-defense/fonts/sans.ttf";
+    std::string fontPath = "/home/myrddin-dm/tower-defense/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color red = {255, 0, 0};
 

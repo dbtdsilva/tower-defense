@@ -44,15 +44,15 @@ void wait_for_ctrl_c(void) {
 
 void god_task(void *world_state_void) {
     int err;
-    int task_period = 10000;
+    int task_period = 200000000;
     err = rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     WorldState* world = static_cast<WorldState*>(world_state_void);
-    ostringstream stream_serialize;
     string serialized_string;
 
     TowerInterface* tower;
     MonsterInterface* monster;
+    rt_printf("%d %d %d %d\n", EINVAL, ENOMEM, EIDRM, ENODEV);
     for(;;) {
         err = rt_task_wait_period(NULL);
 
@@ -65,9 +65,11 @@ void god_task(void *world_state_void) {
             }
         }
 
+        ostringstream stream_serialize;
         world->serialize_data(stream_serialize);
-        serialized_string = stream_serialize.str();
-
+        string wat = stream_serialize.str();
+        serialized_string = "MESSAGE" + wat;
+        rt_printf("%d %d\n", wat[0], wat.size());
         err = rt_pipe_write(&task_pipe, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
         if(err < 0) {
             rt_printf("Error sending world state message (error code = %d)\n", err);
@@ -86,9 +88,9 @@ void user_interaction_task(void *interface) {
     err = rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     UserInteractionInterface* user_interface = static_cast<UserInteractionInterface*>(interface);
-    for(;;) {
+    /*for(;;) {
         err = rt_task_wait_period(NULL);
-    }
+    }*/
     return;
 }
 
@@ -98,9 +100,9 @@ void tower_task(void *interface) {
     err = rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
-    for(;;) {
+    /*for(;;) {
         err = rt_task_wait_period(NULL);
-    }
+    }*/
     return;
 }
 
@@ -110,9 +112,9 @@ void monster_task(void *interface) {
     err = rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     MonsterInterface* tower_interface = static_cast<MonsterInterface*>(interface);
-    for(;;) {
+    /*for(;;) {
         err = rt_task_wait_period(NULL);
-    }
+    }*/
     return;
 }
 
