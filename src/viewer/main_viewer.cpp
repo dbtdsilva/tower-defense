@@ -18,7 +18,11 @@ int main() {
     char buf[16];
     int bytes_read, idx, idx_message;
     string value, recv, sub, message;
-    while (true) {
+
+    MapDrawer *drawer = new MapDrawer(SCREEN_WIDTH, SCREEN_HEIGTH);
+    if(!drawer->initSuccessful()) return -1;
+
+    while (!drawer->isQuit()) {
         bytes_read = file_serialized.readsome(buf, 16);
 
         if (bytes_read == 0) continue;
@@ -43,8 +47,13 @@ int main() {
         cereal::BinaryInputArchive archive(filedata);
         archive(*world);
 
+        drawer->updateWorldData(world);
+        drawer->drawMap();
+
         cout << world->monsters_.size() << endl; 
     }
+
+    delete drawer;
 
     return 0;
 }
