@@ -1,4 +1,5 @@
 #include "WorldState.h"
+#include "interaction/UserInteraction.h"
 
 #include <cmath>
 #include <cereal/types/vector.hpp>
@@ -31,11 +32,13 @@ WorldState::WorldState(size_t width, size_t height) :
 std::vector<EntityModification> WorldState::update_world_state() {
     std::vector<EntityModification> entity_modifications;
     if (monsters_left_to_spawn_ == 0) {
-        idle_cycles_++;
-        if (idle_cycles_ > 2) {
-            game_level_++;
-            monsters_left_to_spawn_ = monsters_per_level_ + game_level_ * 3;
-            idle_cycles_ = 0;
+        if (monsters_.empty()) {
+            idle_cycles_++;
+            if (idle_cycles_ > 2) {
+                game_level_++;
+                monsters_left_to_spawn_ = monsters_per_level_;
+                idle_cycles_ = 0;
+            }
         }
     } else if (idle_cycles_before_spawn_ > 5){
         Monster ref = Monster::add_monster(this, MonsterType::BASIC, start_position);
@@ -49,6 +52,10 @@ std::vector<EntityModification> WorldState::update_world_state() {
     }
 
     for (const TowerAddRequest& request : user_interaction_.get_tower_add_requests()) {
+        if (request.position.get_x() < 0 || request.position.get_x() >= width_ ||
+            request.position.get_y() < 0 || request.position.get_y() >= height_ ||
+            map_[request.position.get_x()][request.position.get_y()] != PositionState::EMPTY)
+            continue;
         Tower ref = Tower::create_tower(this, request.type, request.position);
         if (ref.get_cost() > player_currency_)
             continue;
@@ -95,23 +102,31 @@ std::vector<EntityModification> WorldState::update_world_state() {
         if (!movements.empty()) {
             const Position<double>& position = monster.get_position();
             double& angle = monster.get_angle();
+
+            Position<double> new_position(0, 0);
             switch (movements[0]) {
                 case MonsterMovement::FRONT:
-                    monster.set_position(position.get_x() + cos(angle) * monster.get_movement_speed(),
-                                         position.get_y() + sin(angle) * monster.get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle) * monster.get_movement_speed());
+                    new_position.set_y(position.get_y() + sin(angle) * monster.get_movement_speed());
                     break;
                 case MonsterMovement::BACK:
-                    monster.set_position(position.get_x() + cos(angle - M_PI) * monster.get_movement_speed(),
-                                         position.get_y() + sin(angle - M_PI) * monster.get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle - M_PI) * monster.get_movement_speed());
+                    new_position.set_y(position.get_y() + sin(angle - M_PI) * monster.get_movement_speed());
                     break;
                 case MonsterMovement::LEFT:
-                    monster.set_position(position.get_x() + cos(angle + M_PI_2) * monster.get_movement_speed(),
-                                         position.get_y() + sin(angle + M_PI_2) * monster.get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle + M_PI_2) * monster.get_movement_speed());
+                    new_position.set_y(position.get_y() + sin(angle + M_PI_2) * monster.get_movement_speed());
                     break;
                 case MonsterMovement::RIGHT:
-                    monster.set_position(position.get_x() + cos(angle - M_PI_2) * monster.get_movement_speed(),
-                                         position.get_y() + sin(angle - M_PI_2) * monster.get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle - M_PI_2) * monster.get_movement_speed());
+                    new_position.set_y(position.get_y() + sin(angle - M_PI_2) * monster.get_movement_speed());
                     break;
+            }
+            Position<int> new_position_map((int)new_position.get_x(), (int)new_position.get_y());
+            if (new_position_map.get_x() >= 0 && new_position_map.get_x() < width_ &&
+                    new_position_map.get_y() >= 0 && new_position_map.get_y() < height_ &&
+                    map_[new_position_map.get_x()][new_position_map.get_y()] == PositionState::PATH) {
+                monster.set_position(new_position.get_x(), new_position.get_y());
             }
         }
         const vector<MonsterRotation>& rotations = monster.get_requested_rotations();

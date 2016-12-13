@@ -21,6 +21,7 @@ using namespace std;
 
 RT_TASK god_task_desc, user_task_desc;
 vector<RT_TASK> monsters_tasks;
+vector<RT_TASK> towers_tasks;
 RT_PIPE task_pipe;
 
 #define TASK_MODE       0       // No flags
@@ -60,7 +61,7 @@ void tower_task(void *interface) {
 }
 
 void monster_task(void *interface) {
-    int task_period = 1110000000;
+    int task_period = 200000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     rt_printf("Monster task started!\n");
@@ -73,7 +74,7 @@ void monster_task(void *interface) {
 }
 
 void god_task(void *world_state_void) {
-    int task_period = 1110000000;
+    int task_period = 200000000;
 
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
@@ -101,7 +102,15 @@ void god_task(void *world_state_void) {
                     rt_task_start(&monsters_tasks.back(), &monster_task, monster);
                 }
             } else if ((tower = dynamic_cast<TowerInterface*>(change.entity_)) != nullptr) {
-                // Create/delete tower task
+                towers_tasks.push_back(RT_TASK());
+                string task_name("Towers Task " + towers_tasks.size());
+                int err = rt_task_create(&towers_tasks.back(), task_name.c_str(), TASK_STKSZ, TASK_PRIO_MONSTER, TASK_MODE);
+                if(err) {
+                    rt_printf("Error creating task tower (error code = %d)\n", err);
+                } else  {
+                    rt_printf("Task created successfully\n");
+                    rt_task_start(&monsters_tasks.back(), &tower_task, tower);
+                }
             }
         }
 
