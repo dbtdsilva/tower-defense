@@ -39,8 +39,9 @@ std::vector<EntityModification> WorldState::update_world_state() {
         }
     } else if (idle_cycles_before_spawn_ > 5){
         Monster ref = Monster::add_monster(this, MonsterType::BASIC, start_position);
-        entity_modifications.push_back(EntityModification(ref.get_interface(), ref.get_identifier(), EntityAction::ADD));
         monsters_.push_back(std::move(ref));
+        entity_modifications.push_back(EntityModification(monsters_.back().get_interface(),
+                                                          monsters_.back().get_identifier(), EntityAction::ADD));
         monsters_left_to_spawn_--;
         idle_cycles_before_spawn_ = 0;
     } else {

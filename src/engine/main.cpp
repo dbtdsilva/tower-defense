@@ -11,6 +11,7 @@
 #include <native/task.h>
 #include <native/timer.h>
 #include <native/pipe.h>
+#include <vector>
 
 #include <rtdk.h> // Provides rt_print functions
 
@@ -19,6 +20,7 @@
 using namespace std;
 
 RT_TASK god_task_desc, user_task_desc;
+vector<RT_TASK> monsters_tasks;
 RT_PIPE task_pipe;
 
 #define TASK_MODE       0       // No flags
@@ -46,16 +48,41 @@ void wait_for_ctrl_c(void) {
     rt_printf("Terminating ...\n");
 }
 
-void god_task(void *world_state_void) {
+void tower_task(void *interface) {
     int task_period = 200000000;
+    rt_task_set_periodic(NULL, TM_NOW, task_period);
+
+    TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
+    while (!terminate_tasks) {
+        rt_task_wait_period(NULL);
+        tower_interface->shoot();
+    }
+}
+
+void monster_task(void *interface) {
+    int task_period = 1110000000;
+    rt_task_set_periodic(NULL, TM_NOW, task_period);
+
+    rt_printf("Monster task started!\n");
+    MonsterInterface* monster_interface = static_cast<MonsterInterface*>(interface);
+    while (!terminate_tasks) {
+        rt_task_wait_period(NULL);
+        monster_interface->move(MonsterMovement::FRONT);
+    }
+    return;
+}
+
+void god_task(void *world_state_void) {
+    int task_period = 1110000000;
 
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     WorldState* world = static_cast<WorldState*>(world_state_void);
     string serialized_string;
 
-    TowerInterface* tower;
     MonsterInterface* monster;
+    TowerInterface* tower;
+
     rt_printf("%d %d %d %d\n", EINVAL, ENOMEM, EIDRM, ENODEV);
     while(!terminate_tasks) {
         rt_task_wait_period(NULL);
@@ -64,6 +91,15 @@ void god_task(void *world_state_void) {
         for (EntityModification& change : changes) {
             if ((monster = dynamic_cast<MonsterInterface*>(change.entity_)) != nullptr) {
                 // Create/delete monster task
+                monsters_tasks.push_back(RT_TASK());
+                string task_name("Monster Task " + monsters_tasks.size());
+                int err = rt_task_create(&monsters_tasks.back(), task_name.c_str(), TASK_STKSZ, TASK_PRIO_MONSTER, TASK_MODE);
+                if(err) {
+                    rt_printf("Error creating task monster (error code = %d)\n", err);
+                } else  {
+                    rt_printf("Task created successfully\n");
+                    rt_task_start(&monsters_tasks.back(), &monster_task, monster);
+                }
             } else if ((tower = dynamic_cast<TowerInterface*>(change.entity_)) != nullptr) {
                 // Create/delete tower task
             }
@@ -90,29 +126,6 @@ void user_interaction_task(void *interface) {
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
     }
-}
-
-void tower_task(void *interface) {
-    int task_period = 200000000;
-    rt_task_set_periodic(NULL, TM_NOW, task_period);
-
-    TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
-    while (!terminate_tasks) {
-        rt_task_wait_period(NULL);
-        tower_interface->shoot();
-    }
-}
-
-void monster_task(void *interface) {
-    int task_period = 200000000;
-    rt_task_set_periodic(NULL, TM_NOW, task_period);
-
-    MonsterInterface* monster_interface = static_cast<MonsterInterface*>(interface);
-    while (!terminate_tasks) {
-        rt_task_wait_period(NULL);
-        monster_interface->move(MonsterMovement::FRONT);
-    }
-    return;
 }
 
 int main(int argc, char** argv) {

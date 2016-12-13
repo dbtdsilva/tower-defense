@@ -16,7 +16,8 @@ int main() {
     file_serialized.open("/dev/rtp0", ios::binary);
 
     char buf[16];
-    int bytes_read, idx, idx_message;
+    streamsize bytes_read;
+    unsigned long idx, idx_message;
     string value, recv, sub, message;
 
     MapDrawer *drawer = new MapDrawer(SCREEN_WIDTH, SCREEN_HEIGTH);
@@ -28,7 +29,7 @@ int main() {
         if (bytes_read == 0) continue;
         value = "";
         for (int i = 0; i < bytes_read; i++) {
-            value += (char) buf[i];
+            value += buf[i];
         }
         recv += value;
 
