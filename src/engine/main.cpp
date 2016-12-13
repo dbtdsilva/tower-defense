@@ -29,7 +29,11 @@ RT_PIPE task_pipe;
 #define TASK_PRIO_TOWER     70
 #define TASK_PRIO_MONSTER   60
 
-void catch_signal(int sig) {}
+bool terminate_tasks = false;
+
+void catch_signal(int) {
+    terminate_tasks = true;
+}
 
 void wait_for_ctrl_c(void) {
     signal(SIGTERM, catch_signal); //catch_signal is called if SIGTERM received
@@ -43,9 +47,9 @@ void wait_for_ctrl_c(void) {
 }
 
 void god_task(void *world_state_void) {
-    int err;
     int task_period = 200000000;
-    err = rt_task_set_periodic(NULL, TM_NOW, task_period);
+
+    rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     WorldState* world = static_cast<WorldState*>(world_state_void);
     string serialized_string;
@@ -53,8 +57,8 @@ void god_task(void *world_state_void) {
     TowerInterface* tower;
     MonsterInterface* monster;
     rt_printf("%d %d %d %d\n", EINVAL, ENOMEM, EIDRM, ENODEV);
-    for(;;) {
-        err = rt_task_wait_period(NULL);
+    while(!terminate_tasks) {
+        rt_task_wait_period(NULL);
 
         vector<EntityModification> changes = world->update_world_state();
         for (EntityModification& change : changes) {
@@ -68,51 +72,46 @@ void god_task(void *world_state_void) {
         ostringstream stream_serialize;
         world->serialize_data(stream_serialize);
         serialized_string = "MESSAGE" + stream_serialize.str();
-        err = rt_pipe_write(&task_pipe, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
+        int err = rt_pipe_write(&task_pipe, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
         if(err < 0) {
             rt_printf("Error sending world state message (error code = %d)\n", err);
             return;
         } else {
             rt_printf("state message sent successfully\n");
         }
-    }  
-
-    return;
+    }
 }
 
 void user_interaction_task(void *interface) {
-    int err;
-    int task_period = 10000;
-    err = rt_task_set_periodic(NULL, TM_NOW, task_period);
+    int task_period = 200000000;
+    rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     UserInteractionInterface* user_interface = static_cast<UserInteractionInterface*>(interface);
-    /*for(;;) {
-        err = rt_task_wait_period(NULL);
-    }*/
-    return;
+    while (!terminate_tasks) {
+        rt_task_wait_period(NULL);
+    }
 }
 
 void tower_task(void *interface) {
-    int err;
-    int task_period = 10000;
-    err = rt_task_set_periodic(NULL, TM_NOW, task_period);
+    int task_period = 200000000;
+    rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
-    /*for(;;) {
-        err = rt_task_wait_period(NULL);
-    }*/
-    return;
+    while (!terminate_tasks) {
+        rt_task_wait_period(NULL);
+        tower_interface->shoot();
+    }
 }
 
 void monster_task(void *interface) {
-    int err;
-    int task_period = 10000;
-    err = rt_task_set_periodic(NULL, TM_NOW, task_period);
+    int task_period = 200000000;
+    rt_task_set_periodic(NULL, TM_NOW, task_period);
 
-    MonsterInterface* tower_interface = static_cast<MonsterInterface*>(interface);
-    /*for(;;) {
-        err = rt_task_wait_period(NULL);
-    }*/
+    MonsterInterface* monster_interface = static_cast<MonsterInterface*>(interface);
+    while (!terminate_tasks) {
+        rt_task_wait_period(NULL);
+        monster_interface->move(MonsterMovement::FRONT);
+    }
     return;
 }
 

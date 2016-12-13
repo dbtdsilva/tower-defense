@@ -1,8 +1,5 @@
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 
-IF(CMAKE_BUILD_TYPE MATCHES Debug)
-  SET(Xenomai_INCLUDE_DIR "xenomai/install_output/include")
-ENDIF()
 FIND_PACKAGE(Xenomai)
 
 IF(Xenomai_FOUND)
