@@ -5,10 +5,7 @@
 #include <SDL2/SDL.h>
 #include <helpers/WorldDataSerializer.h>
 #include <map>
-#include "objects/Monster.h"
-#include "objects/Tower.h"
-#include "map/Map.h"
-#include "objects/Bullet.h"
+#include <helpers/ViewerDataSerializer.h>
 
 class MapDrawer {
 private:
@@ -19,14 +16,17 @@ private:
     int menuWidth;
     bool initStatus;
     bool quit;
+    bool gameStatusChanged;
     bool towerOneActive;
     bool towerTwoActive;
+    bool removeTowerActive;
 
     // SDL Objects
     SDL_Window* window;
     SDL_Renderer* renderer;
     std::map<std::string, SDL_Texture*>* textures;
-    TowerData* nextTower;
+    GameStatus gameStatus;
+    OperationTowerData* nextTowerOperation;
 
     // Maps and objects
     WorldData* data;
@@ -60,7 +60,8 @@ public:
     void updateWorldData(WorldData *data);
     void drawMap();
     bool handleEvents();
-    TowerData * getNewTower();
+    GameStatus getGameStatus();
+    OperationTowerData* getTowerOperation();
     bool isQuit();
     ~MapDrawer();
 };

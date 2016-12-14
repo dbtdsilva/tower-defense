@@ -11,11 +11,7 @@ INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIR} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2TTF_INCLU
 ADD_EXECUTABLE(towerdefense_viewer
         main_viewer.cpp
         MapDrawer.h MapDrawer.cpp
-        aux/Cleanup.h
-        map/Map.h map/Map.cpp
-        objects/Bullet.h objects/Bullet.cpp
-        objects/Monster.h objects/Monster.cpp
-        objects/Tower.h objects/Tower.cpp)
+        aux/Cleanup.h)
 
 TARGET_LINK_LIBRARIES(towerdefense_viewer ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES} Threads::Threads)
 ADD_DEPENDENCIES(towerdefense_viewer cereal)

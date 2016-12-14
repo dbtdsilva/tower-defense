@@ -11,6 +11,7 @@
 #include <vector>
 
 #include <rtdk.h> // Provides rt_print functions
+#include <sstream>
 
 #include "logic/WorldState.h"
 
@@ -19,6 +20,7 @@ using namespace std;
 RT_TASK god_task_desc, user_task_desc;
 vector<RT_TASK> monsters_tasks;
 vector<RT_TASK> towers_tasks;
+
 RT_PIPE task_pipe_sender, task_pipe_receiver;
 RT_SEM sem_critical_region;
 
@@ -167,6 +169,7 @@ int main(int argc, char** argv) {
     } else {
         rt_printf("Pipe created successfully\n");
     }
+
     err = rt_pipe_create(&task_pipe_receiver, NULL, 1, 0);
     if (err) {
         rt_printf("Error creating pipe (error code = %d)\n", err);

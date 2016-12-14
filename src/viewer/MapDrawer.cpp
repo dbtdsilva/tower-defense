@@ -11,8 +11,11 @@ MapDrawer::MapDrawer(int width, int height) {
     this->menuWidth = 100;
     this->towerOneActive = false;
     this->towerTwoActive = false;
+    this->removeTowerActive = false;
     this->quit = false;
-    this->nextTower = nullptr;
+    this->gameStatusChanged = false;
+    this->gameStatus = GameStatus::PAUSE;
+    this->nextTowerOperation = nullptr;
 
     this->textures = new std::map<std::string, SDL_Texture*>();
 
@@ -189,33 +192,32 @@ bool MapDrawer::handleEvents() {
                 } else if(towerTwo) {
                     this->towerTwoActive = !this->towerTwoActive;
                     this->towerOneActive = false;
-                } else if(towerPlacement && (this->towerOneActive || this->towerTwoActive)) {
-                    bool noTowerPlaced = true;
-                    for(std::vector<TowerData>::iterator it = this->data->towers_.begin(); it != this->data->towers_.end(); ++it) {
-                        if(it->position_.get_x() == i && it->position_.get_y() == j) {
-                            noTowerPlaced = false;
-                            break;
-                        }
-                    }
-
-                    if(noTowerPlaced) {
-                        Position<int> pos(i, j);
-                        this->nextTower = new TowerData(pos, (this->towerOneActive ? TowerType::SIMPLE : TowerType::COMPLEX), 0);
-                    }
+                } else if(towerPlacement && (this->towerOneActive || this->towerTwoActive || this->removeTowerActive)) {
+                    Position<int> pos(i, j);
+                    this->nextTowerOperation = new OperationTowerData(
+                        (this->removeTowerActive ? TowerOperation::REMOVE : TowerOperation::INSERT), 
+                        pos, (this->towerOneActive ? TowerType::SIMPLE : TowerType::COMPLEX));
                 }
 
+                
+                
                 break;
         }
     }
 
-    return nextTower != nullptr;
+    return this->nextTowerOperation != nullptr || this->gameStatusChanged;
 }
 
-TowerData* MapDrawer::getNewTower() {
-    TowerData* data = this->nextTower;
-    this->nextTower = nullptr;
+OperationTowerData* MapDrawer::getTowerOperation() {
+    OperationTowerData* data = this->nextTowerOperation;
+    this->nextTowerOperation = nullptr;
 
     return data;
+}
+
+GameStatus MapDrawer::getGameStatus() {
+    this->gameStatusChanged = false;
+    return this->gameStatus;
 }
 
 bool MapDrawer::isQuit() {
@@ -883,7 +885,6 @@ void MapDrawer::drawRoadCorner(int x, int y, corner_side corner) {
             SDL_RenderCopyEx(this->renderer, small_corner, nullptr, &lower_right, 0, nullptr, SDL_FLIP_HORIZONTAL);
             break;
     }
-
 }
 
 void MapDrawer::drawInsertPosition(int x, int y, marker_type marker) {

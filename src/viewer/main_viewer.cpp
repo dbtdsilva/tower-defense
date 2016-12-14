@@ -4,9 +4,8 @@
 #include <cereal/types/vector.hpp>
 #include <cereal/types/string.hpp>
 
-#include <stdio.h>
-
 #include <helpers/WorldDataSerializer.h>
+#include <helpers/ViewerDataSerializer.h>
 #include "MapDrawer.h"
 
 using namespace std;
@@ -62,8 +61,6 @@ void recv_message(MapDrawer *drawer) {
 }
 
 int main() {
-    cout << "Sending tower" << endl;
-
     MapDrawer *drawer = new MapDrawer(SCREEN_WIDTH, SCREEN_HEIGTH);
 
     if(!drawer->initSuccessful()) 
@@ -73,9 +70,27 @@ int main() {
 
     while (!drawer->isQuit()) {
         if(drawer->handleEvents()) {
-            cout << "Putting tower..." << endl;
+            OperationTowerData* towerOperation = drawer->getTowerOperation();
 
-            if(drawer->getNewTower() != nullptr) {}
+            ViewerData dataToSerialize;
+            dataToSerialize.status_ = drawer->getGameStatus();
+            
+            if(towerOperation != nullptr) {
+                dataToSerialize.tower_ = *towerOperation;
+            }
+
+            ostringstream stream_serialize;
+            cereal::BinaryOutputArchive archive(stream_serialize);
+            archive(dataToSerialize);
+
+            string serialized_string = "MESSAGE" + stream_serialize.str();
+            ofstream pipe_1("/dev/rtp1", ios::binary);
+
+            if(pipe_1) {
+                pipe_1 << serialized_string << endl;
+                pipe_1.close();
+            } else
+                cout << "RT_Pipe 1 error" << endl;
         }
     }
 
