@@ -22,7 +22,8 @@ using namespace std;
 RT_TASK god_task_desc, user_task_desc;
 vector<RT_TASK> monsters_tasks;
 vector<RT_TASK> towers_tasks;
-RT_PIPE task_pipe;
+RT_PIPE task_pipe_0;
+RT_PIPE task_pipe_1;
 
 #define TASK_MODE       0       // No flags
 #define TASK_STKSZ      0       // Default stack size
@@ -117,7 +118,7 @@ void god_task(void *world_state_void) {
         ostringstream stream_serialize;
         world->serialize_data(stream_serialize);
         serialized_string = "MESSAGE" + stream_serialize.str();
-        int err = rt_pipe_write(&task_pipe, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
+        int err = rt_pipe_write(&task_pipe_0, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
         if(err < 0) {
             rt_printf("Error sending world state message (error code = %d)\n", err);
             return;
@@ -147,7 +148,15 @@ int main(int argc, char** argv) {
     /* Lock memory to prevent paging */
     mlockall(MCL_CURRENT | MCL_FUTURE);
 
-    int err = rt_pipe_create(&task_pipe, NULL, 0, 0);
+    int err = rt_pipe_create(&task_pipe_0, NULL, 0, 0);
+    if (err) {
+        rt_printf("Error creating pipe (error code = %d)\n", err);
+        return err;
+    } else {
+        rt_printf("Pipe created successfully\n");
+    }
+
+    err = rt_pipe_create(&task_pipe_1, NULL, 1, 0);
     if (err) {
         rt_printf("Error creating pipe (error code = %d)\n", err);
         return err;
