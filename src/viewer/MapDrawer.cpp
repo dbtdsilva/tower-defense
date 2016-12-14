@@ -984,6 +984,6 @@ void MapDrawer::drawBullet(double x, double y, bullet_type bullet) {
 }
 
 int MapDrawer::getDegrees(double radians) {
-    const double halfC = M_PI / 180;
+    constexpr double halfC = 180.0 / M_PI;
     return rint(radians * halfC);
 }

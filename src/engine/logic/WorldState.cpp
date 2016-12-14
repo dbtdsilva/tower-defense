@@ -173,6 +173,7 @@ void WorldState::serialize_data(ostream& stream) const {
     for (const Monster& monster : monsters_)
         data_to_serialize.monsters_.push_back(MonsterData(monster.get_position(), monster.get_type(),
                                                           monster.get_health(), monster.get_angle()));
+
     data_to_serialize.map_ = map_;
 
     cereal::BinaryOutputArchive archive(stream);
