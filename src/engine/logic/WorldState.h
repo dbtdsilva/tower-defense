@@ -13,7 +13,7 @@ class Monster;
 
 class WorldState {
 public:
-    WorldState(size_t width, size_t height);
+    WorldState(size_t width, size_t height, int god_task_period_ms);
 
     std::vector<EntityModification> update_world_state();
 
@@ -44,6 +44,8 @@ private:
     unsigned int monsters_left_to_spawn_;
     unsigned int idle_cycles_;
     unsigned int idle_cycles_before_spawn_;
+
+    int cycle_ms_;
 };
 
 
