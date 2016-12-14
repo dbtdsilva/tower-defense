@@ -12,7 +12,7 @@ using namespace std;
 WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
         width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
         user_interaction_(this), player_currency_(10000),
-        game_level_(0), monsters_per_level_(5), monsters_left_to_spawn_(0), idle_cycles_(0),
+        game_level_(0), monsters_per_level_(1), monsters_left_to_spawn_(0), idle_cycles_(0),
         idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms)
 {
     start_position.set_x(0);
@@ -34,7 +34,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
     if (monsters_left_to_spawn_ == 0) {
         if (monsters_.empty()) {
             idle_cycles_++;
-            if (idle_cycles_ > (5000.0 / cycle_ms_)) { // 5 second
+            if (idle_cycles_ > (1000.0 / cycle_ms_)) { // 5 second
                 game_level_++;
                 monsters_left_to_spawn_ = monsters_per_level_;
                 idle_cycles_ = 0;
@@ -186,19 +186,22 @@ const std::vector<Monster>& WorldState::get_monsters() const {
 const double WorldState::get_wall_distance(const Position<double>& position, const double& direction,
                                             const double& sensor_precision) const {
     unsigned int index = 0;
-
     Position<int> next_position = {
             static_cast<int>(floor(position.get_x() + cos(direction) * index * sensor_precision)),
             static_cast<int>(floor(position.get_y() + sin(direction) * index * sensor_precision))};
+    Position<double> valid_position = { position.get_x() + cos(direction) * index * sensor_precision,
+                                        position.get_y() + sin(direction) * index * sensor_precision};
     while (next_position.get_x() >= 0 && next_position.get_y() >= 0 &&
             next_position.get_x() < width_ && next_position.get_y() < height_ &&
             map_[next_position.get_x()][next_position.get_y()] == PositionState::PATH) {
+        valid_position = { position.get_x() + cos(direction) * index * sensor_precision,
+                           position.get_y() + sin(direction) * index * sensor_precision};
         index++;
         next_position = {
                 static_cast<int>(floor(position.get_x() + cos(direction) * index * sensor_precision)),
                 static_cast<int>(floor(position.get_y() + sin(direction) * index * sensor_precision))};
     }
-    return sqrt(pow(next_position.get_x() - position.get_x(), 2) + pow(next_position.get_y() - position.get_y(), 2));
+    return sqrt(pow(valid_position.get_x() - position.get_x(), 2) + pow(valid_position.get_y() - position.get_y(), 2));
 }
 
 UserInteractionInterface* WorldState::get_user_interaction_interface() {

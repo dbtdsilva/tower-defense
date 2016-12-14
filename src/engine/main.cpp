@@ -16,6 +16,7 @@
 #include <rtdk.h> // Provides rt_print functions
 
 #include "logic/WorldState.h"
+#include "logic/monster/MonsterEye.h"
 
 using namespace std;
 
@@ -54,7 +55,7 @@ void wait_for_ctrl_c(void) {
 }
 
 void tower_task(void *interface) {
-    int task_period = TASK_PERIOD_MS_GOD * 1000000;
+    int task_period = TASK_PERIOD_MS_TOWER * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
@@ -72,7 +73,15 @@ void monster_task(void *interface) {
     MonsterInterface* monster_interface = static_cast<MonsterInterface*>(interface);
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
-        monster_interface->move(MonsterMovement::FRONT);
+        //monster_interface->move(MonsterMovement::FRONT);
+
+        vector<MonsterEye> eyes = monster_interface->eyes();
+        //rt_printf("%f %f %f\n", eyes[0].wall_distance, eyes[1].wall_distance,
+        //       eyes[2].wall_distance);
+        //if (monster_interface->eyes()[0].wall_distance > 0.5)
+        //    monster_interface->rotate(MonsterRotation::RIGHT);
+        //if (monster_interface->eyes()[2].wall_distance > 0.5)
+        monster_interface->rotate(MonsterRotation::LEFT);
     }
     return;
 }
@@ -125,8 +134,6 @@ void god_task(void *world_state_void) {
         if(err < 0) {
             rt_printf("Error sending world state message (error code = %d)\n", err);
             return;
-        } else {
-            rt_printf("state message sent successfully\n");
         }
     }
 }
@@ -134,7 +141,6 @@ void god_task(void *world_state_void) {
 void user_interaction_task(void *interface) {
     UserInteractionInterface* user_interface = static_cast<UserInteractionInterface*>(interface);
     while (!terminate_tasks) {
-        //rt_task_wait_period(NULL);
         rt_pipe_read(&task_pipe_receiver, nullptr, 0, TM_INFINITE);
     }
 }
