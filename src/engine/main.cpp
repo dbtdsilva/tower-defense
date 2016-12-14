@@ -14,6 +14,7 @@
 #include <vector>
 
 #include <rtdk.h> // Provides rt_print functions
+#include <sstream>
 
 #include "logic/WorldState.h"
 
@@ -22,8 +23,10 @@ using namespace std;
 RT_TASK god_task_desc, user_task_desc;
 vector<RT_TASK> monsters_tasks;
 vector<RT_TASK> towers_tasks;
-RT_PIPE task_pipe_0;
-RT_PIPE task_pipe_1;
+
+RT_PIPE task_pipe_sender, task_pipe_receiver;
+
+int god_task_period_ms = 20;
 
 #define TASK_MODE       0       // No flags
 #define TASK_STKSZ      0       // Default stack size
@@ -51,7 +54,7 @@ void wait_for_ctrl_c(void) {
 }
 
 void tower_task(void *interface) {
-    int task_period = 200000000;
+    int task_period = 20000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
@@ -62,7 +65,7 @@ void tower_task(void *interface) {
 }
 
 void monster_task(void *interface) {
-    int task_period = 200000000;
+    int task_period = 20000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     rt_printf("Monster task started!\n");
@@ -75,7 +78,7 @@ void monster_task(void *interface) {
 }
 
 void god_task(void *world_state_void) {
-    int task_period = 200000000;
+    int task_period = god_task_period_ms * 1000000;
 
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
@@ -105,7 +108,7 @@ void god_task(void *world_state_void) {
             } else if ((tower = dynamic_cast<TowerInterface*>(change.entity_)) != nullptr) {
                 towers_tasks.push_back(RT_TASK());
                 string task_name("Towers Task " + towers_tasks.size());
-                int err = rt_task_create(&towers_tasks.back(), task_name.c_str(), TASK_STKSZ, TASK_PRIO_MONSTER, TASK_MODE);
+                int err = rt_task_create(&towers_tasks.back(), task_name.c_str(), TASK_STKSZ, TASK_PRIO_TOWER, TASK_MODE);
                 if(err) {
                     rt_printf("Error creating task tower (error code = %d)\n", err);
                 } else  {
@@ -118,7 +121,7 @@ void god_task(void *world_state_void) {
         ostringstream stream_serialize;
         world->serialize_data(stream_serialize);
         serialized_string = "MESSAGE" + stream_serialize.str();
-        int err = rt_pipe_write(&task_pipe_0, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
+        ssize_t err = rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
         if(err < 0) {
             rt_printf("Error sending world state message (error code = %d)\n", err);
             return;
@@ -129,17 +132,18 @@ void god_task(void *world_state_void) {
 }
 
 void user_interaction_task(void *interface) {
-    int task_period = 200000000;
+    int task_period = 20000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     UserInteractionInterface* user_interface = static_cast<UserInteractionInterface*>(interface);
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
+        //rt_pipe_read(&task_pipe_receiver, nullptr, 0, TM_INFINITE);
     }
 }
 
 int main(int argc, char** argv) {
-    WorldState world(10, 10);
+    WorldState world(10, 10, god_task_period_ms);
     UserInteractionInterface* user = world.get_user_interaction_interface();
     
     /* Perform auto-init of rt_print buffers if the task doesn't do so */
@@ -148,7 +152,7 @@ int main(int argc, char** argv) {
     /* Lock memory to prevent paging */
     mlockall(MCL_CURRENT | MCL_FUTURE);
 
-    int err = rt_pipe_create(&task_pipe_0, NULL, 0, 0);
+    int err = rt_pipe_create(&task_pipe_sender, NULL, 0, 0);
     if (err) {
         rt_printf("Error creating pipe (error code = %d)\n", err);
         return err;
@@ -156,7 +160,7 @@ int main(int argc, char** argv) {
         rt_printf("Pipe created successfully\n");
     }
 
-    err = rt_pipe_create(&task_pipe_1, NULL, 1, 0);
+    err = rt_pipe_create(&task_pipe_receiver, NULL, 1, 0);
     if (err) {
         rt_printf("Error creating pipe (error code = %d)\n", err);
         return err;

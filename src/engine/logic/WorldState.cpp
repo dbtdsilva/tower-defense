@@ -9,11 +9,11 @@
 
 using namespace std;
 
-WorldState::WorldState(size_t width, size_t height) :
+WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
         width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
         user_interaction_(this), player_currency_(10000),
         game_level_(0), monsters_per_level_(5), monsters_left_to_spawn_(0), idle_cycles_(0),
-        idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0)
+        idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms)
 {
     start_position.set_x(0);
     start_position.set_y(1.5);
@@ -34,13 +34,13 @@ std::vector<EntityModification> WorldState::update_world_state() {
     if (monsters_left_to_spawn_ == 0) {
         if (monsters_.empty()) {
             idle_cycles_++;
-            if (idle_cycles_ > 2) {
+            if (idle_cycles_ > (5000.0 / cycle_ms_)) { // 5 second
                 game_level_++;
                 monsters_left_to_spawn_ = monsters_per_level_;
                 idle_cycles_ = 0;
             }
         }
-    } else if (idle_cycles_before_spawn_ > 5){
+    } else if (idle_cycles_before_spawn_ > (500.0 / cycle_ms_)){ // 1 second
         Monster ref = Monster::add_monster(this, MonsterType::BASIC, start_position);
         monsters_.push_back(std::move(ref));
         entity_modifications.push_back(EntityModification(monsters_.back().get_interface(),
@@ -132,7 +132,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
         const vector<MonsterRotation>& rotations = monster.get_requested_rotations();
         if (!rotations.empty()) {
             double& angle = monster.get_angle();
-            if (rotations[0] == MonsterRotation ::LEFT)
+            if (rotations[0] == MonsterRotation::LEFT)
                 angle += monster.get_rotational_speed();
             else
                 angle -= monster.get_rotational_speed();
