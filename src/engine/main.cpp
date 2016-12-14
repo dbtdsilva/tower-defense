@@ -24,15 +24,17 @@ vector<RT_TASK> monsters_tasks;
 vector<RT_TASK> towers_tasks;
 RT_PIPE task_pipe_sender, task_pipe_receiver;
 
-int god_task_period_ms = 20;
-
 #define TASK_MODE       0       // No flags
 #define TASK_STKSZ      0       // Default stack size
 
-#define TASK_PRIO_GOD       99
-#define TASK_PRIO_USER      80
-#define TASK_PRIO_TOWER     70
-#define TASK_PRIO_MONSTER   60
+#define TASK_PRIORITY_GOD       99
+#define TASK_PRIORITY_USER      80
+#define TASK_PRIORITY_TOWER     70
+#define TASK_PRIORITY_MONSTER   60
+
+#define TASK_PERIOD_MS_GOD      20
+#define TASK_PERIOD_MS_TOWER    20
+#define TASK_PERIOD_MS_MONSTER  20
 
 bool terminate_tasks = false;
 
@@ -52,7 +54,7 @@ void wait_for_ctrl_c(void) {
 }
 
 void tower_task(void *interface) {
-    int task_period = 20000000;
+    int task_period = TASK_PERIOD_MS_GOD * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
@@ -63,7 +65,7 @@ void tower_task(void *interface) {
 }
 
 void monster_task(void *interface) {
-    int task_period = 20000000;
+    int task_period = TASK_PERIOD_MS_MONSTER * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     rt_printf("Monster task started!\n");
@@ -76,7 +78,7 @@ void monster_task(void *interface) {
 }
 
 void god_task(void *world_state_void) {
-    int task_period = god_task_period_ms * 1000000;
+    int task_period = TASK_PERIOD_MS_GOD * 1000000;
 
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
@@ -96,7 +98,7 @@ void god_task(void *world_state_void) {
                 // Create/delete monster task
                 monsters_tasks.push_back(RT_TASK());
                 string task_name("Monster Task " + monsters_tasks.size());
-                int err = rt_task_create(&monsters_tasks.back(), task_name.c_str(), TASK_STKSZ, TASK_PRIO_MONSTER, TASK_MODE);
+                int err = rt_task_create(&monsters_tasks.back(), task_name.c_str(), TASK_STKSZ, TASK_PRIORITY_MONSTER, TASK_MODE);
                 if(err) {
                     rt_printf("Error creating task monster (error code = %d)\n", err);
                 } else  {
@@ -106,7 +108,7 @@ void god_task(void *world_state_void) {
             } else if ((tower = dynamic_cast<TowerInterface*>(change.entity_)) != nullptr) {
                 towers_tasks.push_back(RT_TASK());
                 string task_name("Towers Task " + towers_tasks.size());
-                int err = rt_task_create(&towers_tasks.back(), task_name.c_str(), TASK_STKSZ, TASK_PRIO_TOWER, TASK_MODE);
+                int err = rt_task_create(&towers_tasks.back(), task_name.c_str(), TASK_STKSZ, TASK_PRIORITY_TOWER, TASK_MODE);
                 if(err) {
                     rt_printf("Error creating task tower (error code = %d)\n", err);
                 } else  {
@@ -130,18 +132,15 @@ void god_task(void *world_state_void) {
 }
 
 void user_interaction_task(void *interface) {
-    int task_period = 20000000;
-    rt_task_set_periodic(NULL, TM_NOW, task_period);
-
     UserInteractionInterface* user_interface = static_cast<UserInteractionInterface*>(interface);
     while (!terminate_tasks) {
-        rt_task_wait_period(NULL);
-        //rt_pipe_read(&task_pipe_receiver, nullptr, 0, TM_INFINITE);
+        //rt_task_wait_period(NULL);
+        rt_pipe_read(&task_pipe_receiver, nullptr, 0, TM_INFINITE);
     }
 }
 
 int main(int argc, char** argv) {
-    WorldState world(10, 10, god_task_period_ms);
+    WorldState world(10, 10, TASK_PERIOD_MS_GOD);
     UserInteractionInterface* user = world.get_user_interaction_interface();
     
     /* Perform auto-init of rt_print buffers if the task doesn't do so */
@@ -167,7 +166,7 @@ int main(int argc, char** argv) {
 
     /* Create RT task */
     /* Args: descriptor, name, stack size, prioritry [0..99] and mode (flags for CPU, FPU, joinable ...) */
-    err = rt_task_create(&god_task_desc, "God Task", TASK_STKSZ, TASK_PRIO_GOD, TASK_MODE);
+    err = rt_task_create(&god_task_desc, "God Task", TASK_STKSZ, TASK_PRIORITY_GOD, TASK_MODE);
     if(err) {
         rt_printf("Error creating task a (error code = %d)\n", err);
         return err;
@@ -175,7 +174,7 @@ int main(int argc, char** argv) {
         rt_printf("God task created successfully\n");
     }
        
-    err = rt_task_create(&user_task_desc, "User Interaction Task", TASK_STKSZ, TASK_PRIO_USER, TASK_MODE);
+    err = rt_task_create(&user_task_desc, "User Interaction Task", TASK_STKSZ, TASK_PRIORITY_USER, TASK_MODE);
     if(err) {
         rt_printf("Error creating task a (error code = %d)\n", err);
         return err;
