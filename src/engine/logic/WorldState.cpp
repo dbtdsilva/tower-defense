@@ -29,6 +29,16 @@ WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
     end_position.set_y(height);
 }
 
+void WorldState::clear_world_requests() {
+    user_interaction_.clear_requests();
+    for (Monster& monster : monsters_) {
+        monster.clear_requests();
+    }
+    for (Tower& tower : towers_) {
+        tower.clear_requests();
+    }
+}
+
 std::vector<EntityModification> WorldState::update_world_state() {
     std::vector<EntityModification> entity_modifications;
     if (monsters_left_to_spawn_ == 0) {
@@ -66,12 +76,11 @@ std::vector<EntityModification> WorldState::update_world_state() {
                                                           towers_.back().get_identifier(), EntityAction::ADD));
         map_[request.position.get_x()][request.position.get_y()] = PositionState::TOWER;
     }
-    user_interaction_.clear_requests();
 
     // Update bullets in the world
     for(auto bullet = bullets_.begin(); bullet != bullets_.end(); ++bullet) {
         double new_x = bullet->get_position().get_x() + cos(bullet->get_angle()) * bullet->get_speed();
-        double new_y = bullet->get_position().get_y() + sin(bullet->get_angle()) * bullet->get_speed();
+        double new_y = bullet->get_position().get_y() - sin(bullet->get_angle()) * bullet->get_speed();
 
         bool bullet_struck = false;
         for (auto monster = monsters_.begin(); monster != monsters_.end(); ++monster) {
@@ -107,22 +116,23 @@ std::vector<EntityModification> WorldState::update_world_state() {
             switch (movements[0]) {
                 case MonsterMovement::FRONT:
                     new_position.set_x(position.get_x() + cos(angle) * monster.get_movement_speed());
-                    new_position.set_y(position.get_y() + sin(angle) * monster.get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle) * monster.get_movement_speed());
                     break;
                 case MonsterMovement::BACK:
                     new_position.set_x(position.get_x() + cos(angle - M_PI) * monster.get_movement_speed());
-                    new_position.set_y(position.get_y() + sin(angle - M_PI) * monster.get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle - M_PI) * monster.get_movement_speed());
                     break;
                 case MonsterMovement::LEFT:
                     new_position.set_x(position.get_x() + cos(angle + M_PI_2) * monster.get_movement_speed());
-                    new_position.set_y(position.get_y() + sin(angle + M_PI_2) * monster.get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle + M_PI_2) * monster.get_movement_speed());
                     break;
                 case MonsterMovement::RIGHT:
                     new_position.set_x(position.get_x() + cos(angle - M_PI_2) * monster.get_movement_speed());
-                    new_position.set_y(position.get_y() + sin(angle - M_PI_2) * monster.get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle - M_PI_2) * monster.get_movement_speed());
                     break;
             }
-            Position<int> new_position_map((int)new_position.get_x(), (int)new_position.get_y());
+            Position<int> new_position_map(static_cast<int>(floor(new_position.get_x())),
+                                           static_cast<int>(floor(new_position.get_y())));
             if (new_position_map.get_x() >= 0 && new_position_map.get_x() < width_ &&
                     new_position_map.get_y() >= 0 && new_position_map.get_y() < height_ &&
                     map_[new_position_map.get_x()][new_position_map.get_y()] == PositionState::PATH) {
@@ -137,7 +147,6 @@ std::vector<EntityModification> WorldState::update_world_state() {
             else
                 angle -= monster.get_rotational_speed();
         }
-        monster.clear_requests();
     }
 
     // Update tower state
@@ -158,7 +167,6 @@ std::vector<EntityModification> WorldState::update_world_state() {
             else
                 angle -= rotational_speed;
         }
-        tower.clear_requests();
     }
 
     return entity_modifications;
@@ -173,7 +181,7 @@ void WorldState::serialize_data(ostream& stream) const {
     for (const Monster& monster : monsters_)
         data_to_serialize.monsters_.push_back(MonsterData(monster.get_position(), monster.get_type(),
                                                           monster.get_health(), monster.get_angle()));
-
+        //cout << monster.get_position() << ", " << monster.get_angle() << endl;
     data_to_serialize.map_ = map_;
 
     cereal::BinaryOutputArchive archive(stream);
@@ -189,18 +197,18 @@ const double WorldState::get_wall_distance(const Position<double>& position, con
     unsigned int index = 0;
     Position<int> next_position = {
             static_cast<int>(floor(position.get_x() + cos(direction) * index * sensor_precision)),
-            static_cast<int>(floor(position.get_y() + sin(direction) * index * sensor_precision))};
+            static_cast<int>(floor(position.get_y() - sin(direction) * index * sensor_precision))};
     Position<double> valid_position = { position.get_x() + cos(direction) * index * sensor_precision,
                                         position.get_y() + sin(direction) * index * sensor_precision};
     while (next_position.get_x() >= 0 && next_position.get_y() >= 0 &&
             next_position.get_x() < width_ && next_position.get_y() < height_ &&
             map_[next_position.get_x()][next_position.get_y()] == PositionState::PATH) {
         valid_position = { position.get_x() + cos(direction) * index * sensor_precision,
-                           position.get_y() + sin(direction) * index * sensor_precision};
+                           position.get_y() - sin(direction) * index * sensor_precision};
         index++;
         next_position = {
                 static_cast<int>(floor(position.get_x() + cos(direction) * index * sensor_precision)),
-                static_cast<int>(floor(position.get_y() + sin(direction) * index * sensor_precision))};
+                static_cast<int>(floor(position.get_y() - sin(direction) * index * sensor_precision))};
     }
     return sqrt(pow(valid_position.get_x() - position.get_x(), 2) + pow(valid_position.get_y() - position.get_y(), 2));
 }

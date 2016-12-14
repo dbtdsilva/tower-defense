@@ -73,15 +73,21 @@ void monster_task(void *interface) {
     MonsterInterface* monster_interface = static_cast<MonsterInterface*>(interface);
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
-        //monster_interface->move(MonsterMovement::FRONT);
+
 
         vector<MonsterEye> eyes = monster_interface->eyes();
         //rt_printf("%f %f %f\n", eyes[0].wall_distance, eyes[1].wall_distance,
         //       eyes[2].wall_distance);
-        //if (monster_interface->eyes()[0].wall_distance > 0.5)
-        //    monster_interface->rotate(MonsterRotation::RIGHT);
-        //if (monster_interface->eyes()[2].wall_distance > 0.5)
-        monster_interface->rotate(MonsterRotation::LEFT);
+        /*if (monster_interface->eyes()[0].wall_distance > 0.6)
+            monster_interface->rotate(MonsterRotation::LEFT);
+        else if (monster_interface->eyes()[2].wall_distance > 0.6)
+            monster_interface->rotate(MonsterRotation::RIGHT);*/
+        //monster_interface->move(MonsterMovement::FRONT);
+        if (monster_interface->eyes()[1].wall_distance < 0.5)
+            monster_interface->rotate(MonsterRotation::RIGHT);
+        else
+            monster_interface->move(MonsterMovement::FRONT);
+
     }
     return;
 }
