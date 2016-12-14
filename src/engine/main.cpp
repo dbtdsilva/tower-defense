@@ -1,22 +1,18 @@
 #include <stdlib.h>
 #include <iostream>
-#include <fstream>
-#include <string>
 
 #include <unistd.h>
 #include <signal.h>
-#include <sys/mman.h> // For mlockall
-#include <sys/types.h>
+#include <sys/mman.h>
 
 #include <native/task.h>
-#include <native/timer.h>
 #include <native/pipe.h>
+#include <native/sem.h>
 #include <vector>
 
 #include <rtdk.h> // Provides rt_print functions
 
 #include "logic/WorldState.h"
-#include "logic/monster/MonsterEye.h"
 
 using namespace std;
 
@@ -24,6 +20,7 @@ RT_TASK god_task_desc, user_task_desc;
 vector<RT_TASK> monsters_tasks;
 vector<RT_TASK> towers_tasks;
 RT_PIPE task_pipe_sender, task_pipe_receiver;
+RT_SEM sem_critical_region;
 
 #define TASK_MODE       0       // No flags
 #define TASK_STKSZ      0       // Default stack size
@@ -61,7 +58,9 @@ void tower_task(void *interface) {
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
+        rt_sem_p(&sem_critical_region, TM_INFINITE);
         tower_interface->shoot();
+        rt_sem_v(&sem_critical_region);
     }
 }
 
@@ -71,23 +70,17 @@ void monster_task(void *interface) {
 
     rt_printf("Monster task started!\n");
     MonsterInterface* monster_interface = static_cast<MonsterInterface*>(interface);
+    int i = 0;
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
 
-
         vector<MonsterEye> eyes = monster_interface->eyes();
-        //rt_printf("%f %f %f\n", eyes[0].wall_distance, eyes[1].wall_distance,
-        //       eyes[2].wall_distance);
-        /*if (monster_interface->eyes()[0].wall_distance > 0.6)
-            monster_interface->rotate(MonsterRotation::LEFT);
-        else if (monster_interface->eyes()[2].wall_distance > 0.6)
-            monster_interface->rotate(MonsterRotation::RIGHT);*/
-        //monster_interface->move(MonsterMovement::FRONT);
+        rt_sem_p(&sem_critical_region, TM_INFINITE);
         if (monster_interface->eyes()[1].wall_distance < 0.5)
             monster_interface->rotate(MonsterRotation::RIGHT);
         else
             monster_interface->move(MonsterMovement::FRONT);
-
+        rt_sem_v(&sem_critical_region);
     }
     return;
 }
@@ -108,6 +101,11 @@ void god_task(void *world_state_void) {
         rt_task_wait_period(NULL);
 
         vector<EntityModification> changes = world->update_world_state();
+
+        rt_sem_p(&sem_critical_region, TM_INFINITE);
+        world->clear_world_requests();
+        rt_sem_v(&sem_critical_region);
+
         for (EntityModification& change : changes) {
             if ((monster = dynamic_cast<MonsterInterface*>(change.entity_)) != nullptr) {
                 // Create/delete monster task
@@ -141,6 +139,7 @@ void god_task(void *world_state_void) {
             rt_printf("Error sending world state message (error code = %d)\n", err);
             return;
         }
+
     }
 }
 
@@ -176,6 +175,13 @@ int main(int argc, char** argv) {
         rt_printf("Pipe created successfully\n");
     }
 
+    err = rt_sem_create(&sem_critical_region, "CriticalRegion", 1, S_FIFO);
+    if (err) {
+        rt_printf("Error creating semaphore (error code = %d)\n", err);
+        return err;
+    } else {
+        rt_printf("Semaphore created successfully\n");
+    }
     /* Create RT task */
     /* Args: descriptor, name, stack size, prioritry [0..99] and mode (flags for CPU, FPU, joinable ...) */
     err = rt_task_create(&god_task_desc, "God Task", TASK_STKSZ, TASK_PRIORITY_GOD, TASK_MODE);
