@@ -20,8 +20,6 @@ private:
     bool towerOneActive;
     bool towerTwoActive;
     bool removeTowerActive;
-    unsigned int score;
-    unsigned int money;
 
     // SDL Objects
     SDL_Window* window;
@@ -44,8 +42,10 @@ private:
     bool loadTextures();
     void unloadTextures();
     void drawMenu();
-    void drawScore();
-    void drawMoney();
+    void drawMenuScore();
+    void drawMenuMoney();
+    void drawMenuLives();
+    void drawMenuLeftMonsters();
     void drawMenuTowerOne();
     void drawMenuTowerTwo();
     void drawMenuDemolishButton();

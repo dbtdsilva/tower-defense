@@ -19,8 +19,6 @@ MapDrawer::MapDrawer(int width, int height) {
     this->gameStatusChanged = false;
     this->gameStatus = GameStatus::PAUSE;
     this->nextTowerOperation = nullptr;
-    this->score = 0;
-    this->money = 0;
 
     this->textures = new std::map<std::string, SDL_Texture*>();
 
@@ -153,9 +151,6 @@ void MapDrawer::drawMap() {
         this->drawBullet(it->position_.get_x(), it->position_.get_y(), (it->damage_ < 10 ? BULLET_1 : BULLET_2));
     }
 
-    this->score = this->data->score_;
-    this->money = this->data->player_currency_;
-
     this->drawMenu();
 
     SDL_RenderPresent(this->renderer);
@@ -176,35 +171,37 @@ bool MapDrawer::handleEvents() {
                 if(SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT))
                     leftPressed = true;
 
+
+
                 bool towerOne = leftPressed &&
                         x >= this->width - this->menuWidth + 5 &&
                         x <= this->width - 10 &&
-                        y >= 210 &&
-                        y <= 210 + 120;
+                        y >= 285 &&
+                        y <= 285 + 120;
 
                 bool towerTwo = leftPressed &&
                         x >= this->width - this->menuWidth + 5 &&
                         x <= this->width - 10 &&
-                        y >= 340 &&
-                        y <= 340 + 120;
+                        y >= 410 &&
+                        y <= 410 + 120;
 
                 bool demolishActivation = leftPressed &&
                         x >= this->width - this->menuWidth + 5 &&
                         x <= this->width - 10 &&
-                        y >= 470 &&
-                        y <= 470 + 50;
+                        y >= 535 &&
+                        y <= 535 + 50;
 
                 bool playActivation = leftPressed &&
                         x >= this->width - this->menuWidth + 5 &&
                         x <= this->width - 10 &&
-                        y >= this->height - 120 &&
-                        y <= this->height - 70;
+                        y >= this->height - 110 &&
+                        y <= this->height - 60;
 
                 bool pauseActivation = leftPressed &&
                         x >= this->width - this->menuWidth + 5 &&
                         x <= this->width - 10 &&
-                        y >= this->height - 60 &&
-                        y <= this->height - 10;
+                        y >= this->height - 55 &&
+                        y <= this->height - 5;
 
                 int i = (int) rint(x / this->tileSize);
                 int j = (int) rint(y / this->tileSize);
@@ -225,11 +222,15 @@ bool MapDrawer::handleEvents() {
                 if(towerOne) {
                     this->towerOneActive = !this->towerOneActive;
                     this->towerTwoActive = false;
+                    this->removeTowerActive = false;
                 } else if(towerTwo) {
                     this->towerTwoActive = !this->towerTwoActive;
                     this->towerOneActive = false;
+                    this->removeTowerActive = false;
                 } else if(demolishActivation) {
                     this->removeTowerActive = !this->removeTowerActive;
+                    this->towerOneActive = false;
+                    this->towerTwoActive = false;
                 } else if(towerPlacement && (this->towerOneActive || this->towerTwoActive || this->removeTowerActive)) {
                     Position<int> pos(i, j);
                     this->nextTowerOperation = new OperationTowerData(
@@ -651,6 +652,38 @@ bool MapDrawer::loadTextures() {
         this->textures->emplace("pause_text", message);
     }
 
+    // Lives text
+    surfaceMessage = TTF_RenderText_Solid(sans, "LIVES", black);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return false;
+    } else {
+        this->textures->emplace("lives_text", message);
+    }
+
+    // Monsters text
+    surfaceMessage = TTF_RenderText_Solid(sans, "LEFT", black);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return false;
+    } else {
+        this->textures->emplace("monsters_text", message);
+    }
+
     return true;
 }
 
@@ -678,43 +711,10 @@ void MapDrawer::drawMenu() {
     SDL_SetRenderDrawColor(this->renderer, 211, 211, 211, 255);
     SDL_RenderFillRect(this->renderer, &dest);
 
-    // Score text
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 10;
-    dest.w = this->menuWidth - 20;
-    dest.h = 30;
-
-    SDL_RenderCopy(this->renderer, this->textures->find("score_text")->second, nullptr, &dest);
-
-    // Score box
-    dest.x = this->width - this->menuWidth + 5;
-    dest.y = 50;
-    dest.w = this->menuWidth - 10;
-    dest.h = 50;
-
-    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
-    SDL_RenderFillRect(this->renderer, &dest);
-
-    this->drawScore();
-
-    // Money text
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 110;
-    dest.w = this->menuWidth - 20;
-    dest.h = 30;
-
-    SDL_RenderCopy(this->renderer, this->textures->find("money_text")->second, nullptr, &dest);
-
-    // Money box
-    dest.x = this->width - this->menuWidth + 5;
-    dest.y = 150;
-    dest.w = this->menuWidth - 10;
-    dest.h = 50;
-
-    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
-    SDL_RenderFillRect(this->renderer, &dest);
-
-    this->drawMoney();
+    this->drawMenuScore();
+    this->drawMenuMoney();
+    this->drawMenuLives();
+    this->drawMenuLeftMonsters();
     this->drawMenuTowerOne();
     this->drawMenuTowerTwo();
     this->drawMenuDemolishButton();
@@ -722,20 +722,40 @@ void MapDrawer::drawMenu() {
     this->drawMenuPauseButton();
 }
 
-void MapDrawer::drawScore() {
+void MapDrawer::drawMenuScore() {
+    int init_x = this->width - this->menuWidth + 10;
+    int init_y = 5;
+
+    SDL_Rect dest;
+
+    // Score text
+    dest.x = init_x;
+    dest.y = init_y;
+    dest.w = this->menuWidth - 20;
+    dest.h = 25;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("score_text")->second, nullptr, &dest);
+
+    // Score box
+    dest.x = init_x - 5;
+    dest.y = init_y + 30;
+    dest.w = this->menuWidth - 10;
+    dest.h = 35;
+
+    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(this->renderer, &dest);
+
     std::string fontPath = this->folderPath + "/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color red = {255, 0, 0};
 
-    SDL_Rect dest;
-
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 60;
+    dest.x = init_x;
+    dest.y = init_y + 35;
     dest.w = this->menuWidth - 20;
-    dest.h = 30;
+    dest.h = 25;
 
     std::stringstream ss;
-    ss << std::setw(5) << std::setfill('0') << this->score;
+    ss << std::setw(5) << std::setfill('0') << this->data->score_;
     std::string score_text = ss.str();
 
     // Score value text
@@ -758,21 +778,41 @@ void MapDrawer::drawScore() {
     cleanup(message);
 }
 
-void MapDrawer::drawMoney() {
+void MapDrawer::drawMenuMoney() {
+    int init_x = this->width - this->menuWidth + 10;
+    int init_y = 75;
+
+    SDL_Rect dest;
+
+    // Money text
+    dest.x = init_x;
+    dest.y = init_y;
+    dest.w = this->menuWidth - 20;
+    dest.h = 25;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("money_text")->second, nullptr, &dest);
+
+    // Money box
+    dest.x = init_x - 5;
+    dest.y = init_y + 30;
+    dest.w = this->menuWidth - 10;
+    dest.h = 35;
+
+    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(this->renderer, &dest);
+
     std::string fontPath = this->folderPath + "/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color red = {255, 0, 0};
 
-    SDL_Rect dest;
-
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 160;
+    dest.x = init_x;
+    dest.y = init_y + 35;
     dest.w = this->menuWidth - 20;
-    dest.h = 30;
+    dest.h = 25;
 
     // Score text
     std::stringstream ss;
-    ss << std::setw(5) << std::setfill('0') << this->money;
+    ss << std::setw(5) << std::setfill('0') << this->data->player_currency_;
     std::string money_text = "$" + ss.str();
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, money_text.c_str(), red);
@@ -794,12 +834,127 @@ void MapDrawer::drawMoney() {
     cleanup(message);
 }
 
+void MapDrawer::drawMenuLives() {
+    int init_x = this->width - this->menuWidth + 10;
+    int init_y = 145;
+
+    SDL_Rect dest;
+
+    // Money text
+    dest.x = init_x;
+    dest.y = init_y;
+    dest.w = this->menuWidth - 20;
+    dest.h = 25;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("lives_text")->second, nullptr, &dest);
+
+    // Money box
+    dest.x = init_x - 5;
+    dest.y = init_y + 30;
+    dest.w = this->menuWidth - 10;
+    dest.h = 35;
+
+    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(this->renderer, &dest);
+
+    std::string fontPath = this->folderPath + "/fonts/sans.ttf";
+    TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
+    SDL_Color red = {255, 0, 0};
+
+    dest.x = init_x;
+    dest.y = init_y + 35;
+    dest.w = this->menuWidth - 20;
+    dest.h = 25;
+
+    // Score text
+    std::stringstream ss;
+    ss << std::setw(5) << std::setfill('0') << this->data->lives_;
+    std::string money_text = ss.str();
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, money_text.c_str(), red);
+    TTF_CloseFont(sans);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_RenderCopy(this->renderer, message, nullptr, &dest);
+
+    cleanup(message);
+}
+
+void MapDrawer::drawMenuLeftMonsters() {
+    int init_x = this->width - this->menuWidth + 10;
+    int init_y = 215;
+
+    SDL_Rect dest;
+
+    // Money text
+    dest.x = init_x;
+    dest.y = init_y;
+    dest.w = this->menuWidth - 20;
+    dest.h = 25;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("monsters_text")->second, nullptr, &dest);
+
+    // Money box
+    dest.x = init_x - 5;
+    dest.y = init_y + 30;
+    dest.w = this->menuWidth - 10;
+    dest.h = 35;
+
+    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(this->renderer, &dest);
+
+    std::string fontPath = this->folderPath + "/fonts/sans.ttf";
+    TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
+    SDL_Color red = {255, 0, 0};
+
+    dest.x = init_x;
+    dest.y = init_y + 35;
+    dest.w = this->menuWidth - 20;
+    dest.h = 25;
+
+    // Score text
+    std::stringstream ss;
+    ss << std::setw(5) << std::setfill('0') << this->data->monsters_left_level_;
+    std::string money_text = ss.str();
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, money_text.c_str(), red);
+    TTF_CloseFont(sans);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_RenderCopy(this->renderer, message, nullptr, &dest);
+
+    cleanup(message);
+}
+
 void MapDrawer::drawMenuTowerOne() {
+    int init_x = this->width - this->menuWidth + 5;
+    int init_y = 285;
+
     SDL_Rect dest;
 
     // Tower one box
-    dest.x = this->width - this->menuWidth + 5;
-    dest.y = 210;
+    dest.x = init_x;
+    dest.y = init_y;
     dest.w = this->menuWidth - 10;
     dest.h = 120;
 
@@ -811,16 +966,16 @@ void MapDrawer::drawMenuTowerOne() {
     SDL_RenderDrawRect(this->renderer, &dest);
 
     // Tower one icon
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 215;
+    dest.x = init_x + 5;
+    dest.y = init_y + 5;
     dest.w = this->menuWidth - 20;
     dest.h = this->menuWidth - 20;
 
     SDL_RenderCopy(this->renderer, this->textures->find("tower_one")->second, nullptr, &dest);
 
     // Tower one price
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 215 + this->menuWidth - 20;
+    dest.x = init_x + 5;
+    dest.y = init_y + this->menuWidth - 15;
     dest.w = this->menuWidth - 20;
     dest.h = 30;
 
@@ -828,11 +983,14 @@ void MapDrawer::drawMenuTowerOne() {
 }
 
 void MapDrawer::drawMenuTowerTwo() {
+    int init_x = this->width - this->menuWidth + 5;
+    int init_y = 410;
+
     SDL_Rect dest;
 
     // Tower two box
-    dest.x = this->width - this->menuWidth + 5;
-    dest.y = 340;
+    dest.x = init_x;
+    dest.y = init_y;
     dest.w = this->menuWidth - 10;
     dest.h = 120;
 
@@ -844,16 +1002,16 @@ void MapDrawer::drawMenuTowerTwo() {
     SDL_RenderDrawRect(this->renderer, &dest);
 
     // Tower two icon
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 345;
+    dest.x = init_x + 5;
+    dest.y = init_y + 5;
     dest.w = this->menuWidth - 20;
     dest.h = this->menuWidth - 20;
 
     SDL_RenderCopy(this->renderer, this->textures->find("tower_two")->second, nullptr, &dest);
 
     // Tower two price
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 345 + this->menuWidth - 20;
+    dest.x = init_x + 5;
+    dest.y = init_y + this->menuWidth - 15;
     dest.w = this->menuWidth - 20;
     dest.h = 30;
 
@@ -861,11 +1019,14 @@ void MapDrawer::drawMenuTowerTwo() {
 }
 
 void MapDrawer::drawMenuDemolishButton() {
+    int init_x = this->width - this->menuWidth + 5;
+    int init_y = 535;
+
     SDL_Rect dest;
 
     // Demolish box
-    dest.x = this->width - this->menuWidth + 5;
-    dest.y = 470;
+    dest.x = init_x;
+    dest.y = init_y;
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
@@ -877,8 +1038,8 @@ void MapDrawer::drawMenuDemolishButton() {
     SDL_RenderDrawRect(this->renderer, &dest);
 
     // Demolish text
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = 480;
+    dest.x = init_x + 5;
+    dest.y = init_y + 10;
     dest.w = this->menuWidth - 20;
     dest.h = 30;
 
@@ -886,11 +1047,14 @@ void MapDrawer::drawMenuDemolishButton() {
 }
 
 void MapDrawer::drawMenuPlayButton() {
+    int init_x = this->width - this->menuWidth + 5;
+    int init_y = this->height - 110;
+
     SDL_Rect dest;
 
     // Tower two box
-    dest.x = this->width - this->menuWidth + 5;
-    dest.y = this->height - 120;
+    dest.x = init_x;
+    dest.y = init_y;
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
@@ -902,8 +1066,8 @@ void MapDrawer::drawMenuPlayButton() {
     SDL_RenderDrawRect(this->renderer, &dest);
 
     // Tower two price
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = this->height - 110;
+    dest.x = init_x + 5;
+    dest.y = init_y + 10;
     dest.w = this->menuWidth - 20;
     dest.h = 30;
 
@@ -911,11 +1075,14 @@ void MapDrawer::drawMenuPlayButton() {
 }
 
 void MapDrawer::drawMenuPauseButton() {
+    int init_x = this->width - this->menuWidth + 5;
+    int init_y = this->height - 55;
+
     SDL_Rect dest;
 
     // Tower two box
-    dest.x = this->width - this->menuWidth + 5;
-    dest.y = this->height - 60;
+    dest.x = init_x;
+    dest.y = init_y;
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
@@ -927,8 +1094,8 @@ void MapDrawer::drawMenuPauseButton() {
     SDL_RenderDrawRect(this->renderer, &dest);
 
     // Tower two price
-    dest.x = this->width - this->menuWidth + 10;
-    dest.y = this->height - 50;
+    dest.x = init_x + 5;
+    dest.y = init_y + 10;
     dest.w = this->menuWidth - 20;
     dest.h = 30;
 
