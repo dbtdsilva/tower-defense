@@ -20,6 +20,8 @@ private:
     bool towerOneActive;
     bool towerTwoActive;
     bool removeTowerActive;
+    unsigned int score;
+    unsigned int money;
 
     // SDL Objects
     SDL_Window* window;

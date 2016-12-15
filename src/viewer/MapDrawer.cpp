@@ -1,4 +1,6 @@
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <unistd.h>
@@ -17,6 +19,8 @@ MapDrawer::MapDrawer(int width, int height) {
     this->gameStatusChanged = false;
     this->gameStatus = GameStatus::PAUSE;
     this->nextTowerOperation = nullptr;
+    this->score = 0;
+    this->money = 0;
 
     this->textures = new std::map<std::string, SDL_Texture*>();
 
@@ -149,6 +153,9 @@ void MapDrawer::drawMap() {
         this->drawBullet(it->position_.get_x(), it->position_.get_y(), (it->damage_ < 10 ? BULLET_1 : BULLET_2));
     }
 
+    this->score = this->data->score_;
+    this->money = this->data->player_currency_;
+
     this->drawMenu();
 
     SDL_RenderPresent(this->renderer);
@@ -178,8 +185,26 @@ bool MapDrawer::handleEvents() {
                 bool towerTwo = leftPressed &&
                         x >= this->width - this->menuWidth + 5 &&
                         x <= this->width - 10 &&
-                        y >= 210 &&
+                        y >= 340 &&
                         y <= 340 + 120;
+
+                bool demolishActivation = leftPressed &&
+                        x >= this->width - this->menuWidth + 5 &&
+                        x <= this->width - 10 &&
+                        y >= 470 &&
+                        y <= 470 + 50;
+
+                bool playActivation = leftPressed &&
+                        x >= this->width - this->menuWidth + 5 &&
+                        x <= this->width - 10 &&
+                        y >= this->height - 120 &&
+                        y <= this->height - 70;
+
+                bool pauseActivation = leftPressed &&
+                        x >= this->width - this->menuWidth + 5 &&
+                        x <= this->width - 10 &&
+                        y >= this->height - 60 &&
+                        y <= this->height - 10;
 
                 int i = (int) rint(x / this->tileSize);
                 int j = (int) rint(y / this->tileSize);
@@ -189,12 +214,22 @@ bool MapDrawer::handleEvents() {
                         j >= 0 && j < this->data->map_[i].size() &&
                         this->data->map_[i][j] == PositionState::TOWER;
 
+                if(playActivation) {
+                    this->gameStatusChanged = true;
+                    this->gameStatus = GameStatus::PLAY;
+                } else if(pauseActivation) {
+                    this->gameStatusChanged = true;
+                    this->gameStatus = GameStatus::PAUSE;
+                }
+
                 if(towerOne) {
                     this->towerOneActive = !this->towerOneActive;
                     this->towerTwoActive = false;
                 } else if(towerTwo) {
                     this->towerTwoActive = !this->towerTwoActive;
                     this->towerOneActive = false;
+                } else if(demolishActivation) {
+                    this->removeTowerActive = !this->removeTowerActive;
                 } else if(towerPlacement && (this->towerOneActive || this->towerTwoActive || this->removeTowerActive)) {
                     Position<int> pos(i, j);
                     this->nextTowerOperation = new OperationTowerData(
@@ -202,8 +237,6 @@ bool MapDrawer::handleEvents() {
                         pos, (this->towerOneActive ? TowerType::SIMPLE : TowerType::COMPLEX));
                 }
 
-                
-                
                 break;
         }
     }
@@ -701,8 +734,12 @@ void MapDrawer::drawScore() {
     dest.w = this->menuWidth - 20;
     dest.h = 30;
 
+    std::stringstream ss;
+    ss << std::setw(5) << std::setfill('0') << this->score;
+    std::string score_text = ss.str();
+
     // Score value text
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, "0000", red);
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, score_text.c_str(), red);
     TTF_CloseFont(sans);
     if(surfaceMessage == nullptr) {
         std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
@@ -734,7 +771,11 @@ void MapDrawer::drawMoney() {
     dest.h = 30;
 
     // Score text
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, "$000", red);
+    std::stringstream ss;
+    ss << std::setw(5) << std::setfill('0') << this->money;
+    std::string money_text = "$" + ss.str();
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, money_text.c_str(), red);
     TTF_CloseFont(sans);
     if(surfaceMessage == nullptr) {
         std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
