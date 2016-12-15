@@ -16,6 +16,7 @@ public:
     WorldState(size_t width, size_t height, int god_task_period_ms);
 
     std::vector<EntityModification> update_world_state();
+    void clear_world_requests();
 
     const std::vector<Monster>& get_monsters() const;
     const double get_wall_distance(const Position<double>&, const double&, const double&) const;
@@ -36,14 +37,13 @@ private:
     std::vector<Bullet> bullets_;
     UserInteraction user_interaction_;
 
-    unsigned int simulation_time_;
     unsigned int player_currency_;
 
     const unsigned int monsters_per_level_;
-    unsigned int game_level_;
-    unsigned int monsters_left_to_spawn_;
-    unsigned int idle_cycles_;
-    unsigned int idle_cycles_before_spawn_;
+    unsigned int game_level_, monsters_left_to_spawn_, score_;
+    unsigned int idle_cycles_, idle_cycles_before_spawn_;
+
+    unsigned int lives_;
 
     int cycle_ms_;
 };

@@ -1,4 +1,6 @@
 #include "Monster.h"
+
+#include <cmath>
 #include "types/BasicMonster.h"
 
 using namespace std;
@@ -73,9 +75,11 @@ std::vector<MonsterEye> Monster::eyes() {
 
     // Calculate the eyes values
     vector<MonsterEye> monster_eyes;
-    const vector<double> eyes_direction = {-90.0, 0.0, 90.0};
+    const vector<double> eyes_direction = {M_PI / 3.0, 0.0, -M_PI / 3.0};
     for (double eye_direction : eyes_direction) {
-        monster_eyes.push_back({ eye_direction, world_ref_->get_wall_distance(pos_, angle_ + eye_direction, 0.01) });
+        double distance = world_ref_->get_wall_distance(pos_, angle_ + eye_direction, 0.01);
+        if (distance > 3.0) distance = 3.0;
+        monster_eyes.push_back({ eye_direction, distance });
     }
     return monster_eyes;
 }

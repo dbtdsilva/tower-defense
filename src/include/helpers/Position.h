@@ -7,6 +7,7 @@
 template <class T>
 class Position {
 public:
+    Position() {}
     Position(T x, T y) : x_(x), y_(y) {}
     Position(const Position& other) { *this = other; }
     ~Position() {}
