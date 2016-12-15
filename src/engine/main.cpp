@@ -14,6 +14,7 @@
 #include <sstream>
 
 #include "logic/WorldState.h"
+#include "logic/monster/MonsterEye.h"
 
 using namespace std;
 
@@ -60,6 +61,7 @@ void tower_task(void *interface) {
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
+
         rt_sem_p(&sem_critical_region, TM_INFINITE);
         tower_interface->shoot();
         rt_sem_v(&sem_critical_region);
@@ -72,16 +74,40 @@ void monster_task(void *interface) {
 
     rt_printf("Monster task started!\n");
     MonsterInterface* monster_interface = static_cast<MonsterInterface*>(interface);
-    int i = 0;
+
+    enum Direction { STAY, LEFT, RIGHT };
+    Direction dir = STAY;
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
 
         vector<MonsterEye> eyes = monster_interface->eyes();
         rt_sem_p(&sem_critical_region, TM_INFINITE);
-        if (monster_interface->eyes()[1].wall_distance < 0.5)
-            monster_interface->rotate(MonsterRotation::RIGHT);
-        else
-            monster_interface->move(MonsterMovement::FRONT);
+        if (monster_interface->eyes()[1].wall_distance < 0.5) {
+            dir = monster_interface->eyes()[2].wall_distance > monster_interface->eyes()[0].wall_distance ?
+                RIGHT : LEFT;
+        }
+
+        if (dir == LEFT) {
+            if (monster_interface->eyes()[1].wall_distance < 2)
+                monster_interface->rotate(MonsterRotation::LEFT);
+            else
+                dir = STAY;
+        } else if (dir == RIGHT) {
+            if (monster_interface->eyes()[1].wall_distance < 2)
+                monster_interface->rotate(MonsterRotation::RIGHT);
+            else
+                dir = STAY;
+        } else {
+            if (monster_interface->eyes()[0].wall_distance < 0.5) {
+                monster_interface->rotate(MonsterRotation::RIGHT);
+                monster_interface->move(MonsterMovement::FRONT);
+            } else if (monster_interface->eyes()[2].wall_distance < 0.5) {
+                monster_interface->rotate(MonsterRotation::LEFT);
+                monster_interface->move(MonsterMovement::FRONT);
+            } else {
+                monster_interface->move(MonsterMovement::FRONT);
+            }
+        }
         rt_sem_v(&sem_critical_region);
     }
     return;

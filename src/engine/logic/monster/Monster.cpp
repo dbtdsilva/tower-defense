@@ -75,7 +75,7 @@ std::vector<MonsterEye> Monster::eyes() {
 
     // Calculate the eyes values
     vector<MonsterEye> monster_eyes;
-    const vector<double> eyes_direction = {M_PI_2, 0.0, -M_PI_2};
+    const vector<double> eyes_direction = {M_PI / 3.0, 0.0, -M_PI / 3.0};
     for (double eye_direction : eyes_direction) {
         monster_eyes.push_back({ eye_direction, world_ref_->get_wall_distance(pos_, angle_ + eye_direction, 0.01) });
     }
