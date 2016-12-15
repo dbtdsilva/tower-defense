@@ -13,7 +13,8 @@ WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
         width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
         user_interaction_(this), player_currency_(10000),
         game_level_(0), monsters_per_level_(1), monsters_left_to_spawn_(0), idle_cycles_(0),
-        idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms)
+        idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms),
+        score_(0)
 {
     start_position.set_x(0);
     start_position.set_y(1.5);
@@ -90,6 +91,14 @@ std::vector<EntityModification> WorldState::update_world_state() {
                 int health_left = monster->bullet_struck(bullet->get_damage());
                 bullets_.erase(bullets_.begin() + 1);
                 if (health_left <= 0) {
+                    switch (monster->get_type()) {
+                        case MonsterType::BASIC:
+                            score_ += 50;
+                            break;
+                        case MonsterType::INSANE:
+                            score_ += 150;
+                            break;
+                    }
                     entity_modifications.push_back(EntityModification(monster->get_interface(),
                                                                       monster->get_identifier(),
                                                                       EntityAction::REMOVE));

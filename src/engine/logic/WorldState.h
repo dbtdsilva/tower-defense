@@ -41,10 +41,8 @@ private:
     unsigned int player_currency_;
 
     const unsigned int monsters_per_level_;
-    unsigned int game_level_;
-    unsigned int monsters_left_to_spawn_;
-    unsigned int idle_cycles_;
-    unsigned int idle_cycles_before_spawn_;
+    unsigned int game_level_, monsters_left_to_spawn_, score_;
+    unsigned int idle_cycles_, idle_cycles_before_spawn_;
 
     int cycle_ms_;
 };
