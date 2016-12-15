@@ -75,39 +75,53 @@ void monster_task(void *interface) {
     rt_printf("Monster task started!\n");
     MonsterInterface* monster_interface = static_cast<MonsterInterface*>(interface);
 
-    enum Direction { STAY, LEFT, RIGHT };
-    Direction dir = STAY;
+    enum Direction { D_STAY, D_LEFT, D_RIGHT };
+    Direction dir = D_STAY;
+    enum Move { M_STAY, M_FRONT };
+
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
 
+        Direction final_dir = D_STAY;
+        Move final_move = M_STAY;
+
+        // Read sensors
         vector<MonsterEye> eyes = monster_interface->eyes();
-        rt_sem_p(&sem_critical_region, TM_INFINITE);
-        if (monster_interface->eyes()[1].wall_distance < 0.5) {
+        // Decision
+        if (dir == D_STAY && monster_interface->eyes()[1].wall_distance < 0.5) {
             dir = monster_interface->eyes()[2].wall_distance > monster_interface->eyes()[0].wall_distance ?
-                RIGHT : LEFT;
+                  D_RIGHT : D_LEFT;
         }
 
-        if (dir == LEFT) {
-            if (monster_interface->eyes()[1].wall_distance < 2)
-                monster_interface->rotate(MonsterRotation::LEFT);
-            else
-                dir = STAY;
-        } else if (dir == RIGHT) {
-            if (monster_interface->eyes()[1].wall_distance < 2)
-                monster_interface->rotate(MonsterRotation::RIGHT);
-            else
-                dir = STAY;
+        if (dir == D_LEFT && monster_interface->eyes()[1].wall_distance < 2) {
+            final_dir = D_LEFT;
+        } else if (dir == D_RIGHT && monster_interface->eyes()[1].wall_distance < 2) {
+            final_dir = D_RIGHT;
         } else {
+            dir = D_STAY;
+        }
+
+        if (dir == D_STAY) {
             if (monster_interface->eyes()[0].wall_distance < 0.5) {
-                monster_interface->rotate(MonsterRotation::RIGHT);
-                monster_interface->move(MonsterMovement::FRONT);
+                final_dir = D_RIGHT;
+                final_move = M_FRONT;
             } else if (monster_interface->eyes()[2].wall_distance < 0.5) {
-                monster_interface->rotate(MonsterRotation::LEFT);
-                monster_interface->move(MonsterMovement::FRONT);
+                final_dir = D_LEFT;
+                final_move = M_FRONT;
             } else {
-                monster_interface->move(MonsterMovement::FRONT);
+                final_move = M_FRONT;
             }
         }
+
+        // Action
+        rt_sem_p(&sem_critical_region, TM_INFINITE);
+        if (final_dir == D_RIGHT)
+            monster_interface->rotate(MonsterRotation::RIGHT);
+        else if (final_dir == D_LEFT)
+            monster_interface->rotate(MonsterRotation::LEFT);
+
+        if (final_move == M_FRONT)
+            monster_interface->move(MonsterMovement::FRONT);
         rt_sem_v(&sem_critical_region);
     }
     return;
