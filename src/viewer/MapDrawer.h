@@ -53,6 +53,7 @@ private:
     void drawMonster(double x, double y, int angle, monster_type monster);
     void drawBullet(double x, double y, bullet_type bullet);
     int getDegrees(double radians);
+    std::string getCurrentDir();
 
 public:
     MapDrawer(int width, int height);

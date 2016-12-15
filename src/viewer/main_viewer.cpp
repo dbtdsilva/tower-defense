@@ -10,8 +10,8 @@
 
 using namespace std;
 
-const int SCREEN_WIDTH = 700;
-const int SCREEN_HEIGTH = 600;
+const int SCREEN_WIDTH = 900;
+const int SCREEN_HEIGTH = 800;
 
 void recv_message(MapDrawer *drawer) {
     ifstream file_serialized;

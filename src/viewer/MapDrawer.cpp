@@ -1,13 +1,14 @@
 #include <iostream>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <unistd.h>
 #include "MapDrawer.h"
 #include "aux/Cleanup.h"
 
 MapDrawer::MapDrawer(int width, int height) {
     this->width = width;
     this->height = height;
-    this->tileSize = 60;
+    this->tileSize = 80;
     this->menuWidth = 100;
     this->towerOneActive = false;
     this->towerTwoActive = false;
@@ -225,7 +226,7 @@ bool MapDrawer::isQuit() {
 }
 
 bool MapDrawer::loadTextures() {
-    std::string folderPath = "/home/myrddin-dm/tower-defense/textures/";
+    std::string folderPath = this->getCurrentDir() + "/textures/";
 
     // Full border
     std::string tilePath = folderPath + "tile01.png";
@@ -499,8 +500,7 @@ bool MapDrawer::loadTextures() {
         this->textures->emplace("bullet_two", tileTex);
     }
 
-    folderPath = "/home/myrddin-dm/tower-defense/fonts/";
-    std::string fontPath = folderPath + "sans.ttf";
+    std::string fontPath = this->getCurrentDir() + "/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color black = {0, 0, 0};
 
@@ -639,7 +639,7 @@ void MapDrawer::drawMenu() {
 }
 
 void MapDrawer::drawScore() {
-    std::string fontPath = "/home/myrddin-dm/tower-defense/fonts/sans.ttf";
+    std::string fontPath = this->getCurrentDir() + "/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color red = {255, 0, 0};
 
@@ -671,7 +671,7 @@ void MapDrawer::drawScore() {
 }
 
 void MapDrawer::drawMoney() {
-    std::string fontPath = "/home/myrddin-dm/tower-defense/fonts/sans.ttf";
+    std::string fontPath = this->getCurrentDir() + "/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color red = {255, 0, 0};
 
@@ -987,4 +987,13 @@ void MapDrawer::drawBullet(double x, double y, bullet_type bullet) {
 int MapDrawer::getDegrees(double radians) {
     constexpr double halfC = 180.0 / M_PI;
     return rint(radians * halfC);
+}
+
+std::string MapDrawer::getCurrentDir() {
+    char cwd[1024];
+    getcwd(cwd, sizeof(cwd));
+    std::string path(cwd);
+    size_t pos = path.find("/tower-defense");
+    std::cout << path.substr(0, pos + 15) << std::endl;
+    return path.substr(0, pos + 15);
 }
