@@ -14,7 +14,7 @@ WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
         user_interaction_(this), player_currency_(10000),
         game_level_(0), monsters_per_level_(5), monsters_left_to_spawn_(0), idle_cycles_(0),
         idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms),
-        score_(0)
+        score_(0), lives_(10)
 {
     start_position.set_x(0);
     start_position.set_y(1.5);
@@ -42,6 +42,9 @@ void WorldState::clear_world_requests() {
 
 std::vector<EntityModification> WorldState::update_world_state() {
     std::vector<EntityModification> entity_modifications;
+    if (lives_ == 0)
+        return entity_modifications;
+
     if (monsters_left_to_spawn_ == 0) {
         if (monsters_.empty()) {
             idle_cycles_++;
@@ -115,29 +118,29 @@ std::vector<EntityModification> WorldState::update_world_state() {
     }
 
     // Update monster state
-    for (Monster& monster : monsters_) {
-        const vector<MonsterMovement>& movements = monster.get_requested_movements();
+    for (auto monster = monsters_.begin(); monster != monsters_.end(); ++monster) {
+        const vector<MonsterMovement>& movements = monster->get_requested_movements();
         if (!movements.empty()) {
-            const Position<double>& position = monster.get_position();
-            double& angle = monster.get_angle();
+            const Position<double>& position = monster->get_position();
+            double& angle = monster->get_angle();
 
             Position<double> new_position(0, 0);
             switch (movements[0]) {
                 case MonsterMovement::FRONT:
-                    new_position.set_x(position.get_x() + cos(angle) * monster.get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle) * monster.get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle) * monster->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle) * monster->get_movement_speed());
                     break;
                 case MonsterMovement::BACK:
-                    new_position.set_x(position.get_x() + cos(angle - M_PI) * monster.get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle - M_PI) * monster.get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle - M_PI) * monster->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle - M_PI) * monster->get_movement_speed());
                     break;
                 case MonsterMovement::LEFT:
-                    new_position.set_x(position.get_x() + cos(angle + M_PI_2) * monster.get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle + M_PI_2) * monster.get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle + M_PI_2) * monster->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle + M_PI_2) * monster->get_movement_speed());
                     break;
                 case MonsterMovement::RIGHT:
-                    new_position.set_x(position.get_x() + cos(angle - M_PI_2) * monster.get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle - M_PI_2) * monster.get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle - M_PI_2) * monster->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle - M_PI_2) * monster->get_movement_speed());
                     break;
             }
             Position<int> new_position_map(static_cast<int>(floor(new_position.get_x())),
@@ -145,16 +148,27 @@ std::vector<EntityModification> WorldState::update_world_state() {
             if (new_position_map.get_x() >= 0 && new_position_map.get_x() < width_ &&
                     new_position_map.get_y() >= 0 && new_position_map.get_y() < height_ &&
                     map_[new_position_map.get_x()][new_position_map.get_y()] == PositionState::PATH) {
-                monster.set_position(new_position.get_x(), new_position.get_y());
+                if (sqrt(pow(new_position.get_x() - end_position.get_x(), 2) +
+                         pow(new_position.get_y() - end_position.get_y(), 2)) < 0.75) {
+                    lives_ = lives_ > 0 ? lives_-- : lives_;
+
+                    entity_modifications.push_back(EntityModification(monster->get_interface(),
+                                                                      monster->get_identifier(),
+                                                                      EntityAction::REMOVE));
+                    monsters_.erase(monster);
+                    continue;
+                } else {
+                    monster->set_position(new_position.get_x(), new_position.get_y());
+                }
             }
         }
-        const vector<MonsterRotation>& rotations = monster.get_requested_rotations();
+        const vector<MonsterRotation>& rotations = monster->get_requested_rotations();
         if (!rotations.empty()) {
-            double& angle = monster.get_angle();
+            double& angle = monster->get_angle();
             if (rotations[0] == MonsterRotation::LEFT)
-                angle += monster.get_rotational_speed();
+                angle += monster->get_rotational_speed();
             else
-                angle -= monster.get_rotational_speed();
+                angle -= monster->get_rotational_speed();
         }
     }
 
@@ -195,6 +209,7 @@ void WorldState::serialize_data(ostream& stream) const {
     data_to_serialize.level_ = game_level_;
     data_to_serialize.monsters_left_level_ = monsters_left_to_spawn_;
     data_to_serialize.player_currency_ = player_currency_;
+    data_to_serialize.lives_ = lives_;
 
     data_to_serialize.start_ = start_position;
     data_to_serialize.end_ = end_position;

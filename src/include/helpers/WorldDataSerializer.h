@@ -60,8 +60,8 @@ class WorldData {
 public:
     WorldData() {}
 
-    unsigned int player_currency_, level_, monsters_left_level_, score_;
-    Postion<int> start_, end_;
+    unsigned int player_currency_, level_, monsters_left_level_, score_, lives_;
+    Position<double> start_, end_;
     std::vector<TowerData> towers_;
     std::vector<MonsterData> monsters_;
     std::vector<BulletData> bullets_;
@@ -70,9 +70,9 @@ private:
     friend class cereal::access;
     template<typename Archive>
     void serialize(Archive &archive) {
-        archive(currency_, bullets_, towers_, monsters_, map_,
+        archive(player_currency_, bullets_, towers_, monsters_, map_,
                 player_currency_, level_, monsters_left_level_, score_,
-                start_, end_);
+                start_, end_, lives_);
     }
 };
 

@@ -37,12 +37,13 @@ private:
     std::vector<Bullet> bullets_;
     UserInteraction user_interaction_;
 
-    unsigned int simulation_time_;
     unsigned int player_currency_;
 
     const unsigned int monsters_per_level_;
     unsigned int game_level_, monsters_left_to_spawn_, score_;
     unsigned int idle_cycles_, idle_cycles_before_spawn_;
+
+    unsigned int lives_;
 
     int cycle_ms_;
 };
