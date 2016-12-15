@@ -27,6 +27,7 @@ private:
     std::map<std::string, SDL_Texture*>* textures;
     GameStatus gameStatus;
     OperationTowerData* nextTowerOperation;
+    std::string folderPath;
 
     // Maps and objects
     WorldData* data;
@@ -45,6 +46,9 @@ private:
     void drawMoney();
     void drawMenuTowerOne();
     void drawMenuTowerTwo();
+    void drawMenuDemolishButton();
+    void drawMenuPlayButton();
+    void drawMenuPauseButton();
     void drawField(int x, int y);
     void drawRoadStraight(int x, int y, bool vertical);
     void drawRoadCorner(int x, int y, corner_side corner);

@@ -47,6 +47,8 @@ MapDrawer::~MapDrawer() {
 }
 
 bool MapDrawer::init() {
+    this->folderPath = this->getCurrentDir();
+
     if(SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
         return false;
@@ -226,7 +228,7 @@ bool MapDrawer::isQuit() {
 }
 
 bool MapDrawer::loadTextures() {
-    std::string folderPath = this->getCurrentDir() + "/textures/";
+    std::string folderPath = this->folderPath + "/textures/";
 
     // Full border
     std::string tilePath = folderPath + "tile01.png";
@@ -500,7 +502,7 @@ bool MapDrawer::loadTextures() {
         this->textures->emplace("bullet_two", tileTex);
     }
 
-    std::string fontPath = this->getCurrentDir() + "/fonts/sans.ttf";
+    std::string fontPath = this->folderPath + "/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color black = {0, 0, 0};
 
@@ -568,6 +570,54 @@ bool MapDrawer::loadTextures() {
         this->textures->emplace("tower_two_price", message);
     }
 
+    // Sell text
+    surfaceMessage = TTF_RenderText_Solid(sans, "SELL", black);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return false;
+    } else {
+        this->textures->emplace("demolish_text", message);
+    }
+
+    // Play text
+    surfaceMessage = TTF_RenderText_Solid(sans, "PLAY", black);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return false;
+    } else {
+        this->textures->emplace("play_text", message);
+    }
+
+    // Pause text
+    surfaceMessage = TTF_RenderText_Solid(sans, "PAUSE", black);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return false;
+    } else {
+        this->textures->emplace("pause_text", message);
+    }
+
     return true;
 }
 
@@ -632,14 +682,15 @@ void MapDrawer::drawMenu() {
     SDL_RenderFillRect(this->renderer, &dest);
 
     this->drawMoney();
-
     this->drawMenuTowerOne();
-
     this->drawMenuTowerTwo();
+    this->drawMenuDemolishButton();
+    this->drawMenuPlayButton();
+    this->drawMenuPauseButton();
 }
 
 void MapDrawer::drawScore() {
-    std::string fontPath = this->getCurrentDir() + "/fonts/sans.ttf";
+    std::string fontPath = this->folderPath + "/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color red = {255, 0, 0};
 
@@ -671,7 +722,7 @@ void MapDrawer::drawScore() {
 }
 
 void MapDrawer::drawMoney() {
-    std::string fontPath = this->getCurrentDir() + "/fonts/sans.ttf";
+    std::string fontPath = this->folderPath + "/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
     SDL_Color red = {255, 0, 0};
 
@@ -766,6 +817,81 @@ void MapDrawer::drawMenuTowerTwo() {
     dest.h = 30;
 
     SDL_RenderCopy(this->renderer, this->textures->find("tower_two_price")->second, nullptr, &dest);
+}
+
+void MapDrawer::drawMenuDemolishButton() {
+    SDL_Rect dest;
+
+    // Demolish box
+    dest.x = this->width - this->menuWidth + 5;
+    dest.y = 470;
+    dest.w = this->menuWidth - 10;
+    dest.h = 50;
+
+    if(this->removeTowerActive)
+        SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
+    else
+        SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+
+    SDL_RenderDrawRect(this->renderer, &dest);
+
+    // Demolish text
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = 480;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("demolish_text")->second, nullptr, &dest);
+}
+
+void MapDrawer::drawMenuPlayButton() {
+    SDL_Rect dest;
+
+    // Tower two box
+    dest.x = this->width - this->menuWidth + 5;
+    dest.y = this->height - 120;
+    dest.w = this->menuWidth - 10;
+    dest.h = 50;
+
+    if(this->gameStatus == GameStatus::PLAY)
+        SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
+    else
+        SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+
+    SDL_RenderDrawRect(this->renderer, &dest);
+
+    // Tower two price
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = this->height - 110;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("play_text")->second, nullptr, &dest);
+}
+
+void MapDrawer::drawMenuPauseButton() {
+    SDL_Rect dest;
+
+    // Tower two box
+    dest.x = this->width - this->menuWidth + 5;
+    dest.y = this->height - 60;
+    dest.w = this->menuWidth - 10;
+    dest.h = 50;
+
+    if(this->gameStatus == GameStatus::PAUSE)
+        SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
+    else
+        SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+
+    SDL_RenderDrawRect(this->renderer, &dest);
+
+    // Tower two price
+    dest.x = this->width - this->menuWidth + 10;
+    dest.y = this->height - 50;
+    dest.w = this->menuWidth - 20;
+    dest.h = 30;
+
+    SDL_RenderCopy(this->renderer, this->textures->find("pause_text")->second, nullptr, &dest);
 }
 
 void MapDrawer::drawField(int x, int y) {
@@ -994,6 +1120,5 @@ std::string MapDrawer::getCurrentDir() {
     getcwd(cwd, sizeof(cwd));
     std::string path(cwd);
     size_t pos = path.find("/tower-defense");
-    std::cout << path.substr(0, pos + 15) << std::endl;
     return path.substr(0, pos + 15);
 }
