@@ -12,7 +12,7 @@ using namespace std;
 WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
         width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
         user_interaction_(this), player_currency_(10000),
-        game_level_(0), monsters_per_level_(1), monsters_left_to_spawn_(0), idle_cycles_(0),
+        game_level_(0), monsters_per_level_(5), monsters_left_to_spawn_(0), idle_cycles_(0),
         idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms),
         score_(0)
 {
@@ -190,8 +190,14 @@ void WorldState::serialize_data(ostream& stream) const {
     for (const Monster& monster : monsters_)
         data_to_serialize.monsters_.push_back(MonsterData(monster.get_position(), monster.get_type(),
                                                           monster.get_health(), monster.get_angle()));
-        //cout << monster.get_position() << ", " << monster.get_angle() << endl;
     data_to_serialize.map_ = map_;
+    data_to_serialize.score_ = score_;
+    data_to_serialize.level_ = game_level_;
+    data_to_serialize.monsters_left_level_ = monsters_left_to_spawn_;
+    data_to_serialize.player_currency_ = player_currency_;
+
+    data_to_serialize.start_ = start_position;
+    data_to_serialize.end_ = end_position;
 
     cereal::BinaryOutputArchive archive(stream);
     archive(data_to_serialize);
