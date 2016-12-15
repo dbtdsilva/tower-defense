@@ -208,8 +208,7 @@ bool MapDrawer::handleEvents() {
 
                 bool towerPlacement = leftPressed &&
                         i >= 0 && i < this->data->map_.size() &&
-                        j >= 0 && j < this->data->map_[i].size() &&
-                        this->data->map_[i][j] == PositionState::TOWER;
+                        j >= 0 && j < this->data->map_[i].size();
 
                 if(playActivation) {
                     this->gameStatusChanged = true;
