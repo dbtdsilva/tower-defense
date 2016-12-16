@@ -24,7 +24,7 @@ private:
 };
 
 union ViewerRequestData {
-    ViewerRequestData() : status_(GameStatus::PAUSE) {}
+    ViewerRequestData() : status_(GameStatus::PLAY) {}
     ~ViewerRequestData() {}
 
     GameStatus status_;
@@ -33,7 +33,7 @@ union ViewerRequestData {
 
 class ViewerData {
 public:
-    ViewerData() {}
+    ViewerData() : type(ViewerRequest::GAME_STATUS) {}
     ~ViewerData() {}
 
     ViewerRequest type;

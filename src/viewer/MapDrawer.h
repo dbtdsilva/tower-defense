@@ -25,8 +25,6 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
     std::map<std::string, SDL_Texture*>* textures;
-    GameStatus gameStatus;
-    OperationTowerData* nextTowerOperation;
     ViewerData viewerData;
     std::string folderPath;
 

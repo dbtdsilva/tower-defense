@@ -17,8 +17,6 @@ MapDrawer::MapDrawer(int width, int height) {
     this->removeTowerActive = false;
     this->quit = false;
     this->gameStatusChanged = false;
-    this->gameStatus = GameStatus::PAUSE;
-    this->nextTowerOperation = nullptr;
 
     this->textures = new std::map<std::string, SDL_Texture*>();
 
@@ -220,9 +218,10 @@ bool MapDrawer::handleEvents() {
                 int i = (int) rint(x / this->tileSize);
                 int j = (int) rint(y / this->tileSize);
 
-                bool towerPlacement = leftPressed &&
+                bool towerPlacement = leftPressed && this->data != nullptr &&
                         i >= 0 && i < this->data->map_.size() &&
-                        j >= 0 && j < this->data->map_[i].size();
+                        j >= 0 && j < this->data->map_[0].size();
+
 
                 if(playActivation) {
                     modifications = true;
@@ -258,11 +257,9 @@ bool MapDrawer::handleEvents() {
                         (this->removeTowerActive ? TowerOperation::REMOVE : TowerOperation::INSERT), 
                         pos, (this->towerOneActive ? TowerType::SIMPLE : TowerType::COMPLEX));
                 }
-
                 break;
         }
     }
-
     return modifications;
 }
 
@@ -1071,7 +1068,8 @@ void MapDrawer::drawMenuPlayButton() {
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
-    if(this->gameStatus == GameStatus::PLAY)
+    if(this->viewerData.type == ViewerRequest::GAME_STATUS &&
+       this->viewerData.data.status_ == GameStatus::PLAY)
         SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
     else
         SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
@@ -1099,7 +1097,8 @@ void MapDrawer::drawMenuPauseButton() {
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
-    if(this->gameStatus == GameStatus::PAUSE)
+    if(this->viewerData.type == ViewerRequest::GAME_STATUS &&
+       this->viewerData.data.status_ == GameStatus::PAUSE)
         SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
     else
         SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
