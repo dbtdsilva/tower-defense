@@ -46,13 +46,13 @@ std::vector<EntityModification> WorldState::update_world_state() {
     if (monsters_left_to_spawn_ == 0) {
         if (monsters_.empty()) {
             idle_cycles_++;
-            if (idle_cycles_ > (1000.0 / cycle_ms_)) { // 5 second
+            if (idle_cycles_ > (5000.0 / cycle_ms_)) {
                 game_level_++;
                 monsters_left_to_spawn_ = monsters_per_level_;
                 idle_cycles_ = 0;
             }
         }
-    } else if (idle_cycles_before_spawn_ > (500.0 / cycle_ms_)){ // 1 second
+    } else if (idle_cycles_before_spawn_ > (500.0 / cycle_ms_)){
         unique_ptr<Monster> ref = make_unique<Monster>(Monster::add_monster(this, MonsterType::BASIC, start_position));
         monsters_.push_back(std::move(ref));
         entity_modifications.push_back(EntityModification(monsters_.back()->get_interface(),
@@ -92,11 +92,11 @@ std::vector<EntityModification> WorldState::update_world_state() {
         bool bullet_struck = false;
         for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ++monster_iter) {
             Monster* monster = monster_iter->get();
-            if (sqrt(pow(new_x - monster->get_position().get_x(), 2) + pow(new_y - monster->get_position().get_y(), 2))
-                    < 0.1) {
+            if (sqrt(pow(new_x - monster->get_position().get_x(), 2) +
+                     pow(new_y - monster->get_position().get_y(), 2)) < 0.1) {
                 bullet_struck = true;
                 int health_left = monster->bullet_struck(bullet->get_damage());
-                bullets_.erase(bullet_iter);
+                bullet_iter = bullets_.erase(bullet_iter);
                 if (health_left <= 0) {
                     switch (monster->get_type()) {
                         case MonsterType::BASIC:
@@ -116,14 +116,15 @@ std::vector<EntityModification> WorldState::update_world_state() {
             }
         }
 
-        if (bullet_struck)
-            break;
-        bullet->get_position().set_x(new_x);
-        bullet->get_position().set_y(new_y);
+        if (!bullet_struck) {
+            bullet->get_position().set_x(new_x);
+            bullet->get_position().set_y(new_y);
+            bullet_iter++;
+        }
     }
 
     // Update monster state
-    for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ++monster_iter) {
+    for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ) {
         Monster* monster = monster_iter->get();
         const vector<MonsterMovement>& movements = monster->get_requested_movements();
         if (!movements.empty()) {
@@ -160,8 +161,8 @@ std::vector<EntityModification> WorldState::update_world_state() {
                                                                       monster->get_identifier(),
                                                                       EntityAction::REMOVE,
                                                                       EntityType::MONSTER));
-                    monsters_.erase(monster_iter);
-                    break;
+                    monster_iter = monsters_.erase(monster_iter);
+                    continue;
                 } else {
                     monster->set_position(new_position.get_x(), new_position.get_y());
                 }
@@ -175,6 +176,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
             else
                 angle -= monster->get_rotational_speed();
         }
+        monster_iter++;
     }
 
     // Update tower state
