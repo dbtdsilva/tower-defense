@@ -56,7 +56,13 @@ void recv_message(MapDrawer *drawer) {
         archive(*world);
 
         drawer->updateWorldData(world);
+    }
+}
+
+void draw_map(MapDrawer *drawer) {
+    while(!drawer->isQuit()) {
         drawer->drawMap();
+        //SDL_Delay(50);
     }
 }
 
@@ -67,6 +73,7 @@ int main() {
         return -1;
 
     thread recv_handler(recv_message, drawer);
+    thread draw_handler(draw_map, drawer);
 
     while (!drawer->isQuit()) {
         if(drawer->handleEvents()) {

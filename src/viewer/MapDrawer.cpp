@@ -94,68 +94,80 @@ bool MapDrawer::init() {
 }
 
 void MapDrawer::updateWorldData(WorldData *data) {
-    delete this->data;
-    this->data = data;
+    this->dataVector.push_back(data);
 }
 
 void MapDrawer::drawMap() {
     SDL_RenderClear(this->renderer);
     SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
 
-    std::string windowTitle = "Tower Defense - Level " + std::to_string(this->data->level_);
-    SDL_SetWindowTitle(this->window, windowTitle.c_str());
-    for(int i = 0; i < this->data->map_.size(); ++i)
-        for(int j = 0; j < this->data->map_[i].size(); ++j) {
-            switch (this->data->map_[i][j]) {
-                case PositionState::EMPTY:
-                    this->drawField(i, j);
-                    break;
-                case PositionState::PATH:
-                    if(i-1 >= 0 && j-1 >= 0 &&
-                       this->data->map_[i-1][j] == PositionState::PATH &&
-                       this->data->map_[i][j-1] == PositionState::PATH)
-                        this->drawRoadCorner(i, j, LEFT_UP);
-                    else if(i-1 >= 0 && j+1 >= 0 &&
-                            this->data->map_[i-1][j] == PositionState::PATH &&
-                            this->data->map_[i][j+1] == PositionState::PATH)
-                        this->drawRoadCorner(i, j, LEFT_DOWN);
-                    else if(i+1 >= 0 && j-1 >= 0 &&
-                            this->data->map_[i+1][j] == PositionState::PATH &&
-                            this->data->map_[i][j-1] == PositionState::PATH)
-                        this->drawRoadCorner(i, j, RIGHT_UP);
-                    else if(i+1 >= 0 && j+1 >= 0 &&
-                            this->data->map_[i+1][j] == PositionState::PATH &&
-                            this->data->map_[i][j+1] == PositionState::PATH)
-                        this->drawRoadCorner(i, j, RIGHT_DOWN);
-                    else
-                        this->drawRoadStraight(i, j,
-                                               !((i - 1 >= 0 && this->data->map_[i - 1][j] == PositionState::PATH) ||
-                                                 (i+1 >= 0 && this->data->map_[i+1][j] == PositionState::PATH)));
-                    break;
-                case PositionState::TOWER:
-                    this->drawField(i, j);
-                    this->drawInsertPosition(i, j, NORMAL);
-                    break;
+    if(!this->dataVector.empty()) {
+        delete this->data;
+        this->data = this->dataVector.front();
+        this->dataVector.erase(this->dataVector.begin());
+    } else {
+        this->data = nullptr;
+    }
+
+    if(data != nullptr) {
+        std::string windowTitle = "Tower Defense - Level " + std::to_string(this->data->level_);
+        SDL_SetWindowTitle(this->window, windowTitle.c_str());
+        for(int i = 0; i < this->data->map_.size(); ++i)
+            for(int j = 0; j < this->data->map_[i].size(); ++j) {
+                switch (this->data->map_[i][j]) {
+                    case PositionState::EMPTY:
+                        this->drawField(i, j);
+                        break;
+                    case PositionState::PATH:
+                        if(i-1 >= 0 && j-1 >= 0 &&
+                           this->data->map_[i-1][j] == PositionState::PATH &&
+                           this->data->map_[i][j-1] == PositionState::PATH)
+                            this->drawRoadCorner(i, j, LEFT_UP);
+                        else if(i-1 >= 0 && j+1 >= 0 &&
+                                this->data->map_[i-1][j] == PositionState::PATH &&
+                                this->data->map_[i][j+1] == PositionState::PATH)
+                            this->drawRoadCorner(i, j, LEFT_DOWN);
+                        else if(i+1 >= 0 && j-1 >= 0 &&
+                                this->data->map_[i+1][j] == PositionState::PATH &&
+                                this->data->map_[i][j-1] == PositionState::PATH)
+                            this->drawRoadCorner(i, j, RIGHT_UP);
+                        else if(i+1 >= 0 && j+1 >= 0 &&
+                                this->data->map_[i+1][j] == PositionState::PATH &&
+                                this->data->map_[i][j+1] == PositionState::PATH)
+                            this->drawRoadCorner(i, j, RIGHT_DOWN);
+                        else
+                            this->drawRoadStraight(i, j,
+                                                   !((i - 1 >= 0 && this->data->map_[i - 1][j] == PositionState::PATH) ||
+                                                     (i+1 >= 0 && this->data->map_[i+1][j] == PositionState::PATH)));
+                        break;
+                    case PositionState::TOWER:
+                        this->drawField(i, j);
+                        this->drawInsertPosition(i, j, NORMAL);
+                        break;
+                }
             }
+
+        this->drawInsertPosition(this->data->start_.get_x(), this->data->start_.get_y(), marker_type::BALL);
+        this->drawInsertPosition(this->data->end_.get_x(), this->data->end_.get_y(), marker_type::CROSS);
+
+        for(std::vector<TowerData>::iterator it = this->data->towers_.begin(); it != this->data->towers_.end(); ++it) {
+            this->drawTower(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
+                            (it->type_ == TowerType::SIMPLE ? ONE_CANNON : TWO_CANNON));
         }
 
-    for(std::vector<TowerData>::iterator it = this->data->towers_.begin(); it != this->data->towers_.end(); ++it) {
-        this->drawTower(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
-                        (it->type_ == TowerType::SIMPLE ? ONE_CANNON : TWO_CANNON));
+        for(std::vector<MonsterData>::iterator it = this->data->monsters_.begin(); it != this->data->monsters_.end(); ++it) {
+            this->drawMonster(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
+                              (it->type_ == MonsterType::BASIC ? MONSTER_1 : MONSTER_2));
+        }
+
+        for(std::vector<BulletData>::iterator it = this->data->bullets_.begin(); it != this->data->bullets_.end(); ++it) {
+            this->drawBullet(it->position_.get_x(), it->position_.get_y(), (it->damage_ < 10 ? BULLET_1 : BULLET_2));
+        }
+
+        this->drawMenu();
+
+        SDL_RenderPresent(this->renderer);
     }
-
-    for(std::vector<MonsterData>::iterator it = this->data->monsters_.begin(); it != this->data->monsters_.end(); ++it) {
-        this->drawMonster(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
-                          (it->type_ == MonsterType::BASIC ? MONSTER_1 : MONSTER_2));
-    }
-
-    for(std::vector<BulletData>::iterator it = this->data->bullets_.begin(); it != this->data->bullets_.end(); ++it) {
-        this->drawBullet(it->position_.get_x(), it->position_.get_y(), (it->damage_ < 10 ? BULLET_1 : BULLET_2));
-    }
-
-    this->drawMenu();
-
-    SDL_RenderPresent(this->renderer);
 }
 
 bool MapDrawer::handleEvents() {
@@ -172,8 +184,6 @@ bool MapDrawer::handleEvents() {
 
                 if(SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT))
                     leftPressed = true;
-
-
 
                 bool towerOne = leftPressed &&
                         x >= this->width - this->menuWidth + 5 &&

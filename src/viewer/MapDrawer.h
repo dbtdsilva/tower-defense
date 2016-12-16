@@ -31,6 +31,7 @@ private:
 
     // Maps and objects
     WorldData* data;
+    std::vector<WorldData*> dataVector;
 
     enum corner_side {LEFT_UP, LEFT_DOWN, RIGHT_UP, RIGHT_DOWN};
     enum marker_type {NORMAL, WRENCH, CROSS, BALL, EXPLOSION};
