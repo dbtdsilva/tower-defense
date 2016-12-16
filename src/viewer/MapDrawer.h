@@ -27,6 +27,7 @@ private:
     std::map<std::string, SDL_Texture*>* textures;
     GameStatus gameStatus;
     OperationTowerData* nextTowerOperation;
+    std::string folderPath;
 
     // Maps and objects
     WorldData* data;
@@ -41,10 +42,15 @@ private:
     bool loadTextures();
     void unloadTextures();
     void drawMenu();
-    void drawScore();
-    void drawMoney();
+    void drawMenuScore();
+    void drawMenuMoney();
+    void drawMenuLives();
+    void drawMenuLeftMonsters();
     void drawMenuTowerOne();
     void drawMenuTowerTwo();
+    void drawMenuDemolishButton();
+    void drawMenuPlayButton();
+    void drawMenuPauseButton();
     void drawField(int x, int y);
     void drawRoadStraight(int x, int y, bool vertical);
     void drawRoadCorner(int x, int y, corner_side corner);
@@ -53,6 +59,7 @@ private:
     void drawMonster(double x, double y, int angle, monster_type monster);
     void drawBullet(double x, double y, bullet_type bullet);
     int getDegrees(double radians);
+    std::string getCurrentDir();
 
 public:
     MapDrawer(int width, int height);
