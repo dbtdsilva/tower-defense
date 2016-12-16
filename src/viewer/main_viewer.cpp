@@ -17,42 +17,37 @@ void recv_message(MapDrawer *drawer) {
     ifstream file_serialized;
     file_serialized.open("/dev/rtp0", ios::binary);
 
-    char buf[16];
+    // Each packet has around 572 bytes
+    char buffer[2048];
     streamsize bytes_read;
     unsigned long idx, idx_message;
-    string value, recv, sub, message;
+    string raw_received,            // Contains the last raw message received
+            raw_total_received,     // Contains the raw messages received till the moment that contain useful info
+            useless_chars,          // Used to parse trash characters that might appear
+            final_message;          // Final message parsed and ready for the serializer
 
     while (!drawer->isQuit()) {
-        bytes_read = file_serialized.readsome(buf, 16);
-
+        bytes_read = file_serialized.readsome(buffer, 2048);
         if (bytes_read == 0) 
             continue;
-
-        value = "";
-        
-        for (int i = 0; i < bytes_read; i++) {
-            value += buf[i];
-        }
-        
-        recv += value;
-        idx = recv.rfind("MESSAGE");
-        
+        raw_received = string(buffer, bytes_read);
+        raw_total_received += raw_received;
+        idx = raw_total_received.rfind("MESSAGE");
         if (idx <= 0) 
             continue;
-        
-        sub = recv.substr(0, idx);
-        idx_message = sub.rfind("MESSAGE") + 7;
-        
+
+        useless_chars = raw_total_received.substr(0, idx);
+        idx_message = useless_chars.rfind("MESSAGE") + 7;
         if (idx_message == -1) 
             continue;
-        
-        message = sub.substr(idx_message);
-        recv = recv.substr(idx);
+
+        final_message = useless_chars.substr(idx_message);
+        raw_total_received = raw_total_received.substr(idx);
 
         WorldData *world = new WorldData();
 
-        istringstream filedata(message);
-        cereal::BinaryInputArchive archive(filedata);
+        istringstream file_data(final_message);
+        cereal::BinaryInputArchive archive(file_data);
         archive(*world);
 
         drawer->updateWorldData(world);
@@ -69,7 +64,7 @@ int main() {
     thread recv_handler(recv_message, drawer);
 
     while (!drawer->isQuit()) {
-        if(drawer->handleEvents()) {
+        if (drawer->handleEvents()) {
             OperationTowerData* towerOperation = drawer->getTowerOperation();
 
             ViewerData dataToSerialize;
@@ -83,9 +78,10 @@ int main() {
             cereal::BinaryOutputArchive archive(stream_serialize);
             archive(dataToSerialize);
 
-            string serialized_string = "MESSAGE" + stream_serialize.str();
+            string serialized_string = stream_serialize.str();
             ofstream pipe_1("/dev/rtp1", ios::binary);
 
+            cout << "Sent.." << endl;
             if(pipe_1) {
                 pipe_1 << serialized_string << endl;
                 pipe_1.close();

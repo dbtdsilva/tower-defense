@@ -13,9 +13,9 @@
 
 #include <rtdk.h> // Provides rt_print functions
 #include <sstream>
+#include <helpers/ViewerDataSerializer.h>
 
 #include "logic/WorldState.h"
-#include "logic/monster/MonsterEye.h"
 
 using namespace std;
 
@@ -34,9 +34,9 @@ RT_SEM sem_critical_region;
 #define TASK_PRIORITY_TOWER     70
 #define TASK_PRIORITY_MONSTER   60
 
-#define TASK_PERIOD_MS_GOD      20
-#define TASK_PERIOD_MS_TOWER    20
-#define TASK_PERIOD_MS_MONSTER  20
+#define TASK_PERIOD_MS_GOD      25
+#define TASK_PERIOD_MS_TOWER    50
+#define TASK_PERIOD_MS_MONSTER  50
 
 bool terminate_tasks = false;
 
@@ -190,8 +190,35 @@ void god_task(void *world_state_void) {
 
 void user_interaction_task(void *interface) {
     UserInteractionInterface* user_interface = static_cast<UserInteractionInterface*>(interface);
+    unsigned int buffer_size = 32;
+    char buffer[buffer_size];
+    string raw_received,            // Contains the last raw message received
+            raw_total_received,     // Contains the raw messages received till the moment that contain useful info
+            useless_chars,          // Used to parse trash characters that might appear
+            final_message;          // Final message parsed and ready for the serializer
+    unsigned long idx, idx_message;
     while (!terminate_tasks) {
-        rt_pipe_read(&task_pipe_receiver, nullptr, 0, TM_INFINITE);
+        ssize_t bytes_read = rt_pipe_read(&task_pipe_receiver, buffer, buffer_size, TM_INFINITE);
+        if (bytes_read == 0)
+            continue;
+        raw_received = string(buffer, bytes_read);
+        ViewerData *viewer = new ViewerData();
+
+        istringstream file_data(raw_received);
+        cereal::BinaryInputArchive archive(file_data);
+        archive(*viewer);
+
+        if (viewer->tower_.operation_ == TowerOperation::EMPTY) {
+            if (viewer->status_ == GameStatus::PAUSE) {
+                rt_printf("Pause\n");
+            } else if (viewer->status_ == GameStatus::PLAY) {
+                rt_printf("Play\n");
+            } else {
+                rt_printf("wtf\n");
+            }
+        } else {
+            rt_printf("Request!!\n");
+        }
     }
 }
 
