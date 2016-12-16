@@ -102,6 +102,8 @@ void MapDrawer::drawMap() {
     SDL_RenderClear(this->renderer);
     SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
 
+    std::string windowTitle = "Tower Defense - Level " + std::to_string(this->data->level_);
+    SDL_SetWindowTitle(this->window, windowTitle.c_str());
     for(int i = 0; i < this->data->map_.size(); ++i)
         for(int j = 0; j < this->data->map_[i].size(); ++j) {
             switch (this->data->map_[i][j]) {
