@@ -1,10 +1,8 @@
 #include "WorldState.h"
-#include "interaction/UserInteraction.h"
 
 #include <cmath>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/string.hpp>
-
 #include <helpers/WorldDataSerializer.h>
 
 using namespace std;
@@ -87,18 +85,20 @@ std::vector<EntityModification> WorldState::update_world_state() {
 
     // Update bullets in the world
     for(auto bullet_iter = bullets_.begin(); bullet_iter != bullets_.end(); ++bullet_iter) {
-        double new_x = (*bullet_iter)->get_position().get_x() + cos((*bullet_iter)->get_angle()) * (*bullet_iter)->get_speed();
-        double new_y = (*bullet_iter)->get_position().get_y() - sin((*bullet_iter)->get_angle()) * (*bullet_iter)->get_speed();
+        Bullet* bullet = bullet_iter->get();
+        double new_x = bullet->get_position().get_x() + cos(bullet->get_angle()) * bullet->get_speed();
+        double new_y = bullet->get_position().get_y() - sin(bullet->get_angle()) * bullet->get_speed();
 
         bool bullet_struck = false;
-        for (auto monster = monsters_.begin(); monster != monsters_.end(); ++monster) {
-            if (sqrt(pow(new_x - (*monster)->get_position().get_x(), 2) + pow(new_y - (*monster)->get_position().get_y(), 2))
+        for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ++monster_iter) {
+            Monster* monster = monster_iter->get();
+            if (sqrt(pow(new_x - monster->get_position().get_x(), 2) + pow(new_y - monster->get_position().get_y(), 2))
                     < 0.1) {
                 bullet_struck = true;
-                int health_left = (*monster)->bullet_struck((*bullet_iter)->get_damage());
-                bullets_.erase(bullets_.begin() + 1);
+                int health_left = monster->bullet_struck(bullet->get_damage());
+                bullets_.erase(bullet_iter);
                 if (health_left <= 0) {
-                    switch ((*monster)->get_type()) {
+                    switch (monster->get_type()) {
                         case MonsterType::BASIC:
                             score_ += 50;
                             break;
@@ -106,11 +106,11 @@ std::vector<EntityModification> WorldState::update_world_state() {
                             score_ += 150;
                             break;
                     }
-                    entity_modifications.push_back(EntityModification((*monster)->get_interface(),
-                                                                      (*monster)->get_identifier(),
+                    entity_modifications.push_back(EntityModification(monster->get_interface(),
+                                                                      monster->get_identifier(),
                                                                       EntityAction::REMOVE,
                                                                       EntityType::MONSTER));
-                    monsters_.erase(monster);
+                    monsters_.erase(monster_iter);
                     break;
                 }
             }
@@ -118,33 +118,34 @@ std::vector<EntityModification> WorldState::update_world_state() {
 
         if (bullet_struck)
             break;
-        (*bullet_iter)->get_position().set_x(new_x);
-        (*bullet_iter)->get_position().set_y(new_y);
+        bullet->get_position().set_x(new_x);
+        bullet->get_position().set_y(new_y);
     }
 
     // Update monster state
-    for (auto monster = monsters_.begin(); monster != monsters_.end(); ++monster) {
-        const vector<MonsterMovement>& movements = (*monster)->get_requested_movements();
+    for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ++monster_iter) {
+        Monster* monster = monster_iter->get();
+        const vector<MonsterMovement>& movements = monster->get_requested_movements();
         if (!movements.empty()) {
-            const Position<double>& position = (*monster)->get_position();
-            double& angle = (*monster)->get_angle();
+            const Position<double>& position = monster->get_position();
+            double& angle = monster->get_angle();
             Position<double> new_position(0, 0);
             switch (movements[0]) {
                 case MonsterMovement::FRONT:
-                    new_position.set_x(position.get_x() + cos(angle) * (*monster)->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle) * (*monster)->get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle) * monster->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle) * monster->get_movement_speed());
                     break;
                 case MonsterMovement::BACK:
-                    new_position.set_x(position.get_x() + cos(angle - M_PI) * (*monster)->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle - M_PI) * (*monster)->get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle - M_PI) * monster->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle - M_PI) * monster->get_movement_speed());
                     break;
                 case MonsterMovement::LEFT:
-                    new_position.set_x(position.get_x() + cos(angle + M_PI_2) * (*monster)->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle + M_PI_2) * (*monster)->get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle + M_PI_2) * monster->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle + M_PI_2) * monster->get_movement_speed());
                     break;
                 case MonsterMovement::RIGHT:
-                    new_position.set_x(position.get_x() + cos(angle - M_PI_2) * (*monster)->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle - M_PI_2) * (*monster)->get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle - M_PI_2) * monster->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle - M_PI_2) * monster->get_movement_speed());
                     break;
             }
             Position<int> new_position_map(static_cast<int>(floor(new_position.get_x())),
@@ -155,24 +156,24 @@ std::vector<EntityModification> WorldState::update_world_state() {
                 if (sqrt(pow(new_position.get_x() - end_position.get_x(), 2) +
                          pow(new_position.get_y() - end_position.get_y(), 2)) < 0.75) {
                     lives_ = lives_ > 0 ? lives_ - 1 : lives_;
-                    entity_modifications.push_back(EntityModification((*monster)->get_interface(),
-                                                                      (*monster)->get_identifier(),
+                    entity_modifications.push_back(EntityModification(monster->get_interface(),
+                                                                      monster->get_identifier(),
                                                                       EntityAction::REMOVE,
                                                                       EntityType::MONSTER));
-                    monster = monsters_.erase(monster);
+                    monsters_.erase(monster_iter);
                     break;
                 } else {
-                    (*monster)->set_position(new_position.get_x(), new_position.get_y());
+                    monster->set_position(new_position.get_x(), new_position.get_y());
                 }
             }
         }
-        const vector<MonsterRotation>& rotations = (*monster)->get_requested_rotations();
+        const vector<MonsterRotation>& rotations = monster->get_requested_rotations();
         if (!rotations.empty()) {
-            double& angle = (*monster)->get_angle();
+            double& angle = monster->get_angle();
             if (rotations[0] == MonsterRotation::LEFT)
-                angle += (*monster)->get_rotational_speed();
+                angle += monster->get_rotational_speed();
             else
-                angle -= (*monster)->get_rotational_speed();
+                angle -= monster->get_rotational_speed();
         }
     }
 
