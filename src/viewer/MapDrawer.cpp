@@ -173,6 +173,8 @@ void MapDrawer::drawMap() {
 bool MapDrawer::handleEvents() {
     SDL_Event e;
 
+    bool modifications = false;
+
     while(SDL_PollEvent(&e)) {
         switch (e.type) {
             case SDL_QUIT:
@@ -223,11 +225,13 @@ bool MapDrawer::handleEvents() {
                         j >= 0 && j < this->data->map_[i].size();
 
                 if(playActivation) {
-                    this->gameStatusChanged = true;
-                    this->gameStatus = GameStatus::PLAY;
+                    modifications = true;
+                    this->viewerData.type = ViewerRequest::GAME_STATUS;
+                    this->viewerData.data.status_ = GameStatus::PLAY;
                 } else if(pauseActivation) {
-                    this->gameStatusChanged = true;
-                    this->gameStatus = GameStatus::PAUSE;
+                    modifications = true;
+                    this->viewerData.type = ViewerRequest::GAME_STATUS;
+                    this->viewerData.data.status_ = GameStatus::PAUSE;
                 }
 
                 if(towerOne) {
@@ -242,9 +246,15 @@ bool MapDrawer::handleEvents() {
                     this->removeTowerActive = !this->removeTowerActive;
                     this->towerOneActive = false;
                     this->towerTwoActive = false;
-                } else if(towerPlacement && (this->towerOneActive || this->towerTwoActive || this->removeTowerActive)) {
+                }
+
+                if(towerPlacement && (this->towerOneActive || this->towerTwoActive || this->removeTowerActive)) {
+                    modifications = true;
+                    this->viewerData.type = ViewerRequest::TOWER;
+                    this->viewerData.data.tower_.operation_ = this->removeTowerActive ?
+                                                              TowerOperation::REMOVE : TowerOperation::INSERT;
                     Position<int> pos(i, j);
-                    this->nextTowerOperation = new OperationTowerData(
+                    this->viewerData.data.tower_ = OperationTowerData(
                         (this->removeTowerActive ? TowerOperation::REMOVE : TowerOperation::INSERT), 
                         pos, (this->towerOneActive ? TowerType::SIMPLE : TowerType::COMPLEX));
                 }
@@ -253,19 +263,11 @@ bool MapDrawer::handleEvents() {
         }
     }
 
-    return this->nextTowerOperation != nullptr || this->gameStatusChanged;
+    return modifications;
 }
 
-OperationTowerData* MapDrawer::getTowerOperation() {
-    OperationTowerData* data = this->nextTowerOperation;
-    this->nextTowerOperation = nullptr;
-
-    return data;
-}
-
-GameStatus MapDrawer::getGameStatus() {
-    this->gameStatusChanged = false;
-    return this->gameStatus;
+const ViewerData& MapDrawer::getViewerData() const {
+    return viewerData;
 }
 
 bool MapDrawer::isQuit() {

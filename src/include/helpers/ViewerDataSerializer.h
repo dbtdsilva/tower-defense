@@ -8,7 +8,7 @@
 
 class OperationTowerData {
 public:
-    OperationTowerData() : operation_(TowerOperation::EMPTY), position_(0,0), type_(TowerType::SIMPLE) {}
+    OperationTowerData() : operation_(TowerOperation::INSERT), position_(0,0), type_(TowerType::SIMPLE) {}
     OperationTowerData(const TowerOperation& operation, const Position<int>& position, const TowerType& type) :
             operation_(operation), position_(position), type_(type) {}
 
@@ -23,17 +23,34 @@ private:
     }
 };
 
-class ViewerData {
-public:
-    ViewerData() {}
+union ViewerRequestData {
+    ViewerRequestData() : status_(GameStatus::PAUSE) {}
+    ~ViewerRequestData() {}
 
     GameStatus status_;
     OperationTowerData tower_;
+};
+
+class ViewerData {
+public:
+    ViewerData() {}
+    ~ViewerData() {}
+
+    ViewerRequest type;
+    ViewerRequestData data;
 private:
+
     friend class cereal::access;
     template<typename Archive>
     void serialize(Archive &archive) {
-        archive(status_, tower_);
+        switch (type) {
+            case ViewerRequest::GAME_STATUS:
+                archive(type, data.status_);
+                break;
+            case ViewerRequest::TOWER:
+                archive(type, data.tower_);
+                break;
+        }
     }
 };
 

@@ -72,23 +72,13 @@ int main() {
 
     while (!drawer->isQuit()) {
         if (drawer->handleEvents()) {
-            OperationTowerData* towerOperation = drawer->getTowerOperation();
-
-            ViewerData dataToSerialize;
-            dataToSerialize.status_ = drawer->getGameStatus();
-            
-            if(towerOperation != nullptr) {
-                dataToSerialize.tower_ = *towerOperation;
-            }
-
             ostringstream stream_serialize;
             cereal::BinaryOutputArchive archive(stream_serialize);
-            archive(dataToSerialize);
+            archive(drawer->getViewerData());
 
             string serialized_string = stream_serialize.str();
             ofstream pipe_1("/dev/rtp1", ios::binary);
 
-            cout << "Sent.." << endl;
             if(pipe_1) {
                 pipe_1 << serialized_string << endl;
                 pipe_1.close();

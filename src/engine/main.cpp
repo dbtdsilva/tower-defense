@@ -190,13 +190,12 @@ void god_task(void *world_state_void) {
 
 void user_interaction_task(void *interface) {
     UserInteractionInterface* user_interface = static_cast<UserInteractionInterface*>(interface);
-    unsigned int buffer_size = 32;
+    unsigned int buffer_size = 256;
     char buffer[buffer_size];
     string raw_received,            // Contains the last raw message received
             raw_total_received,     // Contains the raw messages received till the moment that contain useful info
             useless_chars,          // Used to parse trash characters that might appear
             final_message;          // Final message parsed and ready for the serializer
-    unsigned long idx, idx_message;
     while (!terminate_tasks) {
         ssize_t bytes_read = rt_pipe_read(&task_pipe_receiver, buffer, buffer_size, TM_INFINITE);
         if (bytes_read == 0)
@@ -208,16 +207,13 @@ void user_interaction_task(void *interface) {
         cereal::BinaryInputArchive archive(file_data);
         archive(*viewer);
 
-        if (viewer->tower_.operation_ == TowerOperation::EMPTY) {
-            if (viewer->status_ == GameStatus::PAUSE) {
-                rt_printf("Pause\n");
-            } else if (viewer->status_ == GameStatus::PLAY) {
-                rt_printf("Play\n");
-            } else {
-                rt_printf("wtf\n");
-            }
-        } else {
-            rt_printf("Request!!\n");
+        switch(viewer->type) {
+            case ViewerRequest::GAME_STATUS:
+                rt_printf("Game Status\n");
+                break;
+            case ViewerRequest::TOWER:
+                rt_printf("Tower\n");
+                break;
         }
     }
 }

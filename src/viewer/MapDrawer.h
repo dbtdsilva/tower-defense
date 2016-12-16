@@ -27,6 +27,7 @@ private:
     std::map<std::string, SDL_Texture*>* textures;
     GameStatus gameStatus;
     OperationTowerData* nextTowerOperation;
+    ViewerData viewerData;
     std::string folderPath;
 
     // Maps and objects
@@ -68,8 +69,7 @@ public:
     void updateWorldData(WorldData *data);
     void drawMap();
     bool handleEvents();
-    GameStatus getGameStatus();
-    OperationTowerData* getTowerOperation();
+    const ViewerData& getViewerData() const;
     bool isQuit();
     ~MapDrawer();
 };
