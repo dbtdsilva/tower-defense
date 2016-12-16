@@ -32,11 +32,11 @@ WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
 
 void WorldState::clear_world_requests() {
     user_interaction_.clear_requests();
-    for (Monster& monster : monsters_) {
-        monster.clear_requests();
+    for (auto& monster : monsters_) {
+        monster->clear_requests();
     }
-    for (Tower& tower : towers_) {
-        tower.clear_requests();
+    for (auto& tower : towers_) {
+        tower->clear_requests();
     }
 }
 
@@ -55,10 +55,12 @@ std::vector<EntityModification> WorldState::update_world_state() {
             }
         }
     } else if (idle_cycles_before_spawn_ > (500.0 / cycle_ms_)){ // 1 second
-        Monster ref = Monster::add_monster(this, MonsterType::BASIC, start_position);
+        unique_ptr<Monster> ref = make_unique<Monster>(Monster::add_monster(this, MonsterType::BASIC, start_position));
         monsters_.push_back(std::move(ref));
-        entity_modifications.push_back(EntityModification(monsters_.back().get_interface(),
-                                                          monsters_.back().get_identifier(), EntityAction::ADD));
+        entity_modifications.push_back(EntityModification(monsters_.back()->get_interface(),
+                                                          monsters_.back()->get_identifier(),
+                                                          EntityAction::ADD,
+                                                          EntityType::MONSTER));
         monsters_left_to_spawn_--;
         idle_cycles_before_spawn_ = 0;
     } else {
@@ -70,31 +72,33 @@ std::vector<EntityModification> WorldState::update_world_state() {
             request.position.get_y() < 0 || request.position.get_y() >= height_ ||
             map_[request.position.get_x()][request.position.get_y()] != PositionState::EMPTY)
             continue;
-        Tower ref = Tower::create_tower(this, request.type, request.position);
-        if (ref.get_cost() > player_currency_)
+        unique_ptr<Tower> ref =  make_unique<Tower>(Tower::create_tower(this, request.type, request.position));
+        if (ref->get_cost() > player_currency_)
             continue;
-        player_currency_ -= ref.get_cost();
+        player_currency_ -= ref->get_cost();
 
         towers_.push_back(std::move(ref));
-        entity_modifications.push_back(EntityModification(towers_.back().get_interface(),
-                                                          towers_.back().get_identifier(), EntityAction::ADD));
+        entity_modifications.push_back(EntityModification(towers_.back()->get_interface(),
+                                                          towers_.back()->get_identifier(),
+                                                          EntityAction::ADD,
+                                                          EntityType::TOWER));
         map_[request.position.get_x()][request.position.get_y()] = PositionState::TOWER;
     }
 
     // Update bullets in the world
-    for(auto bullet = bullets_.begin(); bullet != bullets_.end(); ++bullet) {
-        double new_x = bullet->get_position().get_x() + cos(bullet->get_angle()) * bullet->get_speed();
-        double new_y = bullet->get_position().get_y() - sin(bullet->get_angle()) * bullet->get_speed();
+    for(auto bullet_iter = bullets_.begin(); bullet_iter != bullets_.end(); ++bullet_iter) {
+        double new_x = (*bullet_iter)->get_position().get_x() + cos((*bullet_iter)->get_angle()) * (*bullet_iter)->get_speed();
+        double new_y = (*bullet_iter)->get_position().get_y() - sin((*bullet_iter)->get_angle()) * (*bullet_iter)->get_speed();
 
         bool bullet_struck = false;
         for (auto monster = monsters_.begin(); monster != monsters_.end(); ++monster) {
-            if (sqrt(pow(new_x - monster->get_position().get_x(), 2) + pow(new_y - monster->get_position().get_y(), 2))
+            if (sqrt(pow(new_x - (*monster)->get_position().get_x(), 2) + pow(new_y - (*monster)->get_position().get_y(), 2))
                     < 0.1) {
                 bullet_struck = true;
-                int health_left = monster->bullet_struck(bullet->get_damage());
+                int health_left = (*monster)->bullet_struck((*bullet_iter)->get_damage());
                 bullets_.erase(bullets_.begin() + 1);
                 if (health_left <= 0) {
-                    switch (monster->get_type()) {
+                    switch ((*monster)->get_type()) {
                         case MonsterType::BASIC:
                             score_ += 50;
                             break;
@@ -102,9 +106,10 @@ std::vector<EntityModification> WorldState::update_world_state() {
                             score_ += 150;
                             break;
                     }
-                    entity_modifications.push_back(EntityModification(monster->get_interface(),
-                                                                      monster->get_identifier(),
-                                                                      EntityAction::REMOVE));
+                    entity_modifications.push_back(EntityModification((*monster)->get_interface(),
+                                                                      (*monster)->get_identifier(),
+                                                                      EntityAction::REMOVE,
+                                                                      EntityType::MONSTER));
                     monsters_.erase(monster);
                     break;
                 }
@@ -113,34 +118,33 @@ std::vector<EntityModification> WorldState::update_world_state() {
 
         if (bullet_struck)
             break;
-        bullet->get_position().set_x(new_x);
-        bullet->get_position().set_y(new_y);
+        (*bullet_iter)->get_position().set_x(new_x);
+        (*bullet_iter)->get_position().set_y(new_y);
     }
 
     // Update monster state
     for (auto monster = monsters_.begin(); monster != monsters_.end(); ++monster) {
-        const vector<MonsterMovement>& movements = monster->get_requested_movements();
+        const vector<MonsterMovement>& movements = (*monster)->get_requested_movements();
         if (!movements.empty()) {
-            const Position<double>& position = monster->get_position();
-            double& angle = monster->get_angle();
-
+            const Position<double>& position = (*monster)->get_position();
+            double& angle = (*monster)->get_angle();
             Position<double> new_position(0, 0);
             switch (movements[0]) {
                 case MonsterMovement::FRONT:
-                    new_position.set_x(position.get_x() + cos(angle) * monster->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle) * monster->get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle) * (*monster)->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle) * (*monster)->get_movement_speed());
                     break;
                 case MonsterMovement::BACK:
-                    new_position.set_x(position.get_x() + cos(angle - M_PI) * monster->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle - M_PI) * monster->get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle - M_PI) * (*monster)->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle - M_PI) * (*monster)->get_movement_speed());
                     break;
                 case MonsterMovement::LEFT:
-                    new_position.set_x(position.get_x() + cos(angle + M_PI_2) * monster->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle + M_PI_2) * monster->get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle + M_PI_2) * (*monster)->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle + M_PI_2) * (*monster)->get_movement_speed());
                     break;
                 case MonsterMovement::RIGHT:
-                    new_position.set_x(position.get_x() + cos(angle - M_PI_2) * monster->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle - M_PI_2) * monster->get_movement_speed());
+                    new_position.set_x(position.get_x() + cos(angle - M_PI_2) * (*monster)->get_movement_speed());
+                    new_position.set_y(position.get_y() - sin(angle - M_PI_2) * (*monster)->get_movement_speed());
                     break;
             }
             Position<int> new_position_map(static_cast<int>(floor(new_position.get_x())),
@@ -150,41 +154,42 @@ std::vector<EntityModification> WorldState::update_world_state() {
                     map_[new_position_map.get_x()][new_position_map.get_y()] == PositionState::PATH) {
                 if (sqrt(pow(new_position.get_x() - end_position.get_x(), 2) +
                          pow(new_position.get_y() - end_position.get_y(), 2)) < 0.75) {
-                    lives_ = lives_ > 0 ? lives_-- : lives_;
-
-                    entity_modifications.push_back(EntityModification(monster->get_interface(),
-                                                                      monster->get_identifier(),
-                                                                      EntityAction::REMOVE));
-                    monsters_.erase(monster);
-                    continue;
+                    lives_ = lives_ > 0 ? lives_ - 1 : lives_;
+                    entity_modifications.push_back(EntityModification((*monster)->get_interface(),
+                                                                      (*monster)->get_identifier(),
+                                                                      EntityAction::REMOVE,
+                                                                      EntityType::MONSTER));
+                    monster = monsters_.erase(monster);
+                    break;
                 } else {
-                    monster->set_position(new_position.get_x(), new_position.get_y());
+                    (*monster)->set_position(new_position.get_x(), new_position.get_y());
                 }
             }
         }
-        const vector<MonsterRotation>& rotations = monster->get_requested_rotations();
+        const vector<MonsterRotation>& rotations = (*monster)->get_requested_rotations();
         if (!rotations.empty()) {
-            double& angle = monster->get_angle();
+            double& angle = (*monster)->get_angle();
             if (rotations[0] == MonsterRotation::LEFT)
-                angle += monster->get_rotational_speed();
+                angle += (*monster)->get_rotational_speed();
             else
-                angle -= monster->get_rotational_speed();
+                angle -= (*monster)->get_rotational_speed();
         }
     }
 
     // Update tower state
-    for (Tower& tower : towers_) {
+    for (auto& tower : towers_) {
         // Check for shoots
-        const vector<double>& requested_shoots = tower.get_requested_shoots();
+        const vector<double>& requested_shoots = tower->get_requested_shoots();
         if (!requested_shoots.empty()) {
-            bullets_.push_back({ Position<double>(tower.get_position().get_x() + 0.5, tower.get_position().get_y() + 0.5),
-                                requested_shoots[0], 0.1, tower.get_damage() });
+            bullets_.push_back(make_unique<Bullet>(Position<double>(tower->get_position().get_x() + 0.5,
+                                                                    tower->get_position().get_y() + 0.5),
+                                                   requested_shoots[0], 0.1, tower->get_damage()));
         }
         // Check for rotations
-        const vector<TowerRotation>& requested_rotations = tower.get_requested_rotations();
+        const vector<TowerRotation>& requested_rotations = tower->get_requested_rotations();
         if (!requested_rotations.empty()) {
-            const double& rotational_speed = tower.get_rotational_speed();
-            double& angle = tower.get_angle();
+            const double& rotational_speed = tower->get_rotational_speed();
+            double& angle = tower->get_angle();
             if (requested_rotations[0] == TowerRotation::LEFT)
                 angle += rotational_speed;
             else
@@ -197,13 +202,13 @@ std::vector<EntityModification> WorldState::update_world_state() {
 
 void WorldState::serialize_data(ostream& stream) const {
     WorldData data_to_serialize;
-    for (const Tower& tower : towers_)
-        data_to_serialize.towers_.push_back(TowerData(tower.get_position(), tower.get_type(), tower.get_angle()));
-    for (const Bullet& bullet : bullets_)
-        data_to_serialize.bullets_.push_back(BulletData(bullet.get_position(), bullet.get_damage()));
-    for (const Monster& monster : monsters_)
-        data_to_serialize.monsters_.push_back(MonsterData(monster.get_position(), monster.get_type(),
-                                                          monster.get_health(), monster.get_angle()));
+    for (const auto& tower : towers_)
+        data_to_serialize.towers_.push_back(TowerData(tower->get_position(), tower->get_type(), tower->get_angle()));
+    for (const auto& bullet : bullets_)
+        data_to_serialize.bullets_.push_back(BulletData(bullet->get_position(), bullet->get_damage()));
+    for (const auto& monster : monsters_)
+        data_to_serialize.monsters_.push_back(MonsterData(monster->get_position(), monster->get_type(),
+                                                          monster->get_health(), monster->get_angle()));
     data_to_serialize.map_ = map_;
     data_to_serialize.score_ = score_;
     data_to_serialize.level_ = game_level_;
@@ -218,8 +223,9 @@ void WorldState::serialize_data(ostream& stream) const {
     archive(data_to_serialize);
 }
 
-const std::vector<Monster>& WorldState::get_monsters() const {
-    return monsters_;
+const std::vector<Monster*> WorldState::get_monsters() const {
+    vector<Monster*> monster_list;
+    return monster_list;
 }
 
 const double WorldState::get_wall_distance(const Position<double>& position, const double& direction,

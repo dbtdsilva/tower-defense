@@ -15,10 +15,10 @@ public:
     static Monster add_monster(WorldState* world_ref, const MonsterType& ref, const Position<double>& position);
     ~Monster();
     // No copies or assignments are allowed (only moves)
+    Monster(Monster&&);
     Monster(const Monster&) = delete;
     Monster& operator=(const Monster& other) = delete;
-    Monster& operator=(Monster&& other);
-    Monster(Monster&&);
+    Monster& operator=(Monster&& other) = delete;
 
     std::vector<MonsterEye> eyes();
     void move(const MonsterMovement&);

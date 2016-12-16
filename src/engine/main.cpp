@@ -9,6 +9,7 @@
 #include <native/pipe.h>
 #include <native/sem.h>
 #include <vector>
+#include <map>
 
 #include <rtdk.h> // Provides rt_print functions
 #include <sstream>
@@ -19,8 +20,8 @@
 using namespace std;
 
 RT_TASK god_task_desc, user_task_desc;
-vector<RT_TASK> monsters_tasks;
-vector<RT_TASK> towers_tasks;
+map<unsigned int, RT_TASK> monsters_tasks;
+map<unsigned int, RT_TASK> towers_tasks;
 
 RT_PIPE task_pipe_sender, task_pipe_receiver;
 RT_SEM sem_critical_region;
@@ -135,10 +136,6 @@ void god_task(void *world_state_void) {
     WorldState* world = static_cast<WorldState*>(world_state_void);
     string serialized_string;
 
-    MonsterInterface* monster;
-    TowerInterface* tower;
-
-    rt_printf("%d %d %d %d\n", EINVAL, ENOMEM, EIDRM, ENODEV);
     while(!terminate_tasks) {
         rt_task_wait_period(NULL);
 
@@ -149,26 +146,32 @@ void god_task(void *world_state_void) {
         rt_sem_v(&sem_critical_region);
 
         for (EntityModification& change : changes) {
-            if ((monster = dynamic_cast<MonsterInterface*>(change.entity_)) != nullptr) {
+            if (change.type_ == EntityType::MONSTER) {
                 // Create/delete monster task
-                monsters_tasks.push_back(RT_TASK());
-                string task_name("Monster Task " + monsters_tasks.size());
-                int err = rt_task_create(&monsters_tasks.back(), task_name.c_str(), TASK_STKSZ, TASK_PRIORITY_MONSTER, TASK_MODE);
-                if(err) {
-                    rt_printf("Error creating task monster (error code = %d)\n", err);
-                } else  {
-                    rt_printf("Task created successfully\n");
-                    rt_task_start(&monsters_tasks.back(), &monster_task, monster);
+                if (change.action_ == EntityAction::ADD) {
+                    monsters_tasks.insert({change.identifier_, RT_TASK()});
+                    string task_name("Monster Task " + monsters_tasks.size());
+                    int err = rt_task_create(&monsters_tasks.find(change.identifier_)->second, task_name.c_str(), TASK_STKSZ, TASK_PRIORITY_MONSTER, TASK_MODE);
+                    if(err) {
+                        rt_printf("Error creating task monster (error code = %d)\n", err);
+                    } else  {
+                        rt_printf("Task monster %d created successfully\n", change.identifier_);
+                        rt_task_start(&monsters_tasks.find(change.identifier_)->second, &monster_task, change.entity_);
+                    }
+                } else {
+                    rt_printf("Deleting task monster with id %d\n", change.identifier_);
+                    rt_task_delete(&monsters_tasks.find(change.identifier_)->second);
+                    monsters_tasks.erase(change.identifier_);
                 }
-            } else if ((tower = dynamic_cast<TowerInterface*>(change.entity_)) != nullptr) {
-                towers_tasks.push_back(RT_TASK());
+            } else if (change.type_ == EntityType::TOWER) {
+                towers_tasks.insert({change.identifier_, RT_TASK()});
                 string task_name("Towers Task " + towers_tasks.size());
-                int err = rt_task_create(&towers_tasks.back(), task_name.c_str(), TASK_STKSZ, TASK_PRIORITY_TOWER, TASK_MODE);
+                int err = rt_task_create(&towers_tasks.find(change.identifier_)->second, task_name.c_str(), TASK_STKSZ, TASK_PRIORITY_TOWER, TASK_MODE);
                 if(err) {
                     rt_printf("Error creating task tower (error code = %d)\n", err);
                 } else  {
-                    rt_printf("Task created successfully\n");
-                    rt_task_start(&monsters_tasks.back(), &tower_task, tower);
+                    rt_printf("Task tower %d created successfully\n", change.identifier_);
+                    rt_task_start(&monsters_tasks.find(change.identifier_)->second, &tower_task, change.entity_);
                 }
             }
         }

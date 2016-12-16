@@ -18,7 +18,7 @@ public:
     std::vector<EntityModification> update_world_state();
     void clear_world_requests();
 
-    const std::vector<Monster>& get_monsters() const;
+    const std::vector<Monster*> get_monsters() const;
     const double get_wall_distance(const Position<double>&, const double&, const double&) const;
     UserInteractionInterface* get_user_interaction_interface();
     void serialize_data(std::ostream&) const;
@@ -32,9 +32,9 @@ private:
     std::list<Position<int>> path_;
     Position<double> start_position, end_position;
 
-    std::vector<Tower> towers_;
-    std::vector<Monster> monsters_;
-    std::vector<Bullet> bullets_;
+    std::vector<std::unique_ptr<Tower>> towers_;
+    std::vector<std::unique_ptr<Monster>> monsters_;
+    std::vector<std::unique_ptr<Bullet>> bullets_;
     UserInteraction user_interaction_;
 
     unsigned int player_currency_;
