@@ -61,7 +61,7 @@ public:
     WorldData() {}
 
     unsigned int player_currency_, level_, monsters_left_level_, score_, lives_;
-    Position<double> start_, end_;
+    Position<int> start_, end_;
     std::vector<TowerData> towers_;
     std::vector<MonsterData> monsters_;
     std::vector<BulletData> bullets_;

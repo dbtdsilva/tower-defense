@@ -30,7 +30,7 @@ private:
     const size_t width_, height_;
     std::vector<std::vector<PositionState>> map_;
     std::list<Position<int>> path_;
-    Position<double> start_position, end_position;
+    Position<int> start_position, end_position;
 
     std::vector<std::unique_ptr<Tower>> towers_;
     std::vector<std::unique_ptr<Monster>> monsters_;

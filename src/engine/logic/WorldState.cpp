@@ -15,7 +15,7 @@ WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
         score_(0), lives_(10)
 {
     start_position.set_x(0);
-    start_position.set_y(1.5);
+    start_position.set_y(1);
     append_line_to_path(Position<int>(0, 1), Position<int>(width_ - 2, 1));
     append_line_to_path(Position<int>(width_ - 2, 1), Position<int>(width_ - 2, height_ - 2));
     append_line_to_path(Position<int>(width_ - 2, height_ - 2), Position<int>(3, height_ - 2));
@@ -24,8 +24,8 @@ WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
     append_line_to_path(Position<int>(width_ - 4, height_ - 4), Position<int>(width_ - 4, 3));
     append_line_to_path(Position<int>(width_ - 4, 3), Position<int>(1, 3));
     append_line_to_path(Position<int>(1, 3), Position<int>(1, height_ - 1));
-    end_position.set_x(1.5);
-    end_position.set_y(height);
+    end_position.set_x(1);
+    end_position.set_y(height - 1);
 }
 
 void WorldState::clear_world_requests() {
@@ -53,7 +53,8 @@ std::vector<EntityModification> WorldState::update_world_state() {
             }
         }
     } else if (idle_cycles_before_spawn_ > (500.0 / cycle_ms_)){
-        unique_ptr<Monster> ref = make_unique<Monster>(Monster::add_monster(this, MonsterType::BASIC, start_position));
+        unique_ptr<Monster> ref = make_unique<Monster>(Monster::add_monster(
+                this, MonsterType::BASIC, Position<double>(start_position.get_x() + 0.5, start_position.get_y() + 0.5)));
         monsters_.push_back(std::move(ref));
         entity_modifications.push_back(EntityModification(monsters_.back()->get_interface(),
                                                           monsters_.back()->get_identifier(),
@@ -154,8 +155,8 @@ std::vector<EntityModification> WorldState::update_world_state() {
             if (new_position_map.get_x() >= 0 && new_position_map.get_x() < width_ &&
                     new_position_map.get_y() >= 0 && new_position_map.get_y() < height_ &&
                     map_[new_position_map.get_x()][new_position_map.get_y()] == PositionState::PATH) {
-                if (sqrt(pow(new_position.get_x() - end_position.get_x(), 2) +
-                         pow(new_position.get_y() - end_position.get_y(), 2)) < 0.75) {
+                if (sqrt(pow(new_position.get_x() - end_position.get_x() + 0.5, 2) +
+                         pow(new_position.get_y() - end_position.get_y() + 0.5, 2)) < 0.2) {
                     lives_ = lives_ > 0 ? lives_ - 1 : lives_;
                     entity_modifications.push_back(EntityModification(monster->get_interface(),
                                                                       monster->get_identifier(),
