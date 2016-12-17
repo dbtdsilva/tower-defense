@@ -25,6 +25,8 @@ public:
     const double get_wall_distance(const Position<double>&, const double&, const double&) const;
     UserInteractionInterface* get_user_interaction_interface();
     void serialize_data(std::ostream&) const;
+    void delete_tower(unsigned int identifier);
+    void delete_monster(unsigned int identifier);
 
     friend std::ostream& operator<<(std::ostream& os, const WorldState& obj);
 private:

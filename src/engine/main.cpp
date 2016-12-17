@@ -212,7 +212,11 @@ void god_task(void *world_state_void) {
 #ifdef DEBUG
                     rt_printf("Deleting task monster with id %d\n", change.identifier_);
 #endif
+                    rt_sem_p(&sem_critical_region, TM_INFINITE);
+                    world->delete_monster(change.identifier_);
                     rt_task_delete(&monsters_tasks.find(change.identifier_)->second);
+                    rt_sem_v(&sem_critical_region);
+
                     monsters_tasks.erase(change.identifier_);
                 }
             } else if (change.type_ == EntityType::TOWER) {
@@ -235,7 +239,11 @@ void god_task(void *world_state_void) {
 #ifdef DEBUG
                     rt_printf("Deleting task tower with id %d\n", change.identifier_);
 #endif
+                    rt_sem_p(&sem_critical_region, TM_INFINITE);
+                    world->delete_tower(change.identifier_);
                     rt_task_delete(&towers_tasks.find(change.identifier_)->second);
+                    rt_sem_v(&sem_critical_region);
+
                     towers_tasks.erase(change.identifier_);
                 }
             }

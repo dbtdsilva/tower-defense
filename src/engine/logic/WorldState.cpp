@@ -42,6 +42,27 @@ void WorldState::clear_world_requests() {
     }
 }
 
+void WorldState::delete_tower(unsigned int identifier) {
+    for (auto towers_iter = towers_.begin(); towers_iter != towers_.end(); ++towers_iter) {
+        Tower * tower = towers_iter->get();
+        if (tower->get_identifier() == identifier) {
+            map_[tower->get_position().get_x()][tower->get_position().get_y()] = PositionState::EMPTY;
+            player_currency_ += tower->get_cost() / 2.0;
+            towers_.erase(towers_iter);
+            break;
+        }
+    }
+}
+
+void WorldState::delete_monster(unsigned int identifier) {
+    for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ++monster_iter) {
+        if (monster_iter->get()->get_identifier() == identifier) {
+            monsters_.erase(monster_iter);
+            break;
+        }
+    }
+}
+
 std::vector<EntityModification> WorldState::update_world_state() {
     std::vector<EntityModification> entity_modifications;
     if (lives_ == 0)
@@ -95,13 +116,10 @@ std::vector<EntityModification> WorldState::update_world_state() {
             for (auto tower_iter = towers_.begin(); tower_iter != towers_.end(); ++tower_iter) {
                 Tower * tower_requested = tower_iter->get();
                 if (tower_requested->get_position() == request.position) {
-                    map_[request.position.get_x()][request.position.get_y()] = PositionState::EMPTY;
-                    player_currency_ += tower_requested->get_cost() / 2.0;
                     entity_modifications.push_back(EntityModification(tower_requested->get_interface(),
                                                                       tower_requested->get_identifier(),
                                                                       EntityAction::REMOVE,
                                                                       EntityType::TOWER));
-                    towers_.erase(tower_iter);
                     break;
                 }
             }
@@ -111,19 +129,20 @@ std::vector<EntityModification> WorldState::update_world_state() {
     // Update bullets in the world
     for(auto bullet_iter = bullets_.begin(); bullet_iter != bullets_.end(); ) {
         Bullet* bullet = bullet_iter->get();
+        if (bullet == nullptr) break;
         double new_x = bullet->get_position().get_x() + cos(bullet->get_angle()) * bullet->get_speed();
         double new_y = bullet->get_position().get_y() - sin(bullet->get_angle()) * bullet->get_speed();
 
         bullet->get_position().set_x(new_x);
         bullet->get_position().set_y(new_y);
 
-        bool bullet_struck = false;
         if (new_x < 0 || new_x >= width_ || new_y < 0 || new_y >= height_ ||
                 bullet->get_distance_travelled() >= bullet->get_range()) {
-            bullet_struck = true;
             bullet_iter = bullets_.erase(bullet_iter);
+            continue;
         }
 
+        bool bullet_struck = false;
         for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ++monster_iter) {
             Monster* monster = monster_iter->get();
             if (sqrt(pow(new_x - monster->get_position().get_x(), 2) +
@@ -146,7 +165,6 @@ std::vector<EntityModification> WorldState::update_world_state() {
                                                                       monster->get_identifier(),
                                                                       EntityAction::REMOVE,
                                                                       EntityType::MONSTER));
-                    monsters_.erase(monster_iter);
                     break;
                 }
             }
@@ -197,7 +215,6 @@ std::vector<EntityModification> WorldState::update_world_state() {
                                                                       monster->get_identifier(),
                                                                       EntityAction::REMOVE,
                                                                       EntityType::MONSTER));
-                    monster_iter = monsters_.erase(monster_iter);
                     continue;
                 } else {
                     monster->set_position(new_position.get_x(), new_position.get_y());
