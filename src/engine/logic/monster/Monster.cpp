@@ -56,16 +56,16 @@ const double& Monster::get_movement_speed() const {
     return movement_speed_;
 }
 
-std::vector<MonsterEye> Monster::eyes() {
+std::vector<double> Monster::eyes() {
     // Implement cost function
 
     // Calculate the eyes values
-    vector<MonsterEye> monster_eyes;
+    vector<double> monster_eyes;
     const vector<double> eyes_direction = {M_PI / 3.0, 0.0, -M_PI / 3.0};
     for (double eye_direction : eyes_direction) {
         double distance = world_ref_->get_wall_distance(pos_, angle_ + eye_direction, 0.01);
         if (distance > 3.0) distance = 3.0;
-        monster_eyes.push_back({ eye_direction, distance });
+        monster_eyes.push_back(distance);
     }
     return monster_eyes;
 }

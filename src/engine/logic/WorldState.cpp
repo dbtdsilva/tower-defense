@@ -49,13 +49,13 @@ std::vector<EntityModification> WorldState::update_world_state() {
     if (monsters_left_to_spawn_ == 0) {
         if (monsters_.empty()) {
             idle_cycles_++;
-            if (idle_cycles_ > (5000.0 / cycle_ms_)) {
+            if (idle_cycles_ > (2.0 / cycle_ms_)) {
                 game_level_++;
                 monsters_left_to_spawn_ = monsters_per_level_;
                 idle_cycles_ = 0;
             }
         }
-    } else if (idle_cycles_before_spawn_ > (500.0 / cycle_ms_)){
+    } else if (idle_cycles_before_spawn_ > (200.0 / cycle_ms_)){
         unique_ptr<Monster> ref = make_unique<Monster>(Monster::add_monster(
                 this, MonsterType::BASIC, Position<double>(start_position.get_x() + 0.5, start_position.get_y() + 0.5)));
         monsters_.push_back(std::move(ref));
