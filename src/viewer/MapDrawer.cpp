@@ -7,7 +7,7 @@
 #include "MapDrawer.h"
 #include "aux/Cleanup.h"
 
-MapDrawer::MapDrawer(int width, int height) {
+MapDrawer::MapDrawer(int width, int height) : viewerData(std::make_unique<GameStatusData>(GameStatus::PLAY)) {
     this->width = width;
     this->height = height;
     this->tileSize = 80;
@@ -225,12 +225,10 @@ bool MapDrawer::handleEvents() {
 
                 if(playActivation) {
                     modifications = true;
-                    this->viewerData.type = ViewerRequest::GAME_STATUS;
-                    this->viewerData.data.status_ = GameStatus::PLAY;
+                    this->viewerData = std::make_unique<GameStatusData>(GameStatus::PLAY);
                 } else if(pauseActivation) {
                     modifications = true;
-                    this->viewerData.type = ViewerRequest::GAME_STATUS;
-                    this->viewerData.data.status_ = GameStatus::PAUSE;
+                    this->viewerData = std::make_unique<GameStatusData>(GameStatus::PAUSE);
                 }
 
                 if(towerOne) {
@@ -249,11 +247,8 @@ bool MapDrawer::handleEvents() {
 
                 if(towerPlacement && (this->towerOneActive || this->towerTwoActive || this->removeTowerActive)) {
                     modifications = true;
-                    this->viewerData.type = ViewerRequest::TOWER;
-                    this->viewerData.data.tower_.operation_ = this->removeTowerActive ?
-                                                              TowerOperation::REMOVE : TowerOperation::INSERT;
                     Position<int> pos(i, j);
-                    this->viewerData.data.tower_ = OperationTowerData(
+                    this->viewerData = std::make_unique<OperationTowerData>(
                         (this->removeTowerActive ? TowerOperation::REMOVE : TowerOperation::INSERT), 
                         pos, (this->towerOneActive ? TowerType::SIMPLE : TowerType::COMPLEX));
                 }
@@ -263,7 +258,7 @@ bool MapDrawer::handleEvents() {
     return modifications;
 }
 
-const ViewerData& MapDrawer::getViewerData() const {
+const std::unique_ptr<ViewerData>& MapDrawer::getViewerData() const {
     return viewerData;
 }
 
@@ -1068,8 +1063,8 @@ void MapDrawer::drawMenuPlayButton() {
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
-    if(this->viewerData.type == ViewerRequest::GAME_STATUS &&
-       this->viewerData.data.status_ == GameStatus::PLAY)
+    if(viewerData->get_type() == ViewerRequest::GAME_STATUS &&
+       dynamic_cast<GameStatusData*>(viewerData.get())->status_ == GameStatus::PLAY)
         SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
     else
         SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
@@ -1097,8 +1092,8 @@ void MapDrawer::drawMenuPauseButton() {
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
-    if(this->viewerData.type == ViewerRequest::GAME_STATUS &&
-       this->viewerData.data.status_ == GameStatus::PAUSE)
+    if(viewerData->get_type() == ViewerRequest::GAME_STATUS &&
+       dynamic_cast<GameStatusData*>(viewerData.get())->status_ == GameStatus::PAUSE)
         SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
     else
         SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);

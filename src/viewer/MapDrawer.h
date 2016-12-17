@@ -25,7 +25,7 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
     std::map<std::string, SDL_Texture*>* textures;
-    ViewerData viewerData;
+    std::unique_ptr<ViewerData> viewerData;
     std::string folderPath;
 
     // Maps and objects
@@ -67,7 +67,7 @@ public:
     void updateWorldData(WorldData *data);
     void drawMap();
     bool handleEvents();
-    const ViewerData& getViewerData() const;
+    const std::unique_ptr<ViewerData>& getViewerData() const;
     bool isQuit();
     ~MapDrawer();
 };
