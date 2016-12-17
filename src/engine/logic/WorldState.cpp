@@ -1,4 +1,5 @@
 #include "WorldState.h"
+#include "interaction/UserInteraction.h"
 
 #include <cmath>
 #include <native/timer.h>
@@ -69,22 +70,42 @@ std::vector<EntityModification> WorldState::update_world_state() {
         idle_cycles_before_spawn_++;
     }
 
-    for (const TowerAddRequest& request : user_interaction_.get_tower_add_requests()) {
+    for (const TowerRequest& request : user_interaction_.get_tower_add_requests()) {
         if (request.position.get_x() < 0 || request.position.get_x() >= width_ ||
-            request.position.get_y() < 0 || request.position.get_y() >= height_ ||
-            map_[request.position.get_x()][request.position.get_y()] != PositionState::EMPTY)
+            request.position.get_y() < 0 || request.position.get_y() >= height_)
             continue;
-        unique_ptr<Tower> ref =  make_unique<Tower>(Tower::create_tower(this, request.type, request.position));
-        if (ref->get_cost() > player_currency_)
-            continue;
-        player_currency_ -= ref->get_cost();
 
-        towers_.push_back(std::move(ref));
-        entity_modifications.push_back(EntityModification(towers_.back()->get_interface(),
-                                                          towers_.back()->get_identifier(),
-                                                          EntityAction::ADD,
-                                                          EntityType::TOWER));
-        map_[request.position.get_x()][request.position.get_y()] = PositionState::TOWER;
+        if (request.operation == TowerOperation::INSERT) {
+            if (map_[request.position.get_x()][request.position.get_y()] != PositionState::EMPTY)
+                continue;
+            unique_ptr<Tower> ref =  make_unique<Tower>(Tower::create_tower(this, request.type, request.position));
+            if (ref->get_cost() > player_currency_)
+                continue;
+            player_currency_ -= ref->get_cost();
+
+            towers_.push_back(std::move(ref));
+            entity_modifications.push_back(EntityModification(towers_.back()->get_interface(),
+                                                              towers_.back()->get_identifier(),
+                                                              EntityAction::ADD,
+                                                              EntityType::TOWER));
+            map_[request.position.get_x()][request.position.get_y()] = PositionState::TOWER;
+        } else {
+            if (map_[request.position.get_x()][request.position.get_y()] == PositionState::EMPTY)
+                continue;
+            for (auto tower_iter = towers_.begin(); tower_iter != towers_.end(); ++tower_iter) {
+                Tower * tower_requested = tower_iter->get();
+                if (tower_requested->get_position() == request.position) {
+                    map_[request.position.get_x()][request.position.get_y()] = PositionState::EMPTY;
+                    player_currency_ += tower_requested->get_cost() / 2.0;
+                    entity_modifications.push_back(EntityModification(tower_requested->get_interface(),
+                                                                      tower_requested->get_identifier(),
+                                                                      EntityAction::REMOVE,
+                                                                      EntityType::TOWER));
+                    towers_.erase(tower_iter);
+                    break;
+                }
+            }
+        }
     }
 
     // Update bullets in the world

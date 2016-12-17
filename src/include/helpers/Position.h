@@ -24,11 +24,11 @@ public:
         }
         return *this;
     }
-    bool operator==(const Position& other) {
-        return this->x_ == other.x_ && this->y_ == other.y_;
+    friend bool operator==(const Position& source, const Position& other) {
+        return source.x_ == other.x_ && source.y_ == other.y_;
     }
-    bool operator!=(const Position& other) {
-        return !(*this == other);
+    friend bool operator!=(const Position& source, const Position& other) {
+        return !(source == other);
     }
     friend std::ostream& operator<< (std::ostream& os, const Position& other) {
         os << other.x_ << ", " << other.y_;

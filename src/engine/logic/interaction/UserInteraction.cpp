@@ -11,10 +11,14 @@ UserInteraction::UserInteraction(WorldState* ref) :
 }
 
 void UserInteraction::add_tower(const TowerType& type, const Position<int>& position) {
-    requests.push_back({type, position});
+    requests.push_back({type, position, TowerOperation::INSERT});
 }
 
-const std::vector<TowerAddRequest> &UserInteraction::get_tower_add_requests() const {
+void UserInteraction::remove_tower(const Position<int>& position) {
+    requests.push_back({TowerType::SIMPLE, position, TowerOperation::REMOVE});
+}
+
+const std::vector<TowerRequest> &UserInteraction::get_tower_add_requests() const {
     return requests;
 }
 

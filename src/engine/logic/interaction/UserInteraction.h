@@ -11,20 +11,22 @@ class WorldState;
 typedef struct {
     const TowerType type;
     const Position<int> position;
-} TowerAddRequest;
+    const TowerOperation operation;
+} TowerRequest;
 
 class UserInteraction {
 public:
     UserInteraction(WorldState*);
 
-    const std::vector<TowerAddRequest>& get_tower_add_requests() const;
+    const std::vector<TowerRequest>& get_tower_add_requests() const;
     UserInteractionInterface* get_user_interaction_interface();
     void clear_requests();
     void add_tower(const TowerType& type, const Position<int>& position);
+    void remove_tower(const Position<int>& position);
 private:
     std::unique_ptr<UserInteractionInterface> interface_;
 
-    std::vector<TowerAddRequest> requests;
+    std::vector<TowerRequest> requests;
     WorldState* world_state_;
 };
 

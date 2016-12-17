@@ -7,3 +7,7 @@ UserInteractionInterface::UserInteractionInterface(UserInteraction* reference) :
 void UserInteractionInterface::add_tower(const TowerType& type, const Position<int>& position) {
     user_interaction_->add_tower(type, position);
 }
+
+void UserInteractionInterface::remove_tower(const Position<int>& position) {
+    user_interaction_->remove_tower(position);
+}

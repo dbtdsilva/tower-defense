@@ -12,6 +12,7 @@ public:
     UserInteractionInterface(UserInteraction* reference);
 
     void add_tower(const TowerType& type, const Position<int>& position);
+    void remove_tower(const Position<int>& position);
 private:
     UserInteraction* user_interaction_;
 };

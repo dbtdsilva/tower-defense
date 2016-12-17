@@ -231,6 +231,12 @@ void god_task(void *world_state_void) {
 #endif
                         rt_task_start(&towers_tasks.find(change.identifier_)->second, &tower_task, change.entity_);
                     }
+                } else {
+#ifdef DEBUG
+                    rt_printf("Deleting task tower with id %d\n", change.identifier_);
+#endif
+                    rt_task_delete(&towers_tasks.find(change.identifier_)->second);
+                    towers_tasks.erase(change.identifier_);
                 }
             }
         }
@@ -272,6 +278,9 @@ void user_interaction_task(void *interface) {
                     user_interface->add_tower(data->type_, data->position_);
                     rt_sem_v(&sem_critical_region);
                 } else {
+                    rt_sem_p(&sem_critical_region, TM_INFINITE);
+                    user_interface->remove_tower(data->position_);
+                    rt_sem_v(&sem_critical_region);
                 }
                 break;
         }
