@@ -24,6 +24,7 @@ public:
     const std::vector<double>& get_requested_shoots() const;
     const Position<int>& get_position() const;
     const TowerType& get_type() const;
+    const double& get_range() const;
     const double& get_rotational_speed() const;
     const unsigned int& get_identifier() const;
     const double& get_angle() const;
@@ -36,14 +37,14 @@ public:
     void rotate(const TowerRotation& rotation);
     void clear_requests();
 protected:
-    Tower(WorldState*, const int& damage, const int& radar_load_time, const int& cost, const int& range,
+    Tower(WorldState*, const int& damage, const int& radar_load_time, const int& cost, const double& range,
         const double& rotational_speed, const Position<int>& pos, const TowerType&);
 private:
     static unsigned int instance_counter;
 
     const unsigned int id_;
-    const int damage_, radar_load_time_, cost_, range_;
-    const double rotational_speed_;
+    const int damage_, radar_load_time_, cost_;
+    const double rotational_speed_, range_;
     const Position<int> pos_;
     const TowerType type_;
 

@@ -187,7 +187,7 @@ void god_task(void *world_state_void) {
         serialized_string = "MESSAGE" + stream_serialize.str();
         ssize_t err = rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
         if(err < 0) {
-            //rt_printf("Error sending world state message (error code = %d)\n", err);
+            rt_printf("Error sending world state message (error code = %d)\n", err);
         }
 
     }

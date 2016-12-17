@@ -6,7 +6,7 @@
 class SimpleTower : public Tower {
 public:
     SimpleTower(WorldState* world_ref, const Position<int>& pos) :
-            Tower(world_ref, 100, 250, 100, 2, 2, pos, TowerType::SIMPLE) {}
+            Tower(world_ref, 50, 400, 250, 1.5, 2, pos, TowerType::SIMPLE) {}
 };
 
 #endif //TOWERDEFENSE_SIMPLETOWER_H

@@ -93,7 +93,16 @@ std::vector<EntityModification> WorldState::update_world_state() {
         double new_x = bullet->get_position().get_x() + cos(bullet->get_angle()) * bullet->get_speed();
         double new_y = bullet->get_position().get_y() - sin(bullet->get_angle()) * bullet->get_speed();
 
+        bullet->get_position().set_x(new_x);
+        bullet->get_position().set_y(new_y);
+
         bool bullet_struck = false;
+        if (new_x < 0 || new_x >= width_ || new_y < 0 || new_y >= height_ ||
+                bullet->get_distance_travelled() >= bullet->get_range()) {
+            bullet_struck = true;
+            bullet_iter = bullets_.erase(bullet_iter);
+        }
+
         for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ++monster_iter) {
             Monster* monster = monster_iter->get();
             if (sqrt(pow(new_x - monster->get_position().get_x(), 2) +
@@ -121,8 +130,6 @@ std::vector<EntityModification> WorldState::update_world_state() {
         }
 
         if (!bullet_struck) {
-            bullet->get_position().set_x(new_x);
-            bullet->get_position().set_y(new_y);
             bullet_iter++;
         }
     }
@@ -190,7 +197,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
         if (!requested_shoots.empty()) {
             bullets_.push_back(make_unique<Bullet>(Position<double>(tower->get_position().get_x() + 0.5,
                                                                     tower->get_position().get_y() + 0.5),
-                                                   requested_shoots[0], 0.1, tower->get_damage()));
+                                                   requested_shoots[0], 0.1, tower->get_damage(), tower->get_range()));
         }
         // Check for rotations
         const vector<TowerRotation>& requested_rotations = tower->get_requested_rotations();
