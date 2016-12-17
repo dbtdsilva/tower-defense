@@ -16,7 +16,6 @@ private:
     int menuWidth;
     bool initStatus;
     bool quit;
-    bool gameStatusChanged;
     bool towerOneActive;
     bool towerTwoActive;
     bool removeTowerActive;
