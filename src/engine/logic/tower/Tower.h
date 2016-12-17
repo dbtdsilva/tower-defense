@@ -33,7 +33,7 @@ public:
     double& get_angle();
 
     void shoot();
-    std::vector<Position<double>> radar();
+    const std::vector<Position<double>> radar() const;
     void rotate(const TowerRotation& rotation);
     void clear_requests();
 protected:

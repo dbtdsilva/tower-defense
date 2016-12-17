@@ -2,6 +2,7 @@
 #define TOWERDEFENSE_TOWERINTERFACE_H
 
 #include <helpers/Definitions.h>
+#include <helpers/Position.h>
 #include "../Entity.h"
 
 class Tower;
@@ -12,8 +13,10 @@ public:
     void reference_moved(Tower* reference);
 
     void shoot();
-    void radar();
+    const std::vector<Position<double>> radar() const;
     void rotate(const TowerRotation& rotation);
+    const Position<int> get_position() const;
+    const double get_angle() const;
 private:
     Tower* tower_reference_;
 };

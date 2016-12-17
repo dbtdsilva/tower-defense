@@ -86,20 +86,13 @@ void Tower::shoot() {
     requested_shoots_.push_back(angle_);
 }
 
-vector<Position<double>> Tower::radar() {
+const vector<Position<double>> Tower::radar() const {
     // Implement a cost function
     world_ref_->simulate_load(radar_load_time_);
 
     // Return the value
     vector<Position<double>> monsters_in_range;
-    for (const Monster* monster : world_ref_->get_monsters()) {
-        const Position<double>& monster_position = monster->get_position();
-        if (sqrt(pow(monster_position.get_x() - pos_.get_x(), 2) + pow(monster_position.get_y() - pos_.get_y(), 2)) <
-                range_) {
-            monsters_in_range.push_back(monster_position);
-        }
-    }
-    return monsters_in_range;
+    return world_ref_->get_monsters_position(Position<double>(pos_.get_x() + 0.5, pos_.get_y() + 0.5), range_ + 0.5);
 }
 
 void Tower::rotate(const TowerRotation& rotation) {

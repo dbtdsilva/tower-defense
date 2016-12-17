@@ -113,10 +113,12 @@ std::vector<EntityModification> WorldState::update_world_state() {
                 if (health_left <= 0) {
                     switch (monster->get_type()) {
                         case MonsterType::BASIC:
-                            score_ += 50;
+                            score_ += 1;
+                            player_currency_ += 1;
                             break;
                         case MonsterType::INSANE:
-                            score_ += 150;
+                            score_ += 2;
+                            player_currency_ += 2;
                             break;
                     }
                     entity_modifications.push_back(EntityModification(monster->get_interface(),
@@ -237,8 +239,15 @@ void WorldState::serialize_data(ostream& stream) const {
     archive(data_to_serialize);
 }
 
-const std::vector<Monster*> WorldState::get_monsters() const {
-    vector<Monster*> monster_list;
+const std::vector<Position<double>> WorldState::get_monsters_position(
+        Position<double> tower_pos, double tower_range) const {
+    vector<Position<double>> monster_list;
+    for (const auto& monster : monsters_) {
+        if (sqrt(pow(monster.get()->get_position().get_x() - tower_pos.get_x(), 2) +
+                 pow(monster.get()->get_position().get_y() - tower_pos.get_y(), 2)) < tower_range) {
+            monster_list.push_back(monster.get()->get_position());
+        }
+    }
     return monster_list;
 }
 

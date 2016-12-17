@@ -14,6 +14,7 @@
 #include <rtdk.h> // Provides rt_print functions
 #include <sstream>
 #include <helpers/ViewerDataSerializer.h>
+#include <cmath>
 
 #include "logic/WorldState.h"
 
@@ -42,6 +43,17 @@ bool terminate_tasks = false;
 
 void catch_signal(int) {
     terminate_tasks = true;
+
+    rt_task_delete(&god_task_desc);
+    for (auto iterator = towers_tasks.begin(); !monsters_tasks.empty(); ) {
+        rt_task_delete(&iterator->second);
+        iterator = monsters_tasks.erase(iterator);
+    }
+    for (auto iterator = towers_tasks.begin(); !towers_tasks.empty(); ) {
+        rt_task_delete(&iterator->second);
+        iterator = towers_tasks.erase(iterator);
+    }
+    rt_task_delete(&user_task_desc);
 }
 
 void wait_for_ctrl_c(void) {
@@ -55,19 +67,49 @@ void wait_for_ctrl_c(void) {
     rt_printf("Terminating ...\n");
 }
 
+double normalize_angle(const double& angle) {
+    double value = angle;
+    while (value <= -M_PI) value += M_PI * 2.0;
+    while (value > M_PI) value -= M_PI * 2.0;
+    return value;
+}
+
 void tower_task(void *interface) {
     int task_period = TASK_PERIOD_MS_TOWER * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
     rt_printf("Tower task started!\n");
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
+
+    Position<double> tower_map(tower_interface->get_position().get_x() + 0.5,
+                               tower_interface->get_position().get_y() + 0.5);
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
 
-        tower_interface->radar();
-        //rt_sem_p(&sem_critical_region, TM_INFINITE);
-        tower_interface->shoot();
-        //rt_sem_v(&sem_critical_region);
+        std::vector<Position<double>> monsters = tower_interface->radar();
+        if (monsters.size() != 0) {
+            double opposite = -(monsters[0].get_y() - tower_map.get_y());
+            double adjacent = monsters[0].get_x() - tower_map.get_x();
+
+            double value;
+            if (adjacent == 0) {
+                value = opposite > 0 ? M_PI_2 : -M_PI_2;
+            } else { // tan(theta) = theta + K * M_PI
+                value = atan(opposite / adjacent);
+                if (adjacent < 0)
+                    value += M_PI;
+            }
+            double diff = normalize_angle(value - tower_interface->get_angle());
+            if (diff > 0) {
+                tower_interface->rotate(TowerRotation::LEFT);
+            } else if (diff < 0) {
+                tower_interface->rotate(TowerRotation::RIGHT);
+            }
+
+            rt_sem_p(&sem_critical_region, TM_INFINITE);
+            tower_interface->shoot();
+            rt_sem_v(&sem_critical_region);
+        }
     }
 }
 
