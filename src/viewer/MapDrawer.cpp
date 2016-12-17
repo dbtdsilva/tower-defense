@@ -16,7 +16,6 @@ MapDrawer::MapDrawer(int width, int height) : viewerData(std::make_unique<GameSt
     this->towerTwoActive = false;
     this->removeTowerActive = false;
     this->quit = false;
-    this->gameStatusChanged = false;
 
     this->textures = new std::map<std::string, SDL_Texture*>();
 
@@ -30,8 +29,8 @@ MapDrawer::MapDrawer(int width, int height) : viewerData(std::make_unique<GameSt
 }
 
 MapDrawer::~MapDrawer() {
-    delete this->data;
-    this->data = nullptr;
+    delete this->bufferReader;
+    delete this->bufferWriter;
 
     if(initStatus) {
         unloadTextures();
@@ -92,51 +91,57 @@ bool MapDrawer::init() {
 }
 
 void MapDrawer::updateWorldData(WorldData *data) {
-    this->dataVector.push_back(data);
+    this->mtx.lock();
+
+    this->bufferWriter = data;
+
+    this->mtx.unlock();
 }
 
 void MapDrawer::drawMap() {
     SDL_RenderClear(this->renderer);
     SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
 
-    if(!this->dataVector.empty()) {
-        delete this->data;
-        this->data = this->dataVector.front();
-        this->dataVector.erase(this->dataVector.begin());
-    } else {
-        this->data = nullptr;
+    this->mtx.lock();
+
+    if(this->bufferWriter != nullptr) {
+        delete this->bufferReader;
+        this->bufferReader = this->bufferWriter;
+        this->bufferWriter = nullptr;
     }
 
-    if(data != nullptr) {
-        std::string windowTitle = "Tower Defense - Level " + std::to_string(this->data->level_);
+    this->mtx.unlock();
+
+    if(this->bufferReader != nullptr) {
+        std::string windowTitle = "Tower Defense - Level " + std::to_string(this->bufferReader->level_);
         SDL_SetWindowTitle(this->window, windowTitle.c_str());
-        for(int i = 0; i < this->data->map_.size(); ++i)
-            for(int j = 0; j < this->data->map_[i].size(); ++j) {
-                switch (this->data->map_[i][j]) {
+        for(int i = 0; i < this->bufferReader->map_.size(); ++i)
+            for(int j = 0; j < this->bufferReader->map_[i].size(); ++j) {
+                switch (this->bufferReader->map_[i][j]) {
                     case PositionState::EMPTY:
                         this->drawField(i, j);
                         break;
                     case PositionState::PATH:
                         if(i-1 >= 0 && j-1 >= 0 &&
-                           this->data->map_[i-1][j] == PositionState::PATH &&
-                           this->data->map_[i][j-1] == PositionState::PATH)
+                           this->bufferReader->map_[i-1][j] == PositionState::PATH &&
+                           this->bufferReader->map_[i][j-1] == PositionState::PATH)
                             this->drawRoadCorner(i, j, LEFT_UP);
                         else if(i-1 >= 0 && j+1 >= 0 &&
-                                this->data->map_[i-1][j] == PositionState::PATH &&
-                                this->data->map_[i][j+1] == PositionState::PATH)
+                                this->bufferReader->map_[i-1][j] == PositionState::PATH &&
+                                this->bufferReader->map_[i][j+1] == PositionState::PATH)
                             this->drawRoadCorner(i, j, LEFT_DOWN);
                         else if(i+1 >= 0 && j-1 >= 0 &&
-                                this->data->map_[i+1][j] == PositionState::PATH &&
-                                this->data->map_[i][j-1] == PositionState::PATH)
+                                this->bufferReader->map_[i+1][j] == PositionState::PATH &&
+                                this->bufferReader->map_[i][j-1] == PositionState::PATH)
                             this->drawRoadCorner(i, j, RIGHT_UP);
                         else if(i+1 >= 0 && j+1 >= 0 &&
-                                this->data->map_[i+1][j] == PositionState::PATH &&
-                                this->data->map_[i][j+1] == PositionState::PATH)
+                                this->bufferReader->map_[i+1][j] == PositionState::PATH &&
+                                this->bufferReader->map_[i][j+1] == PositionState::PATH)
                             this->drawRoadCorner(i, j, RIGHT_DOWN);
                         else
                             this->drawRoadStraight(i, j,
-                                                   !((i - 1 >= 0 && this->data->map_[i - 1][j] == PositionState::PATH) ||
-                                                     (i+1 >= 0 && this->data->map_[i+1][j] == PositionState::PATH)));
+                                                   !((i - 1 >= 0 && this->bufferReader->map_[i - 1][j] == PositionState::PATH) ||
+                                                     (i+1 >= 0 && this->bufferReader->map_[i+1][j] == PositionState::PATH)));
                         break;
                     case PositionState::TOWER:
                         this->drawField(i, j);
@@ -145,20 +150,20 @@ void MapDrawer::drawMap() {
                 }
             }
 
-        this->drawInsertPosition(this->data->start_.get_x(), this->data->start_.get_y(), marker_type::BALL);
-        this->drawInsertPosition(this->data->end_.get_x(), this->data->end_.get_y(), marker_type::CROSS);
+        this->drawInsertPosition(this->bufferReader->start_.get_x(), this->bufferReader->start_.get_y(), marker_type::BALL);
+        this->drawInsertPosition(this->bufferReader->end_.get_x(), this->bufferReader->end_.get_y(), marker_type::CROSS);
 
-        for(std::vector<TowerData>::iterator it = this->data->towers_.begin(); it != this->data->towers_.end(); ++it) {
+        for(std::vector<TowerData>::iterator it = this->bufferReader->towers_.begin(); it != this->bufferReader->towers_.end(); ++it) {
             this->drawTower(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
                             (it->type_ == TowerType::SIMPLE ? ONE_CANNON : TWO_CANNON));
         }
 
-        for(std::vector<MonsterData>::iterator it = this->data->monsters_.begin(); it != this->data->monsters_.end(); ++it) {
+        for(std::vector<MonsterData>::iterator it = this->bufferReader->monsters_.begin(); it != this->bufferReader->monsters_.end(); ++it) {
             this->drawMonster(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
                               (it->type_ == MonsterType::BASIC ? MONSTER_1 : MONSTER_2));
         }
 
-        for(std::vector<BulletData>::iterator it = this->data->bullets_.begin(); it != this->data->bullets_.end(); ++it) {
+        for(std::vector<BulletData>::iterator it = this->bufferReader->bullets_.begin(); it != this->bufferReader->bullets_.end(); ++it) {
             this->drawBullet(it->position_.get_x(), it->position_.get_y(), (it->damage_ < 10 ? BULLET_1 : BULLET_2));
         }
 
@@ -218,9 +223,9 @@ bool MapDrawer::handleEvents() {
                 int i = (int) rint(x / this->tileSize);
                 int j = (int) rint(y / this->tileSize);
 
-                bool towerPlacement = leftPressed && this->data != nullptr &&
-                        i >= 0 && i < this->data->map_.size() &&
-                        j >= 0 && j < this->data->map_[0].size();
+                bool towerPlacement = leftPressed && this->bufferReader != nullptr &&
+                        i >= 0 && i < this->bufferReader->map_.size() &&
+                        j >= 0 && j < this->bufferReader->map_[0].size();
 
 
                 if(playActivation) {
@@ -760,7 +765,7 @@ void MapDrawer::drawMenuScore() {
     dest.h = 25;
 
     std::stringstream ss;
-    ss << std::setw(5) << std::setfill('0') << this->data->score_;
+    ss << std::setw(5) << std::setfill('0') << this->bufferReader->score_;
     std::string score_text = ss.str();
 
     // Score value text
@@ -817,7 +822,7 @@ void MapDrawer::drawMenuMoney() {
 
     // Score text
     std::stringstream ss;
-    ss << std::setw(5) << std::setfill('0') << this->data->player_currency_;
+    ss << std::setw(5) << std::setfill('0') << this->bufferReader->player_currency_;
     std::string money_text = "$" + ss.str();
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, money_text.c_str(), red);
@@ -873,7 +878,7 @@ void MapDrawer::drawMenuLives() {
 
     // Score text
     std::stringstream ss;
-    ss << std::setw(5) << std::setfill('0') << this->data->lives_;
+    ss << std::setw(5) << std::setfill('0') << this->bufferReader->lives_;
     std::string money_text = ss.str();
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, money_text.c_str(), red);
@@ -929,7 +934,7 @@ void MapDrawer::drawMenuLeftMonsters() {
 
     // Score text
     std::stringstream ss;
-    ss << std::setw(5) << std::setfill('0') << this->data->monsters_left_level_;
+    ss << std::setw(5) << std::setfill('0') << this->bufferReader->monsters_left_level_;
     std::string money_text = ss.str();
 
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, money_text.c_str(), red);

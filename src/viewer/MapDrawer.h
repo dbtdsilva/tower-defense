@@ -1,10 +1,12 @@
 #ifndef TOWERDEFENSE_VIEWER_MAP_DRAWER_H
 #define TOWERDEFENSE_VIEWER_MAP_DRAWER_H
 
-#include <vector>
-#include <SDL2/SDL.h>
-#include <helpers/WorldDataSerializer.h>
+#include <mutex>
 #include <map>
+
+#include <SDL2/SDL.h>
+
+#include <helpers/WorldDataSerializer.h>
 #include <helpers/ViewerDataSerializer.h>
 
 class MapDrawer {
@@ -28,8 +30,9 @@ private:
     std::string folderPath;
 
     // Maps and objects
-    WorldData* data;
-    std::vector<WorldData*> dataVector;
+    std::mutex mtx;
+    WorldData* bufferReader;
+    WorldData* bufferWriter;
 
     enum corner_side {LEFT_UP, LEFT_DOWN, RIGHT_UP, RIGHT_DOWN};
     enum marker_type {NORMAL, WRENCH, CROSS, BALL, EXPLOSION};
