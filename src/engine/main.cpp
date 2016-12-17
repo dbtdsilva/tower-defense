@@ -59,6 +59,7 @@ void tower_task(void *interface) {
     int task_period = TASK_PERIOD_MS_TOWER * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
+    rt_printf("Tower task started!\n");
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
@@ -174,7 +175,7 @@ void god_task(void *world_state_void) {
                         rt_printf("Error creating task tower (error code = %d)\n", err);
                     } else  {
                         rt_printf("Task tower %d created successfully\n", change.identifier_);
-                        rt_task_start(&monsters_tasks.find(change.identifier_)->second, &tower_task, change.entity_);
+                        rt_task_start(&towers_tasks.find(change.identifier_)->second, &tower_task, change.entity_);
                     }
                 }
             }
@@ -199,7 +200,7 @@ void user_interaction_task(void *interface) {
     string raw_received;
     while (!terminate_tasks) {
         ssize_t bytes_read = rt_pipe_read(&task_pipe_receiver, buffer, buffer_size, TM_INFINITE);
-        if (bytes_read == 0)
+        if (bytes_read <= 0)
             continue;
         raw_received = string(buffer, bytes_read);
         unique_ptr<ViewerData> viewer;

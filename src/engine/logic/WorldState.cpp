@@ -85,7 +85,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
     }
 
     // Update bullets in the world
-    for(auto bullet_iter = bullets_.begin(); bullet_iter != bullets_.end(); ++bullet_iter) {
+    for(auto bullet_iter = bullets_.begin(); bullet_iter != bullets_.end(); ) {
         Bullet* bullet = bullet_iter->get();
         double new_x = bullet->get_position().get_x() + cos(bullet->get_angle()) * bullet->get_speed();
         double new_y = bullet->get_position().get_y() - sin(bullet->get_angle()) * bullet->get_speed();

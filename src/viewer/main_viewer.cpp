@@ -77,7 +77,6 @@ int main() {
             archive(drawer->getViewerData());
 
             string serialized_string = stream_serialize.str();
-            cout << serialized_string << endl;
             ofstream pipe_1("/dev/rtp1", ios::binary);
 
             if(pipe_1) {
