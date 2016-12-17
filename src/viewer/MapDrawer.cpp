@@ -93,6 +93,9 @@ bool MapDrawer::init() {
 void MapDrawer::updateWorldData(WorldData *data) {
     this->mtx.lock();
 
+    if(this->bufferWriter != this->bufferReader)
+        delete this->bufferWriter;
+
     this->bufferWriter = data;
 
     this->mtx.unlock();
