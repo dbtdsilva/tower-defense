@@ -15,10 +15,18 @@ void TowerInterface::shoot() {
     tower_reference_->shoot();
 }
 
-void TowerInterface::radar() {
-    tower_reference_->radar();
+const std::vector<Position<double>> TowerInterface::radar() const {
+    return tower_reference_->radar();
 }
 
 void TowerInterface::rotate(const TowerRotation& rotation) {
     tower_reference_->rotate(rotation);
+}
+
+const Position<int> TowerInterface::get_position() const {
+    return tower_reference_->get_position();
+}
+
+const double TowerInterface::get_angle() const {
+    return tower_reference_->get_angle();
 }

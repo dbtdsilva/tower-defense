@@ -21,7 +21,7 @@ public:
     void simulate_load(long load_ms);
 
 
-    const std::vector<Monster*> get_monsters() const;
+    const std::vector<Position<double>> get_monsters_position(Position<double> tower_pos, double tower_range) const;
     const double get_wall_distance(const Position<double>&, const double&, const double&) const;
     UserInteractionInterface* get_user_interaction_interface();
     void serialize_data(std::ostream&) const;
