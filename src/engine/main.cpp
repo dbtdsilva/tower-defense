@@ -27,13 +27,13 @@ map<unsigned int, RT_TASK> towers_tasks;
 RT_PIPE task_pipe_sender, task_pipe_receiver;
 RT_SEM sem_critical_region;
 
-#define TASK_MODE       0       // No flags
-#define TASK_STKSZ      10 * 1024 * 1024       // Default stack size
+#define TASK_MODE               0           // No flags
+#define TASK_STACK_SIZE         0           // Default stack size
 
-#define TASK_PRIORITY_GOD       99
+#define TASK_PRIORITY_GOD       90
 #define TASK_PRIORITY_USER      80
-#define TASK_PRIORITY_MONSTER   60
-#define TASK_PRIORITY_TOWER     40
+#define TASK_PRIORITY_MONSTER   70
+#define TASK_PRIORITY_TOWER     70
 
 #define TASK_PERIOD_MS_GOD      25
 #define TASK_PERIOD_MS_TOWER    50
@@ -130,30 +130,30 @@ void monster_task(void *interface) {
 
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
-
         Direction final_dir = D_STAY;
         Move final_move = M_STAY;
 
         // Read sensors
-        vector<double> eyes = monster_interface->eyes();
+        vector<MonsterEye> eyes = monster_interface->eyes();
         // Decision
-        if (dir == D_STAY && eyes[1] < 0.5) {
-            dir = eyes[2] > eyes[0] ? D_RIGHT : D_LEFT;
+        if (eyes.size() != 3) continue;
+        if (dir == D_STAY && eyes.at(1).wall_distance < 0.5) {
+            dir = eyes.at(2).wall_distance > eyes.at(0).wall_distance ? D_RIGHT : D_LEFT;
         }
 
-        if (dir == D_LEFT && eyes[1] < 2) {
+        if (dir == D_LEFT && eyes.at(1).wall_distance < 2) {
             final_dir = D_LEFT;
-        } else if (dir == D_RIGHT && eyes[1] < 2) {
+        } else if (dir == D_RIGHT && eyes.at(1).wall_distance < 2) {
             final_dir = D_RIGHT;
         } else {
             dir = D_STAY;
         }
 
         if (dir == D_STAY) {
-            if (eyes[0] < 0.5) {
+            if (eyes.at(0).wall_distance < 0.5) {
                 final_dir = D_RIGHT;
                 final_move = M_FRONT;
-            } else if (eyes[2] < 0.5) {
+            } else if (eyes.at(2).wall_distance < 0.5) {
                 final_dir = D_LEFT;
                 final_move = M_FRONT;
             } else {
@@ -197,7 +197,7 @@ void god_task(void *world_state_void) {
                     monsters_tasks.insert({change.identifier_, RT_TASK()});
                     string task_name("Monster Task " + change.identifier_);
                     int err = rt_task_create(&monsters_tasks.find(change.identifier_)->second, task_name.c_str(),
-                                             TASK_STKSZ, TASK_PRIORITY_MONSTER, TASK_MODE);
+                                             TASK_STACK_SIZE, TASK_PRIORITY_MONSTER, TASK_MODE);
                     if (err) {
 #ifdef DEBUG
                         rt_printf("Error creating task monster (error code = %d)\n", err);
@@ -220,7 +220,7 @@ void god_task(void *world_state_void) {
                     towers_tasks.insert({change.identifier_, RT_TASK()});
                     string task_name("Towers Task " + change.identifier_);
                     int err = rt_task_create(&towers_tasks.find(change.identifier_)->second, task_name.c_str(),
-                                             TASK_STKSZ, TASK_PRIORITY_TOWER, TASK_MODE);
+                                             TASK_STACK_SIZE, TASK_PRIORITY_TOWER, TASK_MODE);
                     if(err) {
 #ifdef DEBUG
                         rt_printf("Error creating task tower (error code = %d)\n", err);
@@ -319,7 +319,7 @@ int main(int argc, char** argv) {
 #endif
     /* Create RT task */
     /* Args: descriptor, name, stack size, prioritry [0..99] and mode (flags for CPU, FPU, joinable ...) */
-    err = rt_task_create(&god_task_desc, "God Task", TASK_STKSZ, TASK_PRIORITY_GOD, TASK_MODE);
+    err = rt_task_create(&god_task_desc, "God Task", TASK_STACK_SIZE, TASK_PRIORITY_GOD, TASK_MODE);
 #ifdef DEBUG
     if(err) {
         rt_printf("Error creating task a (error code = %d)\n", err);
@@ -329,7 +329,7 @@ int main(int argc, char** argv) {
     }
 #endif
        
-    err = rt_task_create(&user_task_desc, "User Interaction Task", TASK_STKSZ, TASK_PRIORITY_USER, TASK_MODE);
+    err = rt_task_create(&user_task_desc, "User Interaction Task", TASK_STACK_SIZE, TASK_PRIORITY_USER, TASK_MODE);
 #ifdef DEBUG
     if(err) {
         rt_printf("Error creating task a (error code = %d)\n", err);

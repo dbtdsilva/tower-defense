@@ -114,11 +114,11 @@ std::vector<EntityModification> WorldState::update_world_state() {
                     switch (monster->get_type()) {
                         case MonsterType::BASIC:
                             score_ += 1;
-                            player_currency_ += 1;
+                            player_currency_ += 10;
                             break;
                         case MonsterType::INSANE:
                             score_ += 2;
-                            player_currency_ += 2;
+                            player_currency_ += 25;
                             break;
                     }
                     entity_modifications.push_back(EntityModification(monster->get_interface(),
@@ -139,6 +139,8 @@ std::vector<EntityModification> WorldState::update_world_state() {
     // Update monster state
     for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ) {
         Monster* monster = monster_iter->get();
+        monster->update_eyes();
+
         const vector<MonsterMovement>& movements = monster->get_requested_movements();
         if (!movements.empty()) {
             const Position<double>& position = monster->get_position();

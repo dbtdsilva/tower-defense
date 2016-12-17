@@ -9,7 +9,7 @@ void MonsterInterface::reference_moved(Monster* reference) {
     monster_reference_ = reference;
 }
 
-std::vector<double> MonsterInterface::eyes() {
+std::vector<MonsterEye> MonsterInterface::eyes() {
     return monster_reference_->eyes();
 }
 

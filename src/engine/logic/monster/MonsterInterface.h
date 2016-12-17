@@ -13,7 +13,7 @@ public:
     MonsterInterface(Monster* reference);
     void reference_moved(Monster* reference);
 
-    std::vector<double> eyes();
+    std::vector<MonsterEye> eyes();
     void move(const MonsterMovement&);
     void rotate(const MonsterRotation&);
 private:

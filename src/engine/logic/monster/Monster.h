@@ -20,7 +20,7 @@ public:
     Monster& operator=(const Monster& other) = delete;
     Monster& operator=(Monster&& other) = delete;
 
-    std::vector<double> eyes();
+    std::vector<MonsterEye>& eyes();
     void move(const MonsterMovement&);
     void rotate(const MonsterRotation&);
 
@@ -36,6 +36,8 @@ public:
     const std::vector<MonsterRotation>& get_requested_rotations() const;
     const unsigned int& get_identifier() const;
     const int& bullet_struck(const int& bullet_damage);
+
+    void update_eyes();
     MonsterInterface* get_interface();
     void clear_requests();
 protected:
@@ -53,6 +55,7 @@ private:
     double angle_;
 
     std::vector<MonsterMovement> requested_movements_;
+    std::vector<MonsterEye> monster_eyes_;
     std::vector<MonsterRotation> requested_rotations_;
     std::unique_ptr<MonsterInterface> interface_;
     WorldState* world_ref_;
