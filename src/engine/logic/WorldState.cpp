@@ -1,9 +1,12 @@
 #include "WorldState.h"
 
 #include <cmath>
+#include <native/timer.h>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/string.hpp>
 #include <helpers/WorldDataSerializer.h>
+#include <native/types.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -287,6 +290,22 @@ void WorldState::append_line_to_path(Position<int> src, Position<int> dst) {
             }
         }
     }
+}
+
+void WorldState::simulate_load(long load_ms) {
+    struct timespec req = {0};
+    time_t sec = (int) (load_ms / 1000);
+    load_ms = load_ms - (sec * 1000);
+    req.tv_sec = sec;
+    req.tv_nsec = load_ms * 1000000L;
+
+    nanosleep(&req, &req);
+    /*RTIME ti, tf;
+    RTIME load_ns = 10;//1000000 * (RTIME) load_ms;
+
+    ti = rt_timer_read();           // Get initial time
+    tf = ti + load_ns;              // Compute end time
+    while(rt_timer_read() < tf);    // Busy wait*/
 }
 
 ostream& operator<<(ostream& os, const WorldState& obj)

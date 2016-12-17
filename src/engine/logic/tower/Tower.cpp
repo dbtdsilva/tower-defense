@@ -85,6 +85,7 @@ void Tower::shoot() {
 
 vector<Position<double>> Tower::radar() {
     // Implement a cost function
+    world_ref_->simulate_load(radar_load_time_);
 
     // Return the value
     vector<Position<double>> monsters_in_range;

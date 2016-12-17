@@ -57,7 +57,6 @@ void recv_message(MapDrawer *drawer) {
 void draw_map(MapDrawer *drawer) {
     while(!drawer->isQuit()) {
         drawer->drawMap();
-        //SDL_Delay(50);
     }
 }
 

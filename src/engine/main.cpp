@@ -31,8 +31,8 @@ RT_SEM sem_critical_region;
 
 #define TASK_PRIORITY_GOD       99
 #define TASK_PRIORITY_USER      80
-#define TASK_PRIORITY_TOWER     70
 #define TASK_PRIORITY_MONSTER   60
+#define TASK_PRIORITY_TOWER     40
 
 #define TASK_PERIOD_MS_GOD      25
 #define TASK_PERIOD_MS_TOWER    50
@@ -64,9 +64,10 @@ void tower_task(void *interface) {
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
 
-        rt_sem_p(&sem_critical_region, TM_INFINITE);
+        tower_interface->radar();
+        //rt_sem_p(&sem_critical_region, TM_INFINITE);
         tower_interface->shoot();
-        rt_sem_v(&sem_critical_region);
+        //rt_sem_v(&sem_critical_region);
     }
 }
 
@@ -116,7 +117,7 @@ void monster_task(void *interface) {
         }
 
         // Action
-        rt_sem_p(&sem_critical_region, TM_INFINITE);
+        //rt_sem_p(&sem_critical_region, TM_INFINITE);
         if (final_dir == D_RIGHT)
             monster_interface->rotate(MonsterRotation::RIGHT);
         else if (final_dir == D_LEFT)
@@ -124,7 +125,7 @@ void monster_task(void *interface) {
 
         if (final_move == M_FRONT)
             monster_interface->move(MonsterMovement::FRONT);
-        rt_sem_v(&sem_critical_region);
+        //rt_sem_v(&sem_critical_region);
     }
     return;
 }
@@ -186,8 +187,7 @@ void god_task(void *world_state_void) {
         serialized_string = "MESSAGE" + stream_serialize.str();
         ssize_t err = rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
         if(err < 0) {
-            rt_printf("Error sending world state message (error code = %d)\n", err);
-            return;
+            //rt_printf("Error sending world state message (error code = %d)\n", err);
         }
 
     }

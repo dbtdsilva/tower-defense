@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <helpers/Position.h>
+
 #include "tower/Tower.h"
 #include "tower/Bullet.h"
 #include "monster/Monster.h"
@@ -17,6 +18,8 @@ public:
 
     std::vector<EntityModification> update_world_state();
     void clear_world_requests();
+    void simulate_load(long load_ms);
+
 
     const std::vector<Monster*> get_monsters() const;
     const double get_wall_distance(const Position<double>&, const double&, const double&) const;
