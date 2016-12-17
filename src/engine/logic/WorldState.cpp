@@ -1,9 +1,12 @@
 #include "WorldState.h"
 
 #include <cmath>
+#include <native/timer.h>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/string.hpp>
 #include <helpers/WorldDataSerializer.h>
+#include <native/types.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -85,12 +88,21 @@ std::vector<EntityModification> WorldState::update_world_state() {
     }
 
     // Update bullets in the world
-    for(auto bullet_iter = bullets_.begin(); bullet_iter != bullets_.end(); ++bullet_iter) {
+    for(auto bullet_iter = bullets_.begin(); bullet_iter != bullets_.end(); ) {
         Bullet* bullet = bullet_iter->get();
         double new_x = bullet->get_position().get_x() + cos(bullet->get_angle()) * bullet->get_speed();
         double new_y = bullet->get_position().get_y() - sin(bullet->get_angle()) * bullet->get_speed();
 
+        bullet->get_position().set_x(new_x);
+        bullet->get_position().set_y(new_y);
+
         bool bullet_struck = false;
+        if (new_x < 0 || new_x >= width_ || new_y < 0 || new_y >= height_ ||
+                bullet->get_distance_travelled() >= bullet->get_range()) {
+            bullet_struck = true;
+            bullet_iter = bullets_.erase(bullet_iter);
+        }
+
         for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ++monster_iter) {
             Monster* monster = monster_iter->get();
             if (sqrt(pow(new_x - monster->get_position().get_x(), 2) +
@@ -118,8 +130,6 @@ std::vector<EntityModification> WorldState::update_world_state() {
         }
 
         if (!bullet_struck) {
-            bullet->get_position().set_x(new_x);
-            bullet->get_position().set_y(new_y);
             bullet_iter++;
         }
     }
@@ -187,7 +197,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
         if (!requested_shoots.empty()) {
             bullets_.push_back(make_unique<Bullet>(Position<double>(tower->get_position().get_x() + 0.5,
                                                                     tower->get_position().get_y() + 0.5),
-                                                   requested_shoots[0], 0.1, tower->get_damage()));
+                                                   requested_shoots[0], 0.1, tower->get_damage(), tower->get_range()));
         }
         // Check for rotations
         const vector<TowerRotation>& requested_rotations = tower->get_requested_rotations();
@@ -287,6 +297,22 @@ void WorldState::append_line_to_path(Position<int> src, Position<int> dst) {
             }
         }
     }
+}
+
+void WorldState::simulate_load(long load_ms) {
+    struct timespec req = {0};
+    time_t sec = (int) (load_ms / 1000);
+    load_ms = load_ms - (sec * 1000);
+    req.tv_sec = sec;
+    req.tv_nsec = load_ms * 1000000L;
+
+    nanosleep(&req, &req);
+    /*RTIME ti, tf;
+    RTIME load_ns = 10;//1000000 * (RTIME) load_ms;
+
+    ti = rt_timer_read();           // Get initial time
+    tf = ti + load_ns;              // Compute end time
+    while(rt_timer_read() < tf);    // Busy wait*/
 }
 
 ostream& operator<<(ostream& os, const WorldState& obj)

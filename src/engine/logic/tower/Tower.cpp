@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include "types/SimpleTower.h"
+#include "types/ComplexTower.h"
 #include "../monster/Monster.h"
 #include "../WorldState.h"
 
@@ -13,6 +14,8 @@ Tower Tower::create_tower(WorldState* world_ref, const TowerType& ref, const Pos
     switch (ref) {
         case TowerType::SIMPLE:
             return SimpleTower(world_ref, position);
+        case TowerType::COMPLEX:
+            return ComplexTower(world_ref, position);
     }
 }
 
@@ -20,7 +23,7 @@ Tower::~Tower() {
     // Only smart pointers are used
 }
 
-Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, const int& cost, const int& range,
+Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, const int& cost, const double& range,
              const double& rotational_speed, const Position<int>& pos, const TowerType& type) :
         damage_(damage), radar_load_time_(radar_load_time), cost_(cost), range_(range),
         rotational_speed_(rotational_speed), pos_(pos), angle_(0), world_ref_(state),
@@ -85,6 +88,7 @@ void Tower::shoot() {
 
 vector<Position<double>> Tower::radar() {
     // Implement a cost function
+    world_ref_->simulate_load(radar_load_time_);
 
     // Return the value
     vector<Position<double>> monsters_in_range;
@@ -108,4 +112,8 @@ const TowerType &Tower::get_type() const {
 
 const int &Tower::get_damage() const {
     return damage_;
+}
+
+const double& Tower::get_range() const {
+    return range_;
 }

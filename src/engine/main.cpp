@@ -31,8 +31,8 @@ RT_SEM sem_critical_region;
 
 #define TASK_PRIORITY_GOD       99
 #define TASK_PRIORITY_USER      80
-#define TASK_PRIORITY_TOWER     70
 #define TASK_PRIORITY_MONSTER   60
+#define TASK_PRIORITY_TOWER     40
 
 #define TASK_PERIOD_MS_GOD      25
 #define TASK_PERIOD_MS_TOWER    50
@@ -59,13 +59,15 @@ void tower_task(void *interface) {
     int task_period = TASK_PERIOD_MS_TOWER * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
+    rt_printf("Tower task started!\n");
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
 
-        rt_sem_p(&sem_critical_region, TM_INFINITE);
+        tower_interface->radar();
+        //rt_sem_p(&sem_critical_region, TM_INFINITE);
         tower_interface->shoot();
-        rt_sem_v(&sem_critical_region);
+        //rt_sem_v(&sem_critical_region);
     }
 }
 
@@ -115,7 +117,7 @@ void monster_task(void *interface) {
         }
 
         // Action
-        rt_sem_p(&sem_critical_region, TM_INFINITE);
+        //rt_sem_p(&sem_critical_region, TM_INFINITE);
         if (final_dir == D_RIGHT)
             monster_interface->rotate(MonsterRotation::RIGHT);
         else if (final_dir == D_LEFT)
@@ -123,7 +125,7 @@ void monster_task(void *interface) {
 
         if (final_move == M_FRONT)
             monster_interface->move(MonsterMovement::FRONT);
-        rt_sem_v(&sem_critical_region);
+        //rt_sem_v(&sem_critical_region);
     }
     return;
 }
@@ -151,7 +153,8 @@ void god_task(void *world_state_void) {
                 if (change.action_ == EntityAction::ADD) {
                     monsters_tasks.insert({change.identifier_, RT_TASK()});
                     string task_name("Monster Task " + monsters_tasks.size());
-                    int err = rt_task_create(&monsters_tasks.find(change.identifier_)->second, task_name.c_str(), TASK_STKSZ, TASK_PRIORITY_MONSTER, TASK_MODE);
+                    int err = rt_task_create(&monsters_tasks.find(change.identifier_)->second, task_name.c_str(),
+                                             TASK_STKSZ, TASK_PRIORITY_MONSTER, TASK_MODE);
                     if(err) {
                         rt_printf("Error creating task monster (error code = %d)\n", err);
                     } else  {
@@ -164,14 +167,17 @@ void god_task(void *world_state_void) {
                     monsters_tasks.erase(change.identifier_);
                 }
             } else if (change.type_ == EntityType::TOWER) {
-                towers_tasks.insert({change.identifier_, RT_TASK()});
-                string task_name("Towers Task " + towers_tasks.size());
-                int err = rt_task_create(&towers_tasks.find(change.identifier_)->second, task_name.c_str(), TASK_STKSZ, TASK_PRIORITY_TOWER, TASK_MODE);
-                if(err) {
-                    rt_printf("Error creating task tower (error code = %d)\n", err);
-                } else  {
-                    rt_printf("Task tower %d created successfully\n", change.identifier_);
-                    rt_task_start(&monsters_tasks.find(change.identifier_)->second, &tower_task, change.entity_);
+                if (change.action_ == EntityAction::ADD) {
+                    towers_tasks.insert({change.identifier_, RT_TASK()});
+                    string task_name("Towers Task " + towers_tasks.size());
+                    int err = rt_task_create(&towers_tasks.find(change.identifier_)->second, task_name.c_str(),
+                                             TASK_STKSZ, TASK_PRIORITY_TOWER, TASK_MODE);
+                    if(err) {
+                        rt_printf("Error creating task tower (error code = %d)\n", err);
+                    } else  {
+                        rt_printf("Task tower %d created successfully\n", change.identifier_);
+                        rt_task_start(&towers_tasks.find(change.identifier_)->second, &tower_task, change.entity_);
+                    }
                 }
             }
         }
@@ -182,7 +188,6 @@ void god_task(void *world_state_void) {
         ssize_t err = rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
         if(err < 0) {
             rt_printf("Error sending world state message (error code = %d)\n", err);
-            return;
         }
 
     }
@@ -190,29 +195,29 @@ void god_task(void *world_state_void) {
 
 void user_interaction_task(void *interface) {
     UserInteractionInterface* user_interface = static_cast<UserInteractionInterface*>(interface);
-    unsigned int buffer_size = 256;
+    unsigned int buffer_size = 512;
     char buffer[buffer_size];
-    string raw_received,            // Contains the last raw message received
-            raw_total_received,     // Contains the raw messages received till the moment that contain useful info
-            useless_chars,          // Used to parse trash characters that might appear
-            final_message;          // Final message parsed and ready for the serializer
+    string raw_received;
     while (!terminate_tasks) {
         ssize_t bytes_read = rt_pipe_read(&task_pipe_receiver, buffer, buffer_size, TM_INFINITE);
-        if (bytes_read == 0)
+        if (bytes_read <= 0)
             continue;
         raw_received = string(buffer, bytes_read);
-        ViewerData *viewer = new ViewerData();
-
+        unique_ptr<ViewerData> viewer;
         istringstream file_data(raw_received);
         cereal::BinaryInputArchive archive(file_data);
-        archive(*viewer);
-
-        switch(viewer->type) {
+        archive(viewer);
+        switch (viewer->get_type()) {
             case ViewerRequest::GAME_STATUS:
-                rt_printf("Game Status\n");
+                rt_printf("Game\n");
                 break;
             case ViewerRequest::TOWER:
-                rt_printf("Tower\n");
+                OperationTowerData* data = dynamic_cast<OperationTowerData*>(viewer.get());
+                if (data->operation_ == TowerOperation::INSERT) {
+                    user_interface->add_tower(data->type_, data->position_);
+                } else {
+
+                }
                 break;
         }
     }
