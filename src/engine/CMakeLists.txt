@@ -24,5 +24,5 @@ IF(Xenomai_FOUND)
 
   ADD_DEPENDENCIES(towerdefense cereal)
   TARGET_LINK_LIBRARIES(towerdefense ${Xenomai_LIBRARIES_NATIVE})
-  SET_TARGET_PROPERTIES(towerdefense PROPERTIES COMPILE_FLAGS "-std=c++14")
+  SET_TARGET_PROPERTIES(towerdefense PROPERTIES COMPILE_FLAGS "-std=c++14 -g")
 ENDIF()

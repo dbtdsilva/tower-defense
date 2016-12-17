@@ -100,14 +100,12 @@ void tower_task(void *interface) {
                     value += M_PI;
             }
             double diff = normalize_angle(value - tower_interface->get_angle());
-            if (diff > 0) {
-                tower_interface->rotate(TowerRotation::LEFT);
-            } else if (diff < 0) {
-                tower_interface->rotate(TowerRotation::RIGHT);
-            }
 
             rt_sem_p(&sem_critical_region, TM_INFINITE);
-            tower_interface->shoot();
+            tower_interface->rotate(diff < 0 ? TowerRotation::RIGHT : TowerRotation::LEFT);
+            if (fabs(diff) < M_PI_4) {
+                tower_interface->shoot();
+            }
             rt_sem_v(&sem_critical_region);
         }
     }
@@ -159,7 +157,7 @@ void monster_task(void *interface) {
         }
 
         // Action
-        //rt_sem_p(&sem_critical_region, TM_INFINITE);
+        rt_sem_p(&sem_critical_region, TM_INFINITE);
         if (final_dir == D_RIGHT)
             monster_interface->rotate(MonsterRotation::RIGHT);
         else if (final_dir == D_LEFT)
@@ -167,7 +165,7 @@ void monster_task(void *interface) {
 
         if (final_move == M_FRONT)
             monster_interface->move(MonsterMovement::FRONT);
-        //rt_sem_v(&sem_critical_region);
+        rt_sem_v(&sem_critical_region);
     }
     return;
 }
@@ -184,7 +182,6 @@ void god_task(void *world_state_void) {
         rt_task_wait_period(NULL);
 
         vector<EntityModification> changes = world->update_world_state();
-
         rt_sem_p(&sem_critical_region, TM_INFINITE);
         world->clear_world_requests();
         rt_sem_v(&sem_critical_region);
@@ -194,10 +191,10 @@ void god_task(void *world_state_void) {
                 // Create/delete monster task
                 if (change.action_ == EntityAction::ADD) {
                     monsters_tasks.insert({change.identifier_, RT_TASK()});
-                    string task_name("Monster Task " + monsters_tasks.size());
+                    string task_name("Monster Task " + change.identifier_);
                     int err = rt_task_create(&monsters_tasks.find(change.identifier_)->second, task_name.c_str(),
                                              TASK_STKSZ, TASK_PRIORITY_MONSTER, TASK_MODE);
-                    if(err) {
+                    if (err) {
                         rt_printf("Error creating task monster (error code = %d)\n", err);
                     } else  {
                         rt_printf("Task monster %d created successfully\n", change.identifier_);
@@ -211,7 +208,7 @@ void god_task(void *world_state_void) {
             } else if (change.type_ == EntityType::TOWER) {
                 if (change.action_ == EntityAction::ADD) {
                     towers_tasks.insert({change.identifier_, RT_TASK()});
-                    string task_name("Towers Task " + towers_tasks.size());
+                    string task_name("Towers Task " + change.identifier_);
                     int err = rt_task_create(&towers_tasks.find(change.identifier_)->second, task_name.c_str(),
                                              TASK_STKSZ, TASK_PRIORITY_TOWER, TASK_MODE);
                     if(err) {
@@ -249,16 +246,17 @@ void user_interaction_task(void *interface) {
         istringstream file_data(raw_received);
         cereal::BinaryInputArchive archive(file_data);
         archive(viewer);
+
         switch (viewer->get_type()) {
             case ViewerRequest::GAME_STATUS:
-                rt_printf("Game\n");
                 break;
             case ViewerRequest::TOWER:
                 OperationTowerData* data = dynamic_cast<OperationTowerData*>(viewer.get());
                 if (data->operation_ == TowerOperation::INSERT) {
+                    rt_sem_p(&sem_critical_region, TM_INFINITE);
                     user_interface->add_tower(data->type_, data->position_);
+                    rt_sem_v(&sem_critical_region);
                 } else {
-
                 }
                 break;
         }
