@@ -20,6 +20,10 @@ Monster::Monster(WorldState* state, const int& health, const double& movement_sp
         pos_(pos), angle_(0), interface_(make_unique<MonsterInterface>(this)), type_(type),
         id_(Monster::instance_counter)
 {
+    const vector<double> eyes_direction = {M_PI / 3.0, 0.0, -M_PI / 3.0};
+    for (double eye_direction : eyes_direction) {
+        monster_eyes_.push_back(MonsterEye(eye_direction, 0.0));
+    }
     Monster::instance_counter++;
 }
 
@@ -29,7 +33,7 @@ Monster::~Monster() {
 Monster::Monster(Monster&& other) :
         world_ref_(other.world_ref_), health_(other.health_), movement_speed_(other.movement_speed_),
         rotational_speed_(other.rotational_speed_), pos_(other.pos_), angle_(other.angle_),
-        interface_(std::move(other.interface_)), type_(other.type_), id_(other.id_)
+        interface_(std::move(other.interface_)), type_(other.type_), id_(other.id_),  monster_eyes_(other.monster_eyes_)
 {
     interface_->reference_moved(this);
     other.interface_ = nullptr;
@@ -56,18 +60,19 @@ const double& Monster::get_movement_speed() const {
     return movement_speed_;
 }
 
-std::vector<MonsterEye> Monster::eyes() {
+std::vector<MonsterEye>& Monster::eyes() {
     // Implement cost function
 
     // Calculate the eyes values
-    vector<MonsterEye> monster_eyes;
-    const vector<double> eyes_direction = {M_PI / 3.0, 0.0, -M_PI / 3.0};
-    for (double eye_direction : eyes_direction) {
-        double distance = world_ref_->get_wall_distance(pos_, angle_ + eye_direction, 0.01);
+    return monster_eyes_;
+}
+
+void Monster::update_eyes() {
+    for (MonsterEye& eye : monster_eyes_) {
+        double distance = world_ref_->get_wall_distance(pos_, angle_ + eye.direction, 0.01);
         if (distance > 3.0) distance = 3.0;
-        monster_eyes.push_back({ eye_direction, distance });
+        eye.wall_distance = distance;
     }
-    return monster_eyes;
 }
 
 void Monster::move(const MonsterMovement& movement) {

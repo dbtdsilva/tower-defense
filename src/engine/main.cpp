@@ -27,13 +27,13 @@ map<unsigned int, RT_TASK> towers_tasks;
 RT_PIPE task_pipe_sender, task_pipe_receiver;
 RT_SEM sem_critical_region;
 
-#define TASK_MODE       0       // No flags
-#define TASK_STKSZ      0       // Default stack size
+#define TASK_MODE               0           // No flags
+#define TASK_STACK_SIZE         0           // Default stack size
 
-#define TASK_PRIORITY_GOD       99
+#define TASK_PRIORITY_GOD       90
 #define TASK_PRIORITY_USER      80
-#define TASK_PRIORITY_MONSTER   60
-#define TASK_PRIORITY_TOWER     40
+#define TASK_PRIORITY_MONSTER   70
+#define TASK_PRIORITY_TOWER     70
 
 #define TASK_PERIOD_MS_GOD      25
 #define TASK_PERIOD_MS_TOWER    50
@@ -64,7 +64,9 @@ void wait_for_ctrl_c(void) {
     pause();
     
     // Will terminate
+#ifdef DEBUG
     rt_printf("Terminating ...\n");
+#endif
 }
 
 double normalize_angle(const double& angle) {
@@ -78,7 +80,9 @@ void tower_task(void *interface) {
     int task_period = TASK_PERIOD_MS_TOWER * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
+#ifdef DEBUG
     rt_printf("Tower task started!\n");
+#endif
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
 
     Position<double> tower_map(tower_interface->get_position().get_x() + 0.5,
@@ -100,14 +104,12 @@ void tower_task(void *interface) {
                     value += M_PI;
             }
             double diff = normalize_angle(value - tower_interface->get_angle());
-            if (diff > 0) {
-                tower_interface->rotate(TowerRotation::LEFT);
-            } else if (diff < 0) {
-                tower_interface->rotate(TowerRotation::RIGHT);
-            }
 
             rt_sem_p(&sem_critical_region, TM_INFINITE);
-            tower_interface->shoot();
+            tower_interface->rotate(diff < 0 ? TowerRotation::RIGHT : TowerRotation::LEFT);
+            if (fabs(diff) < M_PI_4) {
+                tower_interface->shoot();
+            }
             rt_sem_v(&sem_critical_region);
         }
     }
@@ -117,7 +119,9 @@ void monster_task(void *interface) {
     int task_period = TASK_PERIOD_MS_MONSTER * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
+#ifdef DEBUG
     rt_printf("Monster task started!\n");
+#endif
     MonsterInterface* monster_interface = static_cast<MonsterInterface*>(interface);
 
     enum Direction { D_STAY, D_LEFT, D_RIGHT };
@@ -126,31 +130,30 @@ void monster_task(void *interface) {
 
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
-
         Direction final_dir = D_STAY;
         Move final_move = M_STAY;
 
         // Read sensors
         vector<MonsterEye> eyes = monster_interface->eyes();
         // Decision
-        if (dir == D_STAY && monster_interface->eyes()[1].wall_distance < 0.5) {
-            dir = monster_interface->eyes()[2].wall_distance > monster_interface->eyes()[0].wall_distance ?
-                  D_RIGHT : D_LEFT;
+        if (eyes.size() != 3) continue;
+        if (dir == D_STAY && eyes.at(1).wall_distance < 0.5) {
+            dir = eyes.at(2).wall_distance > eyes.at(0).wall_distance ? D_RIGHT : D_LEFT;
         }
 
-        if (dir == D_LEFT && monster_interface->eyes()[1].wall_distance < 2) {
+        if (dir == D_LEFT && eyes.at(1).wall_distance < 2) {
             final_dir = D_LEFT;
-        } else if (dir == D_RIGHT && monster_interface->eyes()[1].wall_distance < 2) {
+        } else if (dir == D_RIGHT && eyes.at(1).wall_distance < 2) {
             final_dir = D_RIGHT;
         } else {
             dir = D_STAY;
         }
 
         if (dir == D_STAY) {
-            if (monster_interface->eyes()[0].wall_distance < 0.5) {
+            if (eyes.at(0).wall_distance < 0.5) {
                 final_dir = D_RIGHT;
                 final_move = M_FRONT;
-            } else if (monster_interface->eyes()[2].wall_distance < 0.5) {
+            } else if (eyes.at(2).wall_distance < 0.5) {
                 final_dir = D_LEFT;
                 final_move = M_FRONT;
             } else {
@@ -159,7 +162,7 @@ void monster_task(void *interface) {
         }
 
         // Action
-        //rt_sem_p(&sem_critical_region, TM_INFINITE);
+        rt_sem_p(&sem_critical_region, TM_INFINITE);
         if (final_dir == D_RIGHT)
             monster_interface->rotate(MonsterRotation::RIGHT);
         else if (final_dir == D_LEFT)
@@ -167,9 +170,8 @@ void monster_task(void *interface) {
 
         if (final_move == M_FRONT)
             monster_interface->move(MonsterMovement::FRONT);
-        //rt_sem_v(&sem_critical_region);
+        rt_sem_v(&sem_critical_region);
     }
-    return;
 }
 
 void god_task(void *world_state_void) {
@@ -183,9 +185,8 @@ void god_task(void *world_state_void) {
     while(!terminate_tasks) {
         rt_task_wait_period(NULL);
 
-        vector<EntityModification> changes = world->update_world_state();
-
         rt_sem_p(&sem_critical_region, TM_INFINITE);
+        vector<EntityModification> changes = world->update_world_state();
         world->clear_world_requests();
         rt_sem_v(&sem_critical_region);
 
@@ -194,30 +195,40 @@ void god_task(void *world_state_void) {
                 // Create/delete monster task
                 if (change.action_ == EntityAction::ADD) {
                     monsters_tasks.insert({change.identifier_, RT_TASK()});
-                    string task_name("Monster Task " + monsters_tasks.size());
+                    string task_name("Monster Task " + change.identifier_);
                     int err = rt_task_create(&monsters_tasks.find(change.identifier_)->second, task_name.c_str(),
-                                             TASK_STKSZ, TASK_PRIORITY_MONSTER, TASK_MODE);
-                    if(err) {
+                                             TASK_STACK_SIZE, TASK_PRIORITY_MONSTER, TASK_MODE);
+                    if (err) {
+#ifdef DEBUG
                         rt_printf("Error creating task monster (error code = %d)\n", err);
+#endif
                     } else  {
+#ifdef DEBUG
                         rt_printf("Task monster %d created successfully\n", change.identifier_);
+#endif
                         rt_task_start(&monsters_tasks.find(change.identifier_)->second, &monster_task, change.entity_);
                     }
                 } else {
+#ifdef DEBUG
                     rt_printf("Deleting task monster with id %d\n", change.identifier_);
+#endif
                     rt_task_delete(&monsters_tasks.find(change.identifier_)->second);
                     monsters_tasks.erase(change.identifier_);
                 }
             } else if (change.type_ == EntityType::TOWER) {
                 if (change.action_ == EntityAction::ADD) {
                     towers_tasks.insert({change.identifier_, RT_TASK()});
-                    string task_name("Towers Task " + towers_tasks.size());
+                    string task_name("Towers Task " + change.identifier_);
                     int err = rt_task_create(&towers_tasks.find(change.identifier_)->second, task_name.c_str(),
-                                             TASK_STKSZ, TASK_PRIORITY_TOWER, TASK_MODE);
+                                             TASK_STACK_SIZE, TASK_PRIORITY_TOWER, TASK_MODE);
                     if(err) {
+#ifdef DEBUG
                         rt_printf("Error creating task tower (error code = %d)\n", err);
+#endif
                     } else  {
+#ifdef DEBUG
                         rt_printf("Task tower %d created successfully\n", change.identifier_);
+#endif
                         rt_task_start(&towers_tasks.find(change.identifier_)->second, &tower_task, change.entity_);
                     }
                 }
@@ -228,10 +239,11 @@ void god_task(void *world_state_void) {
         world->serialize_data(stream_serialize);
         serialized_string = "MESSAGE" + stream_serialize.str();
         ssize_t err = rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
+#ifdef DEBUG
         if(err < 0) {
             rt_printf("Error sending world state message (error code = %d)\n", err);
         }
-
+#endif
     }
 }
 
@@ -249,16 +261,17 @@ void user_interaction_task(void *interface) {
         istringstream file_data(raw_received);
         cereal::BinaryInputArchive archive(file_data);
         archive(viewer);
+
         switch (viewer->get_type()) {
             case ViewerRequest::GAME_STATUS:
-                rt_printf("Game\n");
                 break;
             case ViewerRequest::TOWER:
                 OperationTowerData* data = dynamic_cast<OperationTowerData*>(viewer.get());
                 if (data->operation_ == TowerOperation::INSERT) {
+                    rt_sem_p(&sem_critical_region, TM_INFINITE);
                     user_interface->add_tower(data->type_, data->position_);
+                    rt_sem_v(&sem_critical_region);
                 } else {
-
                 }
                 break;
         }
@@ -276,45 +289,55 @@ int main(int argc, char** argv) {
     mlockall(MCL_CURRENT | MCL_FUTURE);
 
     int err = rt_pipe_create(&task_pipe_sender, NULL, 0, 0);
+#ifdef DEBUG
     if (err) {
         rt_printf("Error creating pipe (error code = %d)\n", err);
         return err;
     } else {
         rt_printf("Pipe created successfully\n");
     }
+#endif
 
     err = rt_pipe_create(&task_pipe_receiver, NULL, 1, 0);
+#ifdef DEBUG
     if (err) {
         rt_printf("Error creating pipe (error code = %d)\n", err);
         return err;
     } else {
         rt_printf("Pipe created successfully\n");
     }
+#endif
 
     err = rt_sem_create(&sem_critical_region, "CriticalRegion", 1, S_FIFO);
+#ifdef DEBUG
     if (err) {
         rt_printf("Error creating semaphore (error code = %d)\n", err);
         return err;
     } else {
         rt_printf("Semaphore created successfully\n");
     }
+#endif
     /* Create RT task */
     /* Args: descriptor, name, stack size, prioritry [0..99] and mode (flags for CPU, FPU, joinable ...) */
-    err = rt_task_create(&god_task_desc, "God Task", TASK_STKSZ, TASK_PRIORITY_GOD, TASK_MODE);
+    err = rt_task_create(&god_task_desc, "God Task", TASK_STACK_SIZE, TASK_PRIORITY_GOD, TASK_MODE);
+#ifdef DEBUG
     if(err) {
         rt_printf("Error creating task a (error code = %d)\n", err);
         return err;
     } else  {
         rt_printf("God task created successfully\n");
     }
+#endif
        
-    err = rt_task_create(&user_task_desc, "User Interaction Task", TASK_STKSZ, TASK_PRIORITY_USER, TASK_MODE);
+    err = rt_task_create(&user_task_desc, "User Interaction Task", TASK_STACK_SIZE, TASK_PRIORITY_USER, TASK_MODE);
+#ifdef DEBUG
     if(err) {
         rt_printf("Error creating task a (error code = %d)\n", err);
         return err;
     } else  {
         rt_printf("User Interaction task created successfully\n");
     }
+#endif
         
     /* Start RT tasks */
     rt_task_start(&god_task_desc, &god_task, &world);
