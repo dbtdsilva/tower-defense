@@ -14,9 +14,9 @@ using namespace std;
 WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
         width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
         user_interaction_(this), player_currency_(10000),
-        game_level_(0), monsters_per_level_(5), monsters_left_to_spawn_(0), idle_cycles_(0),
+        game_level_(0), monsters_per_level_(5), monsters_left_to_spawn_(0), idle_cycles_between_levels_(0),
         idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms),
-        score_(0), lives_(10)
+        score_(0), lives_(10), time_between_level_ms_(1000), time_between_monsters_ms_(1000)
 {
     start_position.set_x(0);
     start_position.set_y(1);
@@ -87,14 +87,14 @@ std::vector<EntityModification> WorldState::update_world_state() {
 
     if (monsters_left_to_spawn_ == 0) {
         if (monsters_.empty()) {
-            idle_cycles_++;
-            if (idle_cycles_ > (2.0 / cycle_ms_)) {
+            idle_cycles_between_levels_++;
+            if (idle_cycles_between_levels_ > (time_between_level_ms_ / cycle_ms_)) {
                 game_level_++;
                 monsters_left_to_spawn_ = monsters_per_level_;
-                idle_cycles_ = 0;
+                idle_cycles_between_levels_ = 0;
             }
         }
-    } else if (idle_cycles_before_spawn_ > (200.0 / cycle_ms_)){
+    } else if (idle_cycles_before_spawn_ > (time_between_monsters_ms_ / cycle_ms_)){
         unique_ptr<Monster> ref = make_unique<Monster>(Monster::add_monster(
                 this, MonsterType::BASIC, Position<double>(start_position.get_x() + 0.5, start_position.get_y() + 0.5)));
         monsters_.push_back(std::move(ref));
@@ -288,6 +288,7 @@ void WorldState::serialize_data(ostream& stream) const {
     data_to_serialize.monsters_left_level_ = monsters_left_to_spawn_;
     data_to_serialize.player_currency_ = player_currency_;
     data_to_serialize.lives_ = lives_;
+    data_to_serialize.time_level_start_ms_ = cycle_ms_ * idle_cycles_between_levels_;
 
     data_to_serialize.start_ = start_position;
     data_to_serialize.end_ = end_position;

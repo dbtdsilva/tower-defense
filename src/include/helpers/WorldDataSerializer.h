@@ -60,7 +60,7 @@ class WorldData {
 public:
     WorldData() {}
 
-    unsigned int player_currency_, level_, monsters_left_level_, score_, lives_;
+    unsigned int player_currency_, level_, monsters_left_level_, score_, lives_, time_level_start_ms_;
     Position<int> start_, end_;
     std::vector<TowerData> towers_;
     std::vector<MonsterData> monsters_;

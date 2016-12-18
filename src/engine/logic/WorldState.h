@@ -53,10 +53,11 @@ private:
     std::map<unsigned int, MonsterMovement> requested_monster_movement_;
 
     // Game stats and variables
+    const unsigned int time_between_level_ms_, time_between_monsters_ms_;
     unsigned int player_currency_;
     const unsigned int monsters_per_level_;
     unsigned int game_level_, monsters_left_to_spawn_, score_;
-    unsigned int idle_cycles_, idle_cycles_before_spawn_;
+    unsigned int idle_cycles_between_levels_, idle_cycles_before_spawn_;
     unsigned int lives_;
     int cycle_ms_;
 };
