@@ -16,6 +16,7 @@ public:
     std::vector<MonsterEye> eyes();
     void move(const MonsterMovement&);
     void rotate(const MonsterRotation&);
+    const unsigned int get_identifier() const;
 private:
     Monster* monster_reference_;
 };

@@ -30,3 +30,7 @@ const Position<int> TowerInterface::get_position() const {
 const double TowerInterface::get_angle() const {
     return tower_reference_->get_angle();
 }
+
+const unsigned int TowerInterface::get_identifier() const {
+    return tower_reference_->get_identifier();
+}

@@ -20,12 +20,21 @@
 
 using namespace std;
 
-RT_TASK god_task_desc, user_task_desc;
-map<unsigned int, RT_TASK> monsters_tasks;
-map<unsigned int, RT_TASK> towers_tasks;
+typedef struct TASK_SEM {
+    TASK_SEM() : task(RT_TASK()), sem(RT_SEM()) {}
+    RT_TASK task;
+    RT_SEM sem;
+} TASK_SEM;
+
+RT_TASK god_task_desc;
+TASK_SEM user_task_desc;
+map<unsigned int, TASK_SEM> monsters_tasks;
+map<unsigned int, TASK_SEM> towers_tasks;
 
 RT_PIPE task_pipe_sender, task_pipe_receiver;
-RT_SEM sem_critical_region;
+//RT_SEM sem_critical_region;
+
+#undef DEBUG
 
 #define TASK_MODE               0           // No flags
 #define TASK_STACK_SIZE         0           // Default stack size
@@ -45,15 +54,18 @@ void catch_signal(int) {
     terminate_tasks = true;
 
     rt_task_delete(&god_task_desc);
-    for (auto iterator = towers_tasks.begin(); !monsters_tasks.empty(); ) {
-        rt_task_delete(&iterator->second);
+    for (auto iterator = monsters_tasks.begin(); !monsters_tasks.empty(); ) {
+        rt_task_delete(&iterator->second.task);
+        rt_sem_delete(&iterator->second.sem);
         iterator = monsters_tasks.erase(iterator);
     }
     for (auto iterator = towers_tasks.begin(); !towers_tasks.empty(); ) {
-        rt_task_delete(&iterator->second);
+        rt_task_delete(&iterator->second.task);
+        rt_sem_delete(&iterator->second.sem);
         iterator = towers_tasks.erase(iterator);
     }
-    rt_task_delete(&user_task_desc);
+    rt_task_delete(&user_task_desc.task);
+    rt_sem_delete(&user_task_desc.sem);
 }
 
 void wait_for_ctrl_c(void) {
@@ -80,10 +92,12 @@ void tower_task(void *interface) {
     int task_period = TASK_PERIOD_MS_TOWER * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
+
 #ifdef DEBUG
     rt_printf("Tower task started!\n");
 #endif
     TowerInterface* tower_interface = static_cast<TowerInterface*>(interface);
+    unsigned int identifier = tower_interface->get_identifier();
 
     Position<double> tower_map(tower_interface->get_position().get_x() + 0.5,
                                tower_interface->get_position().get_y() + 0.5);
@@ -105,12 +119,12 @@ void tower_task(void *interface) {
             }
             double diff = normalize_angle(value - tower_interface->get_angle());
 
-            rt_sem_p(&sem_critical_region, TM_INFINITE);
+            rt_sem_p(&towers_tasks.find(identifier)->second.sem, TM_INFINITE);
             tower_interface->rotate(diff < 0 ? TowerRotation::RIGHT : TowerRotation::LEFT);
             if (fabs(diff) < M_PI_4) {
                 tower_interface->shoot();
             }
-            rt_sem_v(&sem_critical_region);
+            rt_sem_v(&towers_tasks.find(identifier)->second.sem);
         }
     }
 }
@@ -123,6 +137,7 @@ void monster_task(void *interface) {
     rt_printf("Monster task started!\n");
 #endif
     MonsterInterface* monster_interface = static_cast<MonsterInterface*>(interface);
+    unsigned int identifier = monster_interface->get_identifier();
 
     enum Direction { D_STAY, D_LEFT, D_RIGHT };
     Direction dir = D_STAY;
@@ -162,7 +177,7 @@ void monster_task(void *interface) {
         }
 
         // Action
-        rt_sem_p(&sem_critical_region, TM_INFINITE);
+        rt_sem_p(&monsters_tasks.find(identifier)->second.sem, TM_INFINITE);
         if (final_dir == D_RIGHT)
             monster_interface->rotate(MonsterRotation::RIGHT);
         else if (final_dir == D_LEFT)
@@ -170,12 +185,13 @@ void monster_task(void *interface) {
 
         if (final_move == M_FRONT)
             monster_interface->move(MonsterMovement::FRONT);
-        rt_sem_v(&sem_critical_region);
+        rt_sem_v(&monsters_tasks.find(identifier)->second.sem);
     }
 }
 
 void god_task(void *world_state_void) {
     int task_period = TASK_PERIOD_MS_GOD * 1000000;
+    int err;
 
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
@@ -185,18 +201,31 @@ void god_task(void *world_state_void) {
     while(!terminate_tasks) {
         rt_task_wait_period(NULL);
 
-        rt_sem_p(&sem_critical_region, TM_INFINITE);
+        for (auto iterator = towers_tasks.begin(); iterator != towers_tasks.end(); ++iterator)
+            rt_sem_p(&iterator->second.sem, TM_INFINITE);
+        for (auto iterator = monsters_tasks.begin(); iterator != monsters_tasks.end(); ++iterator)
+            rt_sem_p(&iterator->second.sem, TM_INFINITE);
+
         vector<EntityModification> changes = world->update_world_state();
         world->clear_world_requests();
-        rt_sem_v(&sem_critical_region);
+
+        for (auto iterator = towers_tasks.begin(); iterator != towers_tasks.end(); ++iterator)
+            rt_sem_v(&iterator->second.sem);
+        for (auto iterator = monsters_tasks.begin(); iterator != monsters_tasks.end(); ++iterator)
+            rt_sem_v(&iterator->second.sem);
 
         for (EntityModification& change : changes) {
             if (change.type_ == EntityType::MONSTER) {
                 // Create/delete monster task
                 if (change.action_ == EntityAction::ADD) {
-                    monsters_tasks.insert({change.identifier_, RT_TASK()});
+                    monsters_tasks.insert({ change.identifier_, TASK_SEM()});
                     string task_name("Monster Task " + to_string(change.identifier_));
-                    int err = rt_task_create(&monsters_tasks.find(change.identifier_)->second, task_name.c_str(),
+                    string sem_name("Monster Sem " + to_string(change.identifier_));
+                    err = rt_sem_create(&monsters_tasks.find(change.identifier_)->second.sem, sem_name.c_str(), 1, S_FIFO);
+#ifdef DEBUG
+                    if (err) rt_printf("Error creating semaphore monster (error code = %d)\n", err);
+#endif
+                    err = rt_task_create(&monsters_tasks.find(change.identifier_)->second.task, task_name.c_str(),
                                              TASK_STACK_SIZE, TASK_PRIORITY_MONSTER, TASK_MODE);
                     if (err) {
 #ifdef DEBUG
@@ -206,24 +235,28 @@ void god_task(void *world_state_void) {
 #ifdef DEBUG
                         rt_printf("Task monster %d created successfully\n", change.identifier_);
 #endif
-                        rt_task_start(&monsters_tasks.find(change.identifier_)->second, &monster_task, change.entity_);
+                        rt_task_start(&monsters_tasks.find(change.identifier_)->second.task, &monster_task, change.entity_);
                     }
                 } else {
 #ifdef DEBUG
                     rt_printf("Deleting task monster with id %d\n", change.identifier_);
 #endif
-                    rt_sem_p(&sem_critical_region, TM_INFINITE);
+                    auto task_sem = monsters_tasks.find(change.identifier_);
+                    rt_task_delete(&task_sem->second.task);
+                    rt_sem_delete(&task_sem->second.sem);
                     world->delete_monster(change.identifier_);
-                    rt_task_delete(&monsters_tasks.find(change.identifier_)->second);
-                    rt_sem_v(&sem_critical_region);
-
                     monsters_tasks.erase(change.identifier_);
                 }
             } else if (change.type_ == EntityType::TOWER) {
                 if (change.action_ == EntityAction::ADD) {
-                    towers_tasks.insert({change.identifier_, RT_TASK()});
+                    towers_tasks.insert({change.identifier_, TASK_SEM() });
                     string task_name("Towers Task " + to_string(change.identifier_));
-                    int err = rt_task_create(&towers_tasks.find(change.identifier_)->second, task_name.c_str(),
+                    string sem_name("Towers Sem " + to_string(change.identifier_));
+                    err = rt_sem_create(&towers_tasks.find(change.identifier_)->second.sem, sem_name.c_str(), 1, S_FIFO);
+#ifdef DEBUG
+                    if (err) rt_printf("Error creating semaphore tower (error code = %d)\n", err);
+#endif
+                    err = rt_task_create(&towers_tasks.find(change.identifier_)->second.task, task_name.c_str(),
                                              TASK_STACK_SIZE, TASK_PRIORITY_TOWER, TASK_MODE);
                     if(err) {
 #ifdef DEBUG
@@ -233,17 +266,16 @@ void god_task(void *world_state_void) {
 #ifdef DEBUG
                         rt_printf("Task tower %d created successfully\n", change.identifier_);
 #endif
-                        rt_task_start(&towers_tasks.find(change.identifier_)->second, &tower_task, change.entity_);
+                        rt_task_start(&towers_tasks.find(change.identifier_)->second.task, &tower_task, change.entity_);
                     }
                 } else {
 #ifdef DEBUG
                     rt_printf("Deleting task tower with id %d\n", change.identifier_);
 #endif
-                    rt_sem_p(&sem_critical_region, TM_INFINITE);
+                    auto task_sem = towers_tasks.find(change.identifier_);
+                    rt_task_delete(&task_sem->second.task);
+                    rt_sem_delete(&task_sem->second.sem);
                     world->delete_tower(change.identifier_);
-                    rt_task_delete(&towers_tasks.find(change.identifier_)->second);
-                    rt_sem_v(&sem_critical_region);
-
                     towers_tasks.erase(change.identifier_);
                 }
             }
@@ -282,13 +314,13 @@ void user_interaction_task(void *interface) {
             case ViewerRequest::TOWER:
                 OperationTowerData* data = dynamic_cast<OperationTowerData*>(viewer.get());
                 if (data->operation_ == TowerOperation::INSERT) {
-                    rt_sem_p(&sem_critical_region, TM_INFINITE);
+                    rt_sem_p(&user_task_desc.sem, TM_INFINITE);
                     user_interface->add_tower(data->type_, data->position_);
-                    rt_sem_v(&sem_critical_region);
+                    rt_sem_v(&user_task_desc.sem);
                 } else {
-                    rt_sem_p(&sem_critical_region, TM_INFINITE);
+                    rt_sem_p(&user_task_desc.sem, TM_INFINITE);
                     user_interface->remove_tower(data->position_);
-                    rt_sem_v(&sem_critical_region);
+                    rt_sem_v(&user_task_desc.sem);
                 }
                 break;
         }
@@ -304,8 +336,9 @@ int main(int argc, char** argv) {
 
     /* Lock memory to prevent paging */
     mlockall(MCL_CURRENT | MCL_FUTURE);
+    int err;
 
-    int err = rt_pipe_create(&task_pipe_sender, NULL, 0, 0);
+    err = rt_pipe_create(&task_pipe_sender, NULL, 0, 0);
 #ifdef DEBUG
     if (err) {
         rt_printf("Error creating pipe (error code = %d)\n", err);
@@ -314,7 +347,6 @@ int main(int argc, char** argv) {
         rt_printf("Pipe created successfully\n");
     }
 #endif
-
     err = rt_pipe_create(&task_pipe_receiver, NULL, 1, 0);
 #ifdef DEBUG
     if (err) {
@@ -325,15 +357,6 @@ int main(int argc, char** argv) {
     }
 #endif
 
-    err = rt_sem_create(&sem_critical_region, "CriticalRegion", 1, S_FIFO);
-#ifdef DEBUG
-    if (err) {
-        rt_printf("Error creating semaphore (error code = %d)\n", err);
-        return err;
-    } else {
-        rt_printf("Semaphore created successfully\n");
-    }
-#endif
     /* Create RT task */
     /* Args: descriptor, name, stack size, prioritry [0..99] and mode (flags for CPU, FPU, joinable ...) */
     err = rt_task_create(&god_task_desc, "God Task", TASK_STACK_SIZE, TASK_PRIORITY_GOD, TASK_MODE);
@@ -346,7 +369,7 @@ int main(int argc, char** argv) {
     }
 #endif
        
-    err = rt_task_create(&user_task_desc, "User Interaction Task", TASK_STACK_SIZE, TASK_PRIORITY_USER, TASK_MODE);
+    err = rt_task_create(&user_task_desc.task, "User Interaction Task", TASK_STACK_SIZE, TASK_PRIORITY_USER, TASK_MODE);
 #ifdef DEBUG
     if(err) {
         rt_printf("Error creating task a (error code = %d)\n", err);
@@ -355,10 +378,19 @@ int main(int argc, char** argv) {
         rt_printf("User Interaction task created successfully\n");
     }
 #endif
+    err = rt_sem_create(&user_task_desc.sem, "User Task", 1, S_FIFO);
+#ifdef DEBUG
+    if (err) {
+        rt_printf("Error creating semaphore (error code = %d)\n", err);
+        return err;
+    } else {
+        rt_printf("Semaphore created successfully\n");
+    }
+#endif
         
     /* Start RT tasks */
     rt_task_start(&god_task_desc, &god_task, &world);
-    rt_task_start(&user_task_desc, &user_interaction_task, user); 
+    rt_task_start(&user_task_desc.task, &user_interaction_task, user);
 
     /* wait for termination signal */   
     wait_for_ctrl_c();

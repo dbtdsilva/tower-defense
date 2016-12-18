@@ -17,6 +17,7 @@ public:
     void rotate(const TowerRotation& rotation);
     const Position<int> get_position() const;
     const double get_angle() const;
+    const unsigned int get_identifier() const;
 private:
     Tower* tower_reference_;
 };

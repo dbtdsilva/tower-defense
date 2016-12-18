@@ -20,3 +20,7 @@ void MonsterInterface::move(const MonsterMovement& movement) {
 void MonsterInterface::rotate(const MonsterRotation& rotation) {
     return monster_reference_->rotate(rotation);
 }
+
+const unsigned int MonsterInterface::get_identifier() const {
+    return monster_reference_->get_identifier();
+}
