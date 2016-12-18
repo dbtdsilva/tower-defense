@@ -5,6 +5,7 @@
 #include <vector>
 #include <helpers/Position.h>
 #include <helpers/Definitions.h>
+#include <native/types.h>
 #include "MonsterEye.h"
 #include "MonsterInterface.h"
 
@@ -42,10 +43,11 @@ public:
     void clear_requests();
 protected:
     Monster(WorldState* state, const int& health, const double& movement_speed_, const double& rotational_speed,
-            const Position<double>& pos, const MonsterType& type);
+            const RTIME& eyes_cost_ms, const Position<double>& pos, const MonsterType& type);
 private:
     static unsigned int instance_counter;
 
+    const RTIME eyes_cost_ms_;
     const unsigned int id_;
     const double rotational_speed_, movement_speed_;
     const MonsterType type_;

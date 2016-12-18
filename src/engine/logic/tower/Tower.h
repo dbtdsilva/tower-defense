@@ -5,6 +5,7 @@
 #include <vector>
 #include <helpers/Position.h>
 #include <helpers/Definitions.h>
+#include <native/types.h>
 #include "TowerInterface.h"
 
 class WorldState;
@@ -31,24 +32,27 @@ public:
     const int& get_damage() const;
     TowerInterface* get_interface();
     double& get_angle();
+    bool able_to_shoot();
 
     void shoot();
     const std::vector<Position<double>> radar() const;
     void rotate(const TowerRotation& rotation);
     void clear_requests();
 protected:
-    Tower(WorldState*, const int& damage, const int& radar_load_time, const int& cost, const double& range,
-        const double& rotational_speed, const Position<int>& pos, const TowerType&);
+    Tower(WorldState*, const int& damage, const int& weapon_load_cycles, const RTIME& radar_load_time,
+          const int& cost, const double& range, const double& rotational_speed, const Position<int>& pos,
+          const TowerType&);
 private:
     static unsigned int instance_counter;
 
     const unsigned int id_;
-    const int damage_, radar_load_time_, cost_;
+    const int damage_, radar_load_time_, cost_, weapon_load_cycles_;
     const double rotational_speed_, range_;
     const Position<int> pos_;
     const TowerType type_;
 
     double angle_;
+    unsigned int internal_cycle_between_shots_;
     std::vector<double> requested_shoots_;
     std::vector<TowerRotation> requested_rotations_;
     std::unique_ptr<TowerInterface> interface_;

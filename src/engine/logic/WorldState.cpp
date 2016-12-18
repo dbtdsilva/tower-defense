@@ -182,8 +182,8 @@ std::vector<EntityModification> WorldState::update_world_state() {
                                                                       monster->get_identifier(),
                                                                       EntityAction::REMOVE,
                                                                       EntityType::MONSTER));
-                    break;
                 }
+                break;
             }
         }
 
@@ -253,7 +253,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
     for (auto& tower : towers_) {
         // Check for shoots
         auto shoots = requested_tower_shoot_.find(tower->get_identifier());
-        if (shoots != requested_tower_shoot_.end()) {
+        if (shoots != requested_tower_shoot_.end() && tower->able_to_shoot()) {
             bullets_.push_back(make_unique<Bullet>(Position<double>(tower->get_position().get_x() + 0.5,
                                                                     tower->get_position().get_y() + 0.5),
                                                    shoots->second, 0.1, tower->get_damage(), tower->get_range()));
@@ -365,20 +365,11 @@ void WorldState::append_line_to_path(Position<int> src, Position<int> dst) {
     }
 }
 
-void WorldState::simulate_load(long load_ms) {
-    struct timespec req = {0};
-    time_t sec = (int) (load_ms / 1000);
-    load_ms = load_ms - (sec * 1000);
-    req.tv_sec = sec;
-    req.tv_nsec = load_ms * 1000000L;
-
-    nanosleep(&req, &req);
-    /*RTIME ti, tf;
-    RTIME load_ns = 10;//1000000 * (RTIME) load_ms;
-
+void WorldState::simulate_load(RTIME load_ns) {
+    RTIME ti, tf;
     ti = rt_timer_read();           // Get initial time
     tf = ti + load_ns;              // Compute end time
-    while(rt_timer_read() < tf);    // Busy wait*/
+    while(rt_timer_read() < tf);    // Busy wait
 }
 
 ostream& operator<<(ostream& os, const WorldState& obj)

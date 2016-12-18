@@ -23,11 +23,13 @@ Tower::~Tower() {
     // Only smart pointers are used
 }
 
-Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, const int& cost, const double& range,
-             const double& rotational_speed, const Position<int>& pos, const TowerType& type) :
-        damage_(damage), radar_load_time_(radar_load_time), cost_(cost), range_(range),
-        rotational_speed_(rotational_speed), pos_(pos), angle_(0), world_ref_(state),
-        interface_(make_unique<TowerInterface>(this)), id_(Tower::instance_counter), type_(type)
+Tower::Tower(WorldState* state, const int& damage, const int& weapon_load_cycles, const RTIME& radar_load_time,
+             const int& cost, const double& range, const double& rotational_speed, const Position<int>& pos,
+             const TowerType& type) :
+        damage_(damage), radar_load_time_(radar_load_time), weapon_load_cycles_(weapon_load_cycles), cost_(cost),
+        range_(range), rotational_speed_(rotational_speed), pos_(pos), angle_(0), world_ref_(state),
+        interface_(make_unique<TowerInterface>(this)), id_(Tower::instance_counter), type_(type),
+        internal_cycle_between_shots_(0)
 {
     Tower::instance_counter++;
 }
@@ -35,7 +37,9 @@ Tower::Tower(WorldState* state, const int& damage, const int& radar_load_time, c
 Tower::Tower(Tower&& other)  :
         cost_(other.cost_), pos_(other.pos_), range_(other.range_), rotational_speed_(other.rotational_speed_),
         damage_(other.damage_), radar_load_time_(other.radar_load_time_), angle_(other.angle_), id_(other.id_),
-        interface_(std::move(other.interface_)), world_ref_(other.world_ref_), type_(other.type_)
+        interface_(std::move(other.interface_)), world_ref_(other.world_ref_), type_(other.type_),
+        internal_cycle_between_shots_(other.internal_cycle_between_shots_),
+        weapon_load_cycles_(other.weapon_load_cycles_)
 {
     interface_->reference_moved(this);
     other.interface_ = nullptr;
@@ -75,6 +79,15 @@ const unsigned int& Tower::get_identifier() const {
 
 TowerInterface* Tower::get_interface() {
     return interface_.get();
+}
+
+bool Tower::able_to_shoot() {
+    if (internal_cycle_between_shots_ >= weapon_load_cycles_) {
+        internal_cycle_between_shots_ = 0;
+        return true;
+    }
+    internal_cycle_between_shots_++;
+    return false;
 }
 
 void Tower::clear_requests() {

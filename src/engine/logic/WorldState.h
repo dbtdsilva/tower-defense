@@ -5,6 +5,7 @@
 #include <list>
 #include <helpers/Position.h>
 #include <map>
+#include <native/types.h>
 
 #include "tower/Tower.h"
 #include "tower/Bullet.h"
@@ -19,8 +20,7 @@ public:
 
     std::vector<EntityModification> update_world_state();
     void clear_world_requests();
-    void simulate_load(long load_ms);
-
+    void simulate_load(RTIME load_ns);
 
     const std::vector<Position<double>> get_monsters_position(Position<double> tower_pos, double tower_range) const;
     const double get_wall_distance(const Position<double>&, const double&, const double&) const;
