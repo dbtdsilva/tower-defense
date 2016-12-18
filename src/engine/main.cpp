@@ -20,20 +20,6 @@
 
 using namespace std;
 
-typedef struct TASK_SEM {
-    TASK_SEM() : task(RT_TASK()), sem(RT_SEM()) {}
-    RT_TASK task;
-    RT_SEM sem;
-} TASK_SEM;
-
-RT_TASK god_task_desc;
-TASK_SEM user_task_desc;
-map<unsigned int, TASK_SEM> monsters_tasks;
-map<unsigned int, TASK_SEM> towers_tasks;
-
-RT_PIPE task_pipe_sender, task_pipe_receiver;
-//RT_SEM sem_critical_region;
-
 #undef DEBUG
 
 #define TASK_MODE               0           // No flags
@@ -47,6 +33,20 @@ RT_PIPE task_pipe_sender, task_pipe_receiver;
 #define TASK_PERIOD_MS_GOD      25
 #define TASK_PERIOD_MS_TOWER    50
 #define TASK_PERIOD_MS_MONSTER  50
+
+typedef struct TASK_SEM {
+    TASK_SEM() : task(RT_TASK()), sem(RT_SEM()) {}
+    RT_TASK task;
+    RT_SEM sem;
+} TASK_SEM;
+
+RT_TASK god_task_desc;
+TASK_SEM user_task_desc;
+
+map<unsigned int, TASK_SEM> monsters_tasks;
+map<unsigned int, TASK_SEM> towers_tasks;
+
+RT_PIPE task_pipe_sender, task_pipe_receiver;
 
 bool terminate_tasks = false;
 
@@ -89,9 +89,9 @@ double normalize_angle(const double& angle) {
 }
 
 void tower_task(void *interface) {
+    constexpr double limit_angle = (M_PI / 180.0) * 5.0;
     int task_period = TASK_PERIOD_MS_TOWER * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
-
 
 #ifdef DEBUG
     rt_printf("Tower task started!\n");
@@ -104,15 +104,17 @@ void tower_task(void *interface) {
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
 
+        // Get radar sensor values
         std::vector<Position<double>> monsters = tower_interface->radar();
         if (monsters.size() != 0) {
+            // Calculate angle between first monster and tower
             double opposite = -(monsters[0].get_y() - tower_map.get_y());
             double adjacent = monsters[0].get_x() - tower_map.get_x();
 
             double value;
-            if (adjacent == 0) {
+            if (adjacent == 0) {    // division would be zero
                 value = opposite > 0 ? M_PI_2 : -M_PI_2;
-            } else { // tan(theta) = theta + K * M_PI
+            } else {                // tan(theta) = theta + K * M_PI
                 value = atan(opposite / adjacent);
                 if (adjacent < 0)
                     value += M_PI;
@@ -120,10 +122,14 @@ void tower_task(void *interface) {
             double diff = normalize_angle(value - tower_interface->get_angle());
 
             rt_sem_p(&towers_tasks.find(identifier)->second.sem, TM_INFINITE);
-            tower_interface->rotate(diff < 0 ? TowerRotation::RIGHT : TowerRotation::LEFT);
-            if (fabs(diff) < M_PI_4) {
+            // Point to the right direction and shoot
+            if (diff < -limit_angle)
+                tower_interface->rotate(TowerRotation::RIGHT);
+            else if (diff > limit_angle)
+                tower_interface->rotate(TowerRotation::LEFT);
+
+            if (fabs(diff) < M_PI_4)
                 tower_interface->shoot();
-            }
             rt_sem_v(&towers_tasks.find(identifier)->second.sem);
         }
     }
@@ -152,17 +158,15 @@ void monster_task(void *interface) {
         vector<MonsterEye> eyes = monster_interface->eyes();
         // Decision
         if (eyes.size() != 3) continue;
-        if (dir == D_STAY && eyes.at(1).wall_distance < 0.5) {
+        if (dir == D_STAY && eyes.at(1).wall_distance < 0.5)
             dir = eyes.at(2).wall_distance > eyes.at(0).wall_distance ? D_RIGHT : D_LEFT;
-        }
 
-        if (dir == D_LEFT && eyes.at(1).wall_distance < 2) {
+        if (dir == D_LEFT && eyes.at(1).wall_distance < 2)
             final_dir = D_LEFT;
-        } else if (dir == D_RIGHT && eyes.at(1).wall_distance < 2) {
+        else if (dir == D_RIGHT && eyes.at(1).wall_distance < 2)
             final_dir = D_RIGHT;
-        } else {
+        else
             dir = D_STAY;
-        }
 
         if (dir == D_STAY) {
             if (eyes.at(0).wall_distance < 0.5) {
@@ -201,6 +205,7 @@ void god_task(void *world_state_void) {
     while(!terminate_tasks) {
         rt_task_wait_period(NULL);
 
+        // Requests are used by every tasks, they are in a critical region
         for (auto iterator = towers_tasks.begin(); iterator != towers_tasks.end(); ++iterator)
             rt_sem_p(&iterator->second.sem, TM_INFINITE);
         for (auto iterator = monsters_tasks.begin(); iterator != monsters_tasks.end(); ++iterator)
@@ -209,14 +214,16 @@ void god_task(void *world_state_void) {
         vector<EntityModification> changes = world->update_world_state();
         world->clear_world_requests();
 
+        // Leave critical region, requests stored in the world buffer
         for (auto iterator = towers_tasks.begin(); iterator != towers_tasks.end(); ++iterator)
             rt_sem_v(&iterator->second.sem);
         for (auto iterator = monsters_tasks.begin(); iterator != monsters_tasks.end(); ++iterator)
             rt_sem_v(&iterator->second.sem);
 
+        // Process changes on entities, requests to add tasks or remove
         for (EntityModification& change : changes) {
+            // Process a create/delete monster task
             if (change.type_ == EntityType::MONSTER) {
-                // Create/delete monster task
                 if (change.action_ == EntityAction::ADD) {
                     monsters_tasks.insert({ change.identifier_, TASK_SEM()});
                     string task_name("Monster Task " + to_string(change.identifier_));
@@ -247,6 +254,7 @@ void god_task(void *world_state_void) {
                     world->delete_monster(change.identifier_);
                     monsters_tasks.erase(change.identifier_);
                 }
+            // Process a tower request to add or remove
             } else if (change.type_ == EntityType::TOWER) {
                 if (change.action_ == EntityAction::ADD) {
                     towers_tasks.insert({change.identifier_, TASK_SEM() });
@@ -299,15 +307,19 @@ void user_interaction_task(void *interface) {
     char buffer[buffer_size];
     string raw_received;
     while (!terminate_tasks) {
+        // Read data from the pipe
         ssize_t bytes_read = rt_pipe_read(&task_pipe_receiver, buffer, buffer_size, TM_INFINITE);
         if (bytes_read <= 0)
             continue;
         raw_received = string(buffer, bytes_read);
+
+        // Unserialize the data to the ViewerData object
         unique_ptr<ViewerData> viewer;
         istringstream file_data(raw_received);
         cereal::BinaryInputArchive archive(file_data);
         archive(viewer);
 
+        // Process the data received
         switch (viewer->get_type()) {
             case ViewerRequest::GAME_STATUS:
                 break;
