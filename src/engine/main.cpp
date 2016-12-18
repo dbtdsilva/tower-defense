@@ -195,7 +195,7 @@ void god_task(void *world_state_void) {
                 // Create/delete monster task
                 if (change.action_ == EntityAction::ADD) {
                     monsters_tasks.insert({change.identifier_, RT_TASK()});
-                    string task_name("Monster Task " + change.identifier_);
+                    string task_name("Monster Task " + to_string(change.identifier_));
                     int err = rt_task_create(&monsters_tasks.find(change.identifier_)->second, task_name.c_str(),
                                              TASK_STACK_SIZE, TASK_PRIORITY_MONSTER, TASK_MODE);
                     if (err) {
@@ -222,7 +222,7 @@ void god_task(void *world_state_void) {
             } else if (change.type_ == EntityType::TOWER) {
                 if (change.action_ == EntityAction::ADD) {
                     towers_tasks.insert({change.identifier_, RT_TASK()});
-                    string task_name("Towers Task " + change.identifier_);
+                    string task_name("Towers Task " + to_string(change.identifier_));
                     int err = rt_task_create(&towers_tasks.find(change.identifier_)->second, task_name.c_str(),
                                              TASK_STACK_SIZE, TASK_PRIORITY_TOWER, TASK_MODE);
                     if(err) {
