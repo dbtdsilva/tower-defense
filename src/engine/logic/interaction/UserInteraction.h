@@ -8,17 +8,28 @@
 
 class WorldState;
 
-typedef struct {
-    const TowerType type;
-    const Position<int> position;
-    const TowerOperation operation;
+typedef struct TowerRequest {
+    TowerRequest(const TowerType& type, const Position<int> position, const TowerOperation& operation) :
+            type(type), position(position), operation(operation) {}
+    TowerRequest(const TowerRequest& other) : type(other.type), position(other.position), operation(other.operation) {}
+    TowerRequest& operator=(const TowerRequest& other) {
+        if (this != &other) {
+            this->type = type;
+            this->position = position;
+            this->operation = operation;
+        }
+        return *this;
+    }
+    TowerType type;
+    Position<int> position;
+    TowerOperation operation;
 } TowerRequest;
 
 class UserInteraction {
 public:
     UserInteraction(WorldState*);
 
-    const std::vector<TowerRequest>& get_tower_add_requests() const;
+    const std::vector<TowerRequest>& get_tower_requests() const;
     UserInteractionInterface* get_user_interaction_interface();
     void clear_requests();
     void add_tower(const TowerType& type, const Position<int>& position);

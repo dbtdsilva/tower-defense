@@ -210,16 +210,16 @@ void god_task(void *world_state_void) {
             rt_sem_p(&iterator->second.sem, TM_INFINITE);
         for (auto iterator = monsters_tasks.begin(); iterator != monsters_tasks.end(); ++iterator)
             rt_sem_p(&iterator->second.sem, TM_INFINITE);
-
-        vector<EntityModification> changes = world->update_world_state();
+        // Transfer requests to the World buffer
         world->clear_world_requests();
-
         // Leave critical region, requests stored in the world buffer
         for (auto iterator = towers_tasks.begin(); iterator != towers_tasks.end(); ++iterator)
             rt_sem_v(&iterator->second.sem);
         for (auto iterator = monsters_tasks.begin(); iterator != monsters_tasks.end(); ++iterator)
             rt_sem_v(&iterator->second.sem);
 
+        // Update the world state according with the requests
+        vector<EntityModification> changes = world->update_world_state();
         // Process changes on entities, requests to add tasks or remove
         for (EntityModification& change : changes) {
             // Process a create/delete monster task

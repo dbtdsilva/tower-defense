@@ -33,11 +33,28 @@ WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
 }
 
 void WorldState::clear_world_requests() {
+    requested_user_tower_ = user_interaction_.get_tower_requests();
     user_interaction_.clear_requests();
+
+    requested_monster_movement_.clear();
+    requested_monster_rotation_.clear();
     for (auto& monster : monsters_) {
+        vector<MonsterMovement> movements = monster->get_requested_movements();
+        if (movements.size() != 0) requested_monster_movement_.insert({ monster->get_identifier(), movements[0]} );
+        vector<MonsterRotation> rotations = monster->get_requested_rotations();
+        if (rotations.size() != 0) requested_monster_rotation_.insert({ monster->get_identifier(), rotations[0]} );
+
         monster->clear_requests();
     }
+
+    requested_tower_shoot_.clear();
+    requested_tower_rotation_.clear();
     for (auto& tower : towers_) {
+        vector<double> shoots = tower->get_requested_shoots();
+        if (shoots.size() != 0) requested_tower_shoot_.insert({ tower->get_identifier(), shoots[0]} );
+        vector<TowerRotation> rotations = tower->get_requested_rotations();
+        if (rotations.size() != 0) requested_tower_rotation_.insert({ tower->get_identifier(), rotations[0]} );
+
         tower->clear_requests();
     }
 }
@@ -91,7 +108,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
         idle_cycles_before_spawn_++;
     }
 
-    for (const TowerRequest& request : user_interaction_.get_tower_add_requests()) {
+    for (const TowerRequest& request : requested_user_tower_) {
         if (request.position.get_x() < 0 || request.position.get_x() >= width_ ||
             request.position.get_y() < 0 || request.position.get_y() >= height_)
             continue;
@@ -180,12 +197,12 @@ std::vector<EntityModification> WorldState::update_world_state() {
         Monster* monster = monster_iter->get();
         monster->update_eyes();
 
-        const vector<MonsterMovement>& movements = monster->get_requested_movements();
-        if (!movements.empty()) {
+        auto movement = requested_monster_movement_.find(monster->get_identifier());
+        if (movement != requested_monster_movement_.end()) {
             const Position<double>& position = monster->get_position();
             double& angle = monster->get_angle();
             Position<double> new_position(0, 0);
-            switch (movements[0]) {
+            switch (movement->second) {
                 case MonsterMovement::FRONT:
                     new_position.set_x(position.get_x() + cos(angle) * monster->get_movement_speed());
                     new_position.set_y(position.get_y() - sin(angle) * monster->get_movement_speed());
@@ -221,10 +238,10 @@ std::vector<EntityModification> WorldState::update_world_state() {
                 }
             }
         }
-        const vector<MonsterRotation>& rotations = monster->get_requested_rotations();
-        if (!rotations.empty()) {
+        auto rotation = requested_monster_rotation_.find(monster->get_identifier());
+        if (rotation != requested_monster_rotation_.end()) {
             double& angle = monster->get_angle();
-            if (rotations[0] == MonsterRotation::LEFT)
+            if (rotation->second == MonsterRotation::LEFT)
                 angle += monster->get_rotational_speed();
             else
                 angle -= monster->get_rotational_speed();
@@ -235,18 +252,18 @@ std::vector<EntityModification> WorldState::update_world_state() {
     // Update tower state
     for (auto& tower : towers_) {
         // Check for shoots
-        const vector<double>& requested_shoots = tower->get_requested_shoots();
-        if (!requested_shoots.empty()) {
+        auto shoots = requested_tower_shoot_.find(tower->get_identifier());
+        if (shoots != requested_tower_shoot_.end()) {
             bullets_.push_back(make_unique<Bullet>(Position<double>(tower->get_position().get_x() + 0.5,
                                                                     tower->get_position().get_y() + 0.5),
-                                                   requested_shoots[0], 0.1, tower->get_damage(), tower->get_range()));
+                                                   shoots->second, 0.1, tower->get_damage(), tower->get_range()));
         }
         // Check for rotations
-        const vector<TowerRotation>& requested_rotations = tower->get_requested_rotations();
-        if (!requested_rotations.empty()) {
+        auto rotation = requested_tower_rotation_.find(tower->get_identifier());
+        if (rotation != requested_tower_rotation_.end()) {
             const double& rotational_speed = tower->get_rotational_speed();
             double& angle = tower->get_angle();
-            if (requested_rotations[0] == TowerRotation::LEFT)
+            if (rotation->second == TowerRotation::LEFT)
                 angle += rotational_speed;
             else
                 angle -= rotational_speed;

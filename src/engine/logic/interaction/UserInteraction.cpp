@@ -18,7 +18,7 @@ void UserInteraction::remove_tower(const Position<int>& position) {
     requests.push_back({TowerType::SIMPLE, position, TowerOperation::REMOVE});
 }
 
-const std::vector<TowerRequest> &UserInteraction::get_tower_add_requests() const {
+const std::vector<TowerRequest> &UserInteraction::get_tower_requests() const {
     return requests;
 }
 
