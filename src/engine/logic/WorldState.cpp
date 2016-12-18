@@ -11,12 +11,14 @@
 
 using namespace std;
 
-WorldState::WorldState(size_t width, size_t height, int god_task_period_ms) :
+WorldState::WorldState(size_t width, size_t height, unsigned int god_task_period_ms, unsigned int time_between_level,
+                       unsigned int time_between_monster, unsigned int max_monsters, unsigned int max_towers) :
         width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
         user_interaction_(this), player_currency_(10000),
-        game_level_(0), monsters_per_level_(5), monsters_left_to_spawn_(0), idle_cycles_between_levels_(0),
+        game_level_(0), monsters_per_level_(max_monsters), monsters_left_to_spawn_(0), idle_cycles_between_levels_(0),
         idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms),
-        score_(0), lives_(10), time_between_level_ms_(1000), time_between_monsters_ms_(1000)
+        score_(0), lives_(10), time_between_level_ms_(time_between_level),
+        time_between_monsters_ms_(time_between_monster), max_towers_(max_towers)
 {
     start_position.set_x(0);
     start_position.set_y(1);
@@ -94,9 +96,13 @@ std::vector<EntityModification> WorldState::update_world_state() {
                 idle_cycles_between_levels_ = 0;
             }
         }
-    } else if (idle_cycles_before_spawn_ > (time_between_monsters_ms_ / cycle_ms_)){
+    } else if (idle_cycles_before_spawn_ > (time_between_monsters_ms_ / cycle_ms_)) {
+
         unique_ptr<Monster> ref = make_unique<Monster>(Monster::add_monster(
-                this, MonsterType::BASIC, Position<double>(start_position.get_x() + 0.5, start_position.get_y() + 0.5)));
+                this,
+                monsters_left_to_spawn_ < game_level_ ? MonsterType::INSANE : MonsterType::BASIC,
+                Position<double>(start_position.get_x() + 0.5, start_position.get_y() + 0.5))
+        );
         monsters_.push_back(std::move(ref));
         entity_modifications.push_back(EntityModification(monsters_.back()->get_interface(),
                                                           monsters_.back()->get_identifier(),
@@ -113,7 +119,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
             request.position.get_y() < 0 || request.position.get_y() >= height_)
             continue;
 
-        if (request.operation == TowerOperation::INSERT) {
+        if (request.operation == TowerOperation::INSERT && towers_.size() < max_towers_) {
             if (map_[request.position.get_x()][request.position.get_y()] != PositionState::EMPTY)
                 continue;
             unique_ptr<Tower> ref =  make_unique<Tower>(Tower::create_tower(this, request.type, request.position));
@@ -193,7 +199,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
     }
 
     // Update monster state
-    for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ) {
+    for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); monster_iter++) {
         Monster* monster = monster_iter->get();
         monster->update_eyes();
 
@@ -246,7 +252,6 @@ std::vector<EntityModification> WorldState::update_world_state() {
             else
                 angle -= monster->get_rotational_speed();
         }
-        monster_iter++;
     }
 
     // Update tower state

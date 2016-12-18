@@ -15,7 +15,7 @@ IF(Xenomai_FOUND)
           logic/tower/types/ComplexTower.h
           logic/tower/Bullet.h logic/tower/Bullet.cpp
           logic/monster/Monster.cpp logic/monster/Monster.h
-          logic/monster/types/BasicMonster.h
+          logic/monster/types/BasicMonster.h logic/monster/types/InsaneMonster.h
           logic/monster/MonsterInterface.cpp logic/monster/MonsterInterface.h
           logic/monster/MonsterEye.h
           logic/interaction/UserInteractionInterface.cpp logic/interaction/UserInteractionInterface.h

@@ -340,7 +340,9 @@ void user_interaction_task(void *interface) {
 }
 
 int main(int argc, char** argv) {
-    WorldState world(10, 10, TASK_PERIOD_MS_GOD);
+    // WorldState(size_t width, size_t height, unsigned int god_task_period_ms, unsigned int time_between_level,
+    //            unsigned int time_between_monster, unsigned int max_monsters, unsigned int max_towers);
+    WorldState world(10, 10, TASK_PERIOD_MS_GOD, 5000, 750, 10, 10);
     UserInteractionInterface* user = world.get_user_interaction_interface();
     
     /* Perform auto-init of rt_print buffers if the task doesn't do so */

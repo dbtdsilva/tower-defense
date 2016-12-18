@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include "types/BasicMonster.h"
+#include "types/InsaneMonster.h"
 
 using namespace std;
 
@@ -11,6 +12,8 @@ Monster Monster::add_monster(WorldState* world_ref, const MonsterType& ref, cons
     switch (ref) {
         case MonsterType::BASIC:
             return BasicMonster(world_ref, position);
+        case MonsterType::INSANE:
+            return InsaneMonster(world_ref, position);
     }
 }
 

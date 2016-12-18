@@ -16,7 +16,8 @@ class Monster;
 
 class WorldState {
 public:
-    WorldState(size_t width, size_t height, int god_task_period_ms);
+    WorldState(size_t width, size_t height, unsigned int god_task_period_ms, unsigned int time_between_level,
+               unsigned int time_between_monster, unsigned int max_monsters, unsigned int max_towers);
 
     std::vector<EntityModification> update_world_state();
     void clear_world_requests();
@@ -53,13 +54,12 @@ private:
     std::map<unsigned int, MonsterMovement> requested_monster_movement_;
 
     // Game stats and variables
-    const unsigned int time_between_level_ms_, time_between_monsters_ms_;
+    const unsigned int time_between_level_ms_, time_between_monsters_ms_, cycle_ms_;
+    const unsigned int monsters_per_level_, max_towers_;
     unsigned int player_currency_;
-    const unsigned int monsters_per_level_;
     unsigned int game_level_, monsters_left_to_spawn_, score_;
     unsigned int idle_cycles_between_levels_, idle_cycles_before_spawn_;
     unsigned int lives_;
-    int cycle_ms_;
 };
 
 
