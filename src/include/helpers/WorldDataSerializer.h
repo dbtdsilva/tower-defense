@@ -60,6 +60,7 @@ class WorldData {
 public:
     WorldData() {}
 
+    GameStatus status_;
     unsigned int player_currency_, level_, monsters_left_level_, score_, lives_, time_level_start_ms_;
     Position<int> start_, end_;
     std::vector<TowerData> towers_;
@@ -70,7 +71,7 @@ private:
     friend class cereal::access;
     template<typename Archive>
     void serialize(Archive &archive) {
-        archive(player_currency_, bullets_, towers_, monsters_, map_,
+        archive(status_, player_currency_, bullets_, towers_, monsters_, map_,
                 player_currency_, level_, monsters_left_level_, score_,
                 start_, end_, lives_);
     }

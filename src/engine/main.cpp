@@ -49,6 +49,7 @@ map<unsigned int, TASK_SEM> towers_tasks;
 RT_PIPE task_pipe_sender, task_pipe_receiver;
 
 bool terminate_tasks = false;
+bool pause_game = false;
 
 void catch_signal(int) {
     terminate_tasks = true;
@@ -105,32 +106,34 @@ void tower_task(void *interface) {
         rt_task_wait_period(NULL);
 
         // Get radar sensor values
-        std::vector<Position<double>> monsters = tower_interface->radar();
-        if (monsters.size() != 0) {
-            // Calculate angle between first monster and tower
-            double opposite = -(monsters[0].get_y() - tower_map.get_y());
-            double adjacent = monsters[0].get_x() - tower_map.get_x();
+        if(!pause_game) {
+            std::vector<Position<double>> monsters = tower_interface->radar();
+            if (monsters.size() != 0) {
+                // Calculate angle between first monster and tower
+                double opposite = -(monsters[0].get_y() - tower_map.get_y());
+                double adjacent = monsters[0].get_x() - tower_map.get_x();
 
-            double value;
-            if (adjacent == 0) {    // division would be zero
-                value = opposite > 0 ? M_PI_2 : -M_PI_2;
-            } else {                // tan(theta) = theta + K * M_PI
-                value = atan(opposite / adjacent);
-                if (adjacent < 0)
-                    value += M_PI;
+                double value;
+                if (adjacent == 0) {    // division would be zero
+                    value = opposite > 0 ? M_PI_2 : -M_PI_2;
+                } else {                // tan(theta) = theta + K * M_PI
+                    value = atan(opposite / adjacent);
+                    if (adjacent < 0)
+                        value += M_PI;
+                }
+                double diff = normalize_angle(value - tower_interface->get_angle());
+
+                rt_sem_p(&towers_tasks.find(identifier)->second.sem, TM_INFINITE);
+                // Point to the right direction and shoot
+                if (diff < -limit_angle)
+                    tower_interface->rotate(TowerRotation::RIGHT);
+                else if (diff > limit_angle)
+                    tower_interface->rotate(TowerRotation::LEFT);
+
+                if (fabs(diff) < M_PI_4)
+                    tower_interface->shoot();
+                rt_sem_v(&towers_tasks.find(identifier)->second.sem);
             }
-            double diff = normalize_angle(value - tower_interface->get_angle());
-
-            rt_sem_p(&towers_tasks.find(identifier)->second.sem, TM_INFINITE);
-            // Point to the right direction and shoot
-            if (diff < -limit_angle)
-                tower_interface->rotate(TowerRotation::RIGHT);
-            else if (diff > limit_angle)
-                tower_interface->rotate(TowerRotation::LEFT);
-
-            if (fabs(diff) < M_PI_4)
-                tower_interface->shoot();
-            rt_sem_v(&towers_tasks.find(identifier)->second.sem);
         }
     }
 }
@@ -151,45 +154,48 @@ void monster_task(void *interface) {
 
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
-        Direction final_dir = D_STAY;
-        Move final_move = M_STAY;
 
-        // Read sensors
-        vector<MonsterEye> eyes = monster_interface->eyes();
-        // Decision
-        if (eyes.size() != 3) continue;
-        if (dir == D_STAY && eyes.at(1).wall_distance < 0.5)
-            dir = eyes.at(2).wall_distance > eyes.at(0).wall_distance ? D_RIGHT : D_LEFT;
+        if (!pause_game) {
+            Direction final_dir = D_STAY;
+            Move final_move = M_STAY;
 
-        if (dir == D_LEFT && eyes.at(1).wall_distance < 2)
-            final_dir = D_LEFT;
-        else if (dir == D_RIGHT && eyes.at(1).wall_distance < 2)
-            final_dir = D_RIGHT;
-        else
-            dir = D_STAY;
+            // Read sensors
+            vector<MonsterEye> eyes = monster_interface->eyes();
+            // Decision
+            if (eyes.size() != 3) continue;
+            if (dir == D_STAY && eyes.at(1).wall_distance < 0.5)
+                dir = eyes.at(2).wall_distance > eyes.at(0).wall_distance ? D_RIGHT : D_LEFT;
 
-        if (dir == D_STAY) {
-            if (eyes.at(0).wall_distance < 0.5) {
-                final_dir = D_RIGHT;
-                final_move = M_FRONT;
-            } else if (eyes.at(2).wall_distance < 0.5) {
+            if (dir == D_LEFT && eyes.at(1).wall_distance < 2)
                 final_dir = D_LEFT;
-                final_move = M_FRONT;
-            } else {
-                final_move = M_FRONT;
+            else if (dir == D_RIGHT && eyes.at(1).wall_distance < 2)
+                final_dir = D_RIGHT;
+            else
+                dir = D_STAY;
+
+            if (dir == D_STAY) {
+                if (eyes.at(0).wall_distance < 0.5) {
+                    final_dir = D_RIGHT;
+                    final_move = M_FRONT;
+                } else if (eyes.at(2).wall_distance < 0.5) {
+                    final_dir = D_LEFT;
+                    final_move = M_FRONT;
+                } else {
+                    final_move = M_FRONT;
+                }
             }
+
+            // Action
+            rt_sem_p(&monsters_tasks.find(identifier)->second.sem, TM_INFINITE);
+            if (final_dir == D_RIGHT)
+                monster_interface->rotate(MonsterRotation::RIGHT);
+            else if (final_dir == D_LEFT)
+                monster_interface->rotate(MonsterRotation::LEFT);
+
+            if (final_move == M_FRONT)
+                monster_interface->move(MonsterMovement::FRONT);
+            rt_sem_v(&monsters_tasks.find(identifier)->second.sem);
         }
-
-        // Action
-        rt_sem_p(&monsters_tasks.find(identifier)->second.sem, TM_INFINITE);
-        if (final_dir == D_RIGHT)
-            monster_interface->rotate(MonsterRotation::RIGHT);
-        else if (final_dir == D_LEFT)
-            monster_interface->rotate(MonsterRotation::LEFT);
-
-        if (final_move == M_FRONT)
-            monster_interface->move(MonsterMovement::FRONT);
-        rt_sem_v(&monsters_tasks.find(identifier)->second.sem);
     }
 }
 
@@ -220,6 +226,9 @@ void god_task(void *world_state_void) {
 
         // Update the world state according with the requests
         vector<EntityModification> changes = world->update_world_state();
+
+        pause_game = world->isGamePaused();
+
         // Process changes on entities, requests to add tasks or remove
         for (EntityModification& change : changes) {
             // Process a create/delete monster task
@@ -322,6 +331,16 @@ void user_interaction_task(void *interface) {
         // Process the data received
         switch (viewer->get_type()) {
             case ViewerRequest::GAME_STATUS:
+                GameStatusData* statusData = dynamic_cast<GameStatusData*>(viewer.get());
+                if(statusData->status_ == GameStatus::PLAY) {
+                    rt_sem_p(&user_task_desc.sem, TM_INFINITE);
+                    user_interface->play_game();
+                    rt_sem_v(&user_task_desc.sem);
+                } else {
+                    rt_sem_p(&user_task_desc.sem, TM_INFINITE);
+                    user_interface->pause_game();
+                    rt_sem_v(&user_task_desc.sem);
+                }
                 break;
             case ViewerRequest::TOWER:
                 OperationTowerData* data = dynamic_cast<OperationTowerData*>(viewer.get());

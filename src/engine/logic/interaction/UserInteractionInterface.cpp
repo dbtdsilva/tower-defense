@@ -11,3 +11,11 @@ void UserInteractionInterface::add_tower(const TowerType& type, const Position<i
 void UserInteractionInterface::remove_tower(const Position<int>& position) {
     user_interaction_->remove_tower(position);
 }
+
+void UserInteractionInterface::pause_game() {
+    user_interaction_->pause_game();
+}
+
+void UserInteractionInterface::play_game() {
+    user_interaction_->play_game();
+}

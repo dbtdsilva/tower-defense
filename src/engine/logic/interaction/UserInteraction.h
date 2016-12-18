@@ -8,6 +8,20 @@
 
 class WorldState;
 
+typedef struct GameStatusRequest {
+    GameStatusRequest(const GameStatus& status) :
+            status(status) {};
+    GameStatusRequest(const GameStatusRequest& other) : status(other.status) {}
+    GameStatusRequest& operator=(const GameStatusRequest& other) {
+        if (this != &other)
+            this->status = status;
+
+        return *this;
+    }
+
+    GameStatus status;
+} GameStatusRequest;
+
 typedef struct TowerRequest {
     TowerRequest(const TowerType& type, const Position<int> position, const TowerOperation& operation) :
             type(type), position(position), operation(operation) {}
@@ -34,10 +48,14 @@ public:
     void clear_requests();
     void add_tower(const TowerType& type, const Position<int>& position);
     void remove_tower(const Position<int>& position);
+    GameStatusRequest* get_game_status_request() const;
+    void play_game();
+    void pause_game();
 private:
     std::unique_ptr<UserInteractionInterface> interface_;
 
     std::vector<TowerRequest> requests;
+    std::unique_ptr<GameStatusRequest> gameStatusRequest;
     WorldState* world_state_;
 };
 

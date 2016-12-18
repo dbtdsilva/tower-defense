@@ -20,6 +20,7 @@ public:
                unsigned int time_between_monster, unsigned int max_monsters, unsigned int max_towers);
 
     std::vector<EntityModification> update_world_state();
+    bool isGamePaused();
     void clear_world_requests();
     void simulate_load(RTIME load_ns);
 
@@ -47,6 +48,7 @@ private:
     UserInteraction user_interaction_;
 
     // Request list
+    std::unique_ptr<GameStatusRequest> requested_user_game_status_;
     std::vector<TowerRequest> requested_user_tower_;
     std::map<unsigned int, double> requested_tower_shoot_;
     std::map<unsigned int, TowerRotation> requested_tower_rotation_;
@@ -56,6 +58,7 @@ private:
     // Game stats and variables
     const unsigned int time_between_level_ms_, time_between_monsters_ms_, cycle_ms_;
     const unsigned int monsters_per_level_, max_towers_;
+    GameStatus status_;
     unsigned int player_currency_;
     unsigned int game_level_, monsters_left_to_spawn_, score_;
     unsigned int idle_cycles_between_levels_, idle_cycles_before_spawn_;

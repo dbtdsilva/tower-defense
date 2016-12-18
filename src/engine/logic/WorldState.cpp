@@ -18,7 +18,7 @@ WorldState::WorldState(size_t width, size_t height, unsigned int god_task_period
         game_level_(0), monsters_per_level_(max_monsters), monsters_left_to_spawn_(0), idle_cycles_between_levels_(0),
         idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms),
         score_(0), lives_(10), time_between_level_ms_(time_between_level),
-        time_between_monsters_ms_(time_between_monster), max_towers_(max_towers)
+        time_between_monsters_ms_(time_between_monster), max_towers_(max_towers), status_(GameStatus::PLAY)
 {
     start_position.set_x(0);
     start_position.set_y(1);
@@ -36,28 +36,31 @@ WorldState::WorldState(size_t width, size_t height, unsigned int god_task_period
 
 void WorldState::clear_world_requests() {
     requested_user_tower_ = user_interaction_.get_tower_requests();
+    requested_user_game_status_.reset(new GameStatusRequest(user_interaction_.get_game_status_request()));
     user_interaction_.clear_requests();
 
-    requested_monster_movement_.clear();
-    requested_monster_rotation_.clear();
-    for (auto& monster : monsters_) {
-        vector<MonsterMovement> movements = monster->get_requested_movements();
-        if (movements.size() != 0) requested_monster_movement_.insert({ monster->get_identifier(), movements[0]} );
-        vector<MonsterRotation> rotations = monster->get_requested_rotations();
-        if (rotations.size() != 0) requested_monster_rotation_.insert({ monster->get_identifier(), rotations[0]} );
+    if(status_ == GameStatus::PAUSE) {
+        requested_monster_movement_.clear();
+        requested_monster_rotation_.clear();
+        for (auto& monster : monsters_) {
+            vector<MonsterMovement> movements = monster->get_requested_movements();
+            if (movements.size() != 0) requested_monster_movement_.insert({ monster->get_identifier(), movements[0]} );
+            vector<MonsterRotation> rotations = monster->get_requested_rotations();
+            if (rotations.size() != 0) requested_monster_rotation_.insert({ monster->get_identifier(), rotations[0]} );
 
-        monster->clear_requests();
-    }
+            monster->clear_requests();
+        }
 
-    requested_tower_shoot_.clear();
-    requested_tower_rotation_.clear();
-    for (auto& tower : towers_) {
-        vector<double> shoots = tower->get_requested_shoots();
-        if (shoots.size() != 0) requested_tower_shoot_.insert({ tower->get_identifier(), shoots[0]} );
-        vector<TowerRotation> rotations = tower->get_requested_rotations();
-        if (rotations.size() != 0) requested_tower_rotation_.insert({ tower->get_identifier(), rotations[0]} );
+        requested_tower_shoot_.clear();
+        requested_tower_rotation_.clear();
+        for (auto& tower : towers_) {
+            vector<double> shoots = tower->get_requested_shoots();
+            if (shoots.size() != 0) requested_tower_shoot_.insert({ tower->get_identifier(), shoots[0]} );
+            vector<TowerRotation> rotations = tower->get_requested_rotations();
+            if (rotations.size() != 0) requested_tower_rotation_.insert({ tower->get_identifier(), rotations[0]} );
 
-        tower->clear_requests();
+            tower->clear_requests();
+        }
     }
 }
 
@@ -87,7 +90,12 @@ std::vector<EntityModification> WorldState::update_world_state() {
     if (lives_ == 0)
         return entity_modifications;
 
-    if (monsters_left_to_spawn_ == 0) {
+    if(requested_user_game_status_.get() != nullptr) {
+        status_ = requested_user_game_status_.get()->status;
+        requested_user_game_status_.release();
+    }
+
+    if (status_ == GameStatus::PLAY && monsters_left_to_spawn_ == 0) {
         if (monsters_.empty()) {
             idle_cycles_between_levels_++;
             if (idle_cycles_between_levels_ > (time_between_level_ms_ / cycle_ms_)) {
@@ -96,8 +104,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
                 idle_cycles_between_levels_ = 0;
             }
         }
-    } else if (idle_cycles_before_spawn_ > (time_between_monsters_ms_ / cycle_ms_)) {
-
+    } else if (status_ == GameStatus::PLAY && idle_cycles_before_spawn_ > (time_between_monsters_ms_ / cycle_ms_)) {
         unique_ptr<Monster> ref = make_unique<Monster>(Monster::add_monster(
                 this,
                 monsters_left_to_spawn_ < game_level_ ? MonsterType::INSANE : MonsterType::BASIC,
@@ -110,7 +117,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
                                                           EntityType::MONSTER));
         monsters_left_to_spawn_--;
         idle_cycles_before_spawn_ = 0;
-    } else {
+    } else if(status_ == GameStatus::PLAY){
         idle_cycles_before_spawn_++;
     }
 
@@ -150,128 +157,130 @@ std::vector<EntityModification> WorldState::update_world_state() {
     }
 
     // Update bullets in the world
-    for(auto bullet_iter = bullets_.begin(); bullet_iter != bullets_.end(); ) {
-        Bullet* bullet = bullet_iter->get();
-        if (bullet == nullptr) break;
-        double new_x = bullet->get_position().get_x() + cos(bullet->get_angle()) * bullet->get_speed();
-        double new_y = bullet->get_position().get_y() - sin(bullet->get_angle()) * bullet->get_speed();
+    if(status_ == GameStatus::PLAY) {
+        for (auto bullet_iter = bullets_.begin(); bullet_iter != bullets_.end();) {
+            Bullet *bullet = bullet_iter->get();
+            if (bullet == nullptr) break;
+            double new_x = bullet->get_position().get_x() + cos(bullet->get_angle()) * bullet->get_speed();
+            double new_y = bullet->get_position().get_y() - sin(bullet->get_angle()) * bullet->get_speed();
 
-        bullet->get_position().set_x(new_x);
-        bullet->get_position().set_y(new_y);
+            bullet->get_position().set_x(new_x);
+            bullet->get_position().set_y(new_y);
 
-        if (new_x < 0 || new_x >= width_ || new_y < 0 || new_y >= height_ ||
+            if (new_x < 0 || new_x >= width_ || new_y < 0 || new_y >= height_ ||
                 bullet->get_distance_travelled() >= bullet->get_range()) {
-            bullet_iter = bullets_.erase(bullet_iter);
-            continue;
-        }
-
-        bool bullet_struck = false;
-        for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ++monster_iter) {
-            Monster* monster = monster_iter->get();
-            if (sqrt(pow(new_x - monster->get_position().get_x(), 2) +
-                     pow(new_y - monster->get_position().get_y(), 2)) < 0.1) {
-                bullet_struck = true;
-                int health_left = monster->bullet_struck(bullet->get_damage());
                 bullet_iter = bullets_.erase(bullet_iter);
-                if (health_left <= 0) {
-                    switch (monster->get_type()) {
-                        case MonsterType::BASIC:
-                            score_ += 1;
-                            player_currency_ += 10;
-                            break;
-                        case MonsterType::INSANE:
-                            score_ += 2;
-                            player_currency_ += 25;
-                            break;
+                continue;
+            }
+
+            bool bullet_struck = false;
+            for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); ++monster_iter) {
+                Monster *monster = monster_iter->get();
+                if (sqrt(pow(new_x - monster->get_position().get_x(), 2) +
+                         pow(new_y - monster->get_position().get_y(), 2)) < 0.1) {
+                    bullet_struck = true;
+                    int health_left = monster->bullet_struck(bullet->get_damage());
+                    bullet_iter = bullets_.erase(bullet_iter);
+                    if (health_left <= 0) {
+                        switch (monster->get_type()) {
+                            case MonsterType::BASIC:
+                                score_ += 1;
+                                player_currency_ += 10;
+                                break;
+                            case MonsterType::INSANE:
+                                score_ += 2;
+                                player_currency_ += 25;
+                                break;
+                        }
+                        entity_modifications.push_back(EntityModification(monster->get_interface(),
+                                                                          monster->get_identifier(),
+                                                                          EntityAction::REMOVE,
+                                                                          EntityType::MONSTER));
                     }
-                    entity_modifications.push_back(EntityModification(monster->get_interface(),
-                                                                      monster->get_identifier(),
-                                                                      EntityAction::REMOVE,
-                                                                      EntityType::MONSTER));
+                    break;
                 }
-                break;
+            }
+
+            if (!bullet_struck) {
+                bullet_iter++;
             }
         }
 
-        if (!bullet_struck) {
-            bullet_iter++;
-        }
-    }
+        // Update monster state
+        for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); monster_iter++) {
+            Monster *monster = monster_iter->get();
+            monster->update_eyes();
 
-    // Update monster state
-    for (auto monster_iter = monsters_.begin(); monster_iter != monsters_.end(); monster_iter++) {
-        Monster* monster = monster_iter->get();
-        monster->update_eyes();
-
-        auto movement = requested_monster_movement_.find(monster->get_identifier());
-        if (movement != requested_monster_movement_.end()) {
-            const Position<double>& position = monster->get_position();
-            double& angle = monster->get_angle();
-            Position<double> new_position(0, 0);
-            switch (movement->second) {
-                case MonsterMovement::FRONT:
-                    new_position.set_x(position.get_x() + cos(angle) * monster->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle) * monster->get_movement_speed());
-                    break;
-                case MonsterMovement::BACK:
-                    new_position.set_x(position.get_x() + cos(angle - M_PI) * monster->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle - M_PI) * monster->get_movement_speed());
-                    break;
-                case MonsterMovement::LEFT:
-                    new_position.set_x(position.get_x() + cos(angle + M_PI_2) * monster->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle + M_PI_2) * monster->get_movement_speed());
-                    break;
-                case MonsterMovement::RIGHT:
-                    new_position.set_x(position.get_x() + cos(angle - M_PI_2) * monster->get_movement_speed());
-                    new_position.set_y(position.get_y() - sin(angle - M_PI_2) * monster->get_movement_speed());
-                    break;
-            }
-            Position<int> new_position_map(static_cast<int>(floor(new_position.get_x())),
-                                           static_cast<int>(floor(new_position.get_y())));
-            if (new_position_map.get_x() >= 0 && new_position_map.get_x() < width_ &&
+            auto movement = requested_monster_movement_.find(monster->get_identifier());
+            if (movement != requested_monster_movement_.end()) {
+                const Position<double> &position = monster->get_position();
+                double &angle = monster->get_angle();
+                Position<double> new_position(0, 0);
+                switch (movement->second) {
+                    case MonsterMovement::FRONT:
+                        new_position.set_x(position.get_x() + cos(angle) * monster->get_movement_speed());
+                        new_position.set_y(position.get_y() - sin(angle) * monster->get_movement_speed());
+                        break;
+                    case MonsterMovement::BACK:
+                        new_position.set_x(position.get_x() + cos(angle - M_PI) * monster->get_movement_speed());
+                        new_position.set_y(position.get_y() - sin(angle - M_PI) * monster->get_movement_speed());
+                        break;
+                    case MonsterMovement::LEFT:
+                        new_position.set_x(position.get_x() + cos(angle + M_PI_2) * monster->get_movement_speed());
+                        new_position.set_y(position.get_y() - sin(angle + M_PI_2) * monster->get_movement_speed());
+                        break;
+                    case MonsterMovement::RIGHT:
+                        new_position.set_x(position.get_x() + cos(angle - M_PI_2) * monster->get_movement_speed());
+                        new_position.set_y(position.get_y() - sin(angle - M_PI_2) * monster->get_movement_speed());
+                        break;
+                }
+                Position<int> new_position_map(static_cast<int>(floor(new_position.get_x())),
+                                               static_cast<int>(floor(new_position.get_y())));
+                if (new_position_map.get_x() >= 0 && new_position_map.get_x() < width_ &&
                     new_position_map.get_y() >= 0 && new_position_map.get_y() < height_ &&
                     map_[new_position_map.get_x()][new_position_map.get_y()] == PositionState::PATH) {
-                if (sqrt(pow(new_position.get_x() - (end_position.get_x() + 0.5), 2) +
-                         pow(new_position.get_y() - (end_position.get_y() + 0.5), 2)) < 0.2) {
-                    lives_ = lives_ > 0 ? lives_ - 1 : lives_;
-                    entity_modifications.push_back(EntityModification(monster->get_interface(),
-                                                                      monster->get_identifier(),
-                                                                      EntityAction::REMOVE,
-                                                                      EntityType::MONSTER));
-                    continue;
-                } else {
-                    monster->set_position(new_position.get_x(), new_position.get_y());
+                    if (sqrt(pow(new_position.get_x() - (end_position.get_x() + 0.5), 2) +
+                             pow(new_position.get_y() - (end_position.get_y() + 0.5), 2)) < 0.2) {
+                        lives_ = lives_ > 0 ? lives_ - 1 : lives_;
+                        entity_modifications.push_back(EntityModification(monster->get_interface(),
+                                                                          monster->get_identifier(),
+                                                                          EntityAction::REMOVE,
+                                                                          EntityType::MONSTER));
+                        continue;
+                    } else {
+                        monster->set_position(new_position.get_x(), new_position.get_y());
+                    }
                 }
             }
+            auto rotation = requested_monster_rotation_.find(monster->get_identifier());
+            if (rotation != requested_monster_rotation_.end()) {
+                double &angle = monster->get_angle();
+                if (rotation->second == MonsterRotation::LEFT)
+                    angle += monster->get_rotational_speed();
+                else
+                    angle -= monster->get_rotational_speed();
+            }
         }
-        auto rotation = requested_monster_rotation_.find(monster->get_identifier());
-        if (rotation != requested_monster_rotation_.end()) {
-            double& angle = monster->get_angle();
-            if (rotation->second == MonsterRotation::LEFT)
-                angle += monster->get_rotational_speed();
-            else
-                angle -= monster->get_rotational_speed();
-        }
-    }
 
-    // Update tower state
-    for (auto& tower : towers_) {
-        // Check for shoots
-        auto shoots = requested_tower_shoot_.find(tower->get_identifier());
-        if (shoots != requested_tower_shoot_.end() && tower->able_to_shoot()) {
-            bullets_.push_back(make_unique<Bullet>(Position<double>(tower->get_position().get_x() + 0.5,
-                                                                    tower->get_position().get_y() + 0.5),
-                                                   shoots->second, 0.1, tower->get_damage(), tower->get_range()));
-        }
-        // Check for rotations
-        auto rotation = requested_tower_rotation_.find(tower->get_identifier());
-        if (rotation != requested_tower_rotation_.end()) {
-            const double& rotational_speed = tower->get_rotational_speed();
-            double& angle = tower->get_angle();
-            if (rotation->second == TowerRotation::LEFT)
-                angle += rotational_speed;
-            else
-                angle -= rotational_speed;
+        // Update tower state
+        for (auto &tower : towers_) {
+            // Check for shoots
+            auto shoots = requested_tower_shoot_.find(tower->get_identifier());
+            if (shoots != requested_tower_shoot_.end() && tower->able_to_shoot()) {
+                bullets_.push_back(make_unique<Bullet>(Position<double>(tower->get_position().get_x() + 0.5,
+                                                                        tower->get_position().get_y() + 0.5),
+                                                       shoots->second, 0.1, tower->get_damage(), tower->get_range()));
+            }
+            // Check for rotations
+            auto rotation = requested_tower_rotation_.find(tower->get_identifier());
+            if (rotation != requested_tower_rotation_.end()) {
+                const double &rotational_speed = tower->get_rotational_speed();
+                double &angle = tower->get_angle();
+                if (rotation->second == TowerRotation::LEFT)
+                    angle += rotational_speed;
+                else
+                    angle -= rotational_speed;
+            }
         }
     }
 
@@ -287,6 +296,7 @@ void WorldState::serialize_data(ostream& stream) const {
     for (const auto& monster : monsters_)
         data_to_serialize.monsters_.push_back(MonsterData(monster->get_position(), monster->get_type(),
                                                           monster->get_health(), monster->get_angle()));
+    data_to_serialize.status_ = status_;
     data_to_serialize.map_ = map_;
     data_to_serialize.score_ = score_;
     data_to_serialize.level_ = game_level_;
@@ -392,5 +402,9 @@ ostream& operator<<(ostream& os, const WorldState& obj)
     }
     os << endl;*/
     return os;
+}
+
+bool WorldState::isGamePaused() {
+    return status_ == GameStatus::PAUSE;
 }
 

@@ -116,6 +116,7 @@ void MapDrawer::drawMap() {
     this->mtx.unlock();
 
     if(this->bufferReader != nullptr) {
+
         std::string windowTitle = "Tower Defense - Level " + std::to_string(this->bufferReader->level_);
         SDL_SetWindowTitle(this->window, windowTitle.c_str());
         for(int i = 0; i < this->bufferReader->map_.size(); ++i)
@@ -1071,8 +1072,7 @@ void MapDrawer::drawMenuPlayButton() {
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
-    if(viewerData->get_type() == ViewerRequest::GAME_STATUS &&
-       dynamic_cast<GameStatusData*>(viewerData.get())->status_ == GameStatus::PLAY)
+    if(bufferReader->status_ == GameStatus::PLAY)
         SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
     else
         SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
@@ -1100,8 +1100,7 @@ void MapDrawer::drawMenuPauseButton() {
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
-    if(viewerData->get_type() == ViewerRequest::GAME_STATUS &&
-       dynamic_cast<GameStatusData*>(viewerData.get())->status_ == GameStatus::PAUSE)
+    if(bufferReader->status_ == GameStatus::PAUSE)
         SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
     else
         SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);

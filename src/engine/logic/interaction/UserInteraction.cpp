@@ -28,4 +28,18 @@ UserInteractionInterface* UserInteraction::get_user_interaction_interface() {
 
 void UserInteraction::clear_requests() {
     requests.clear();
+    gameStatusRequest.release();
 }
+
+void UserInteraction::play_game() {
+    gameStatusRequest.reset(new GameStatusRequest(GameStatus::PLAY));
+}
+
+void UserInteraction::pause_game() {
+    gameStatusRequest.reset(new GameStatusRequest(GameStatus::PAUSE));
+}
+
+GameStatusRequest *UserInteraction::get_game_status_request() const {
+    return gameStatusRequest.get();
+}
+

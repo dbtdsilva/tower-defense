@@ -13,6 +13,8 @@ public:
 
     void add_tower(const TowerType& type, const Position<int>& position);
     void remove_tower(const Position<int>& position);
+    void pause_game();
+    void play_game();
 private:
     UserInteraction* user_interaction_;
 };
