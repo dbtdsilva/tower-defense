@@ -105,7 +105,6 @@ std::vector<EntityModification> WorldState::update_world_state() {
             }
         }
     } else if (idle_cycles_before_spawn_ > (time_between_monsters_ms_ / cycle_ms_)) {
-
         unique_ptr<Monster> ref = make_unique<Monster>(Monster::add_monster(
                 this,
                 monsters_left_to_spawn_ < game_level_ ? MonsterType::INSANE : MonsterType::BASIC,
