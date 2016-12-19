@@ -14,7 +14,7 @@ using namespace std;
 WorldState::WorldState(size_t width, size_t height, unsigned int god_task_period_ms, unsigned int time_between_level,
                        unsigned int time_between_monster, unsigned int max_monsters, unsigned int max_towers) :
         width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
-        user_interaction_(this), player_currency_(10000),
+        user_interaction_(this), player_currency_(10000), playing_(true),
         game_level_(0), monsters_per_level_(max_monsters), monsters_left_to_spawn_(0), idle_cycles_between_levels_(0),
         idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms),
         score_(0), lives_(10), time_between_level_ms_(time_between_level),
@@ -36,6 +36,11 @@ WorldState::WorldState(size_t width, size_t height, unsigned int god_task_period
 
 void WorldState::clear_world_requests() {
     requested_user_tower_ = user_interaction_.get_tower_requests();
+    const bool* status = user_interaction_.get_play_request();
+    if (status != nullptr)
+        requested_user_game_status = make_unique<bool>(*status);
+    else if (requested_user_game_status.get() != nullptr)
+        requested_user_game_status.release();
     user_interaction_.clear_requests();
 
     requested_monster_movement_.clear();
@@ -84,7 +89,10 @@ void WorldState::delete_monster(unsigned int identifier) {
 
 std::vector<EntityModification> WorldState::update_world_state() {
     std::vector<EntityModification> entity_modifications;
-    if (lives_ == 0)
+    if (requested_user_game_status.get() != nullptr)
+        playing_ = *requested_user_game_status;
+
+    if (lives_ == 0 || !playing_)
         return entity_modifications;
 
     if (monsters_left_to_spawn_ == 0) {

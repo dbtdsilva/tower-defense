@@ -321,9 +321,14 @@ void user_interaction_task(void *interface) {
 
         // Process the data received
         switch (viewer->get_type()) {
-            case ViewerRequest::GAME_STATUS:
+            case ViewerRequest::GAME_STATUS: {
+                GameStatusData* game_data = dynamic_cast<GameStatusData*>(viewer.get());
+                rt_sem_p(&user_task_desc.sem, TM_INFINITE);
+                user_interface->modify_game_status(game_data->status_ == GameStatus::PLAY);
+                rt_sem_v(&user_task_desc.sem);
                 break;
-            case ViewerRequest::TOWER:
+            }
+            case ViewerRequest::TOWER: {
                 OperationTowerData* data = dynamic_cast<OperationTowerData*>(viewer.get());
                 if (data->operation_ == TowerOperation::INSERT) {
                     rt_sem_p(&user_task_desc.sem, TM_INFINITE);
@@ -335,6 +340,7 @@ void user_interaction_task(void *interface) {
                     rt_sem_v(&user_task_desc.sem);
                 }
                 break;
+            }
         }
     }
 }

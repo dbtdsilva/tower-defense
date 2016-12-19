@@ -11,3 +11,7 @@ void UserInteractionInterface::add_tower(const TowerType& type, const Position<i
 void UserInteractionInterface::remove_tower(const Position<int>& position) {
     user_interaction_->remove_tower(position);
 }
+
+void UserInteractionInterface::modify_game_status(const bool &status) {
+    user_interaction_->modify_game_status(status);
+}

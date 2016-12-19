@@ -28,4 +28,13 @@ UserInteractionInterface* UserInteraction::get_user_interaction_interface() {
 
 void UserInteraction::clear_requests() {
     requests.clear();
+    request_play.release();
+}
+
+void UserInteraction::modify_game_status(const bool& status) {
+    request_play = make_unique<bool>(status);
+}
+
+const bool *UserInteraction::get_play_request() const {
+    return request_play.get();
 }

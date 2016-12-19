@@ -30,14 +30,17 @@ public:
     UserInteraction(WorldState*);
 
     const std::vector<TowerRequest>& get_tower_requests() const;
+    const bool* get_play_request() const;
     UserInteractionInterface* get_user_interaction_interface();
     void clear_requests();
     void add_tower(const TowerType& type, const Position<int>& position);
     void remove_tower(const Position<int>& position);
+    void modify_game_status(const bool& status);
 private:
     std::unique_ptr<UserInteractionInterface> interface_;
 
     std::vector<TowerRequest> requests;
+    std::unique_ptr<bool> request_play;
     WorldState* world_state_;
 };
 
