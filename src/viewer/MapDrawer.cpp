@@ -182,7 +182,8 @@ void MapDrawer::drawMap() {
         }
 
         SDL_RenderPresent(this->renderer);
-    }
+    } else
+        this->drawInitialLogo();
 }
 
 bool MapDrawer::handleEvents() {
@@ -719,6 +720,49 @@ void MapDrawer::unloadTextures() {
 
 bool MapDrawer::initSuccessful() {
     return this->initStatus;
+}
+
+void MapDrawer::drawInitialLogo() {
+    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
+    SDL_RenderClear(this->renderer);
+
+    int init_x = this->width / 2;
+    int init_y = this->height / 2;
+
+    SDL_Rect dest;
+
+    // Score text
+    dest.w = 400;
+    dest.h = 200;
+    dest.x = init_x - dest.w / 2;
+    dest.y = init_y - dest.h / 2;
+
+    std::string fontPath = this->folderPath + "/fonts/sans.ttf";
+    TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
+    SDL_Color white = {255, 255, 255};
+
+    std::string time_text = "TOWER DEFENSE";
+
+    // Score value text
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, time_text.c_str(), white);
+    TTF_CloseFont(sans);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_RenderCopy(this->renderer, message, nullptr, &dest);
+
+    cleanup(message);
+
+    SDL_RenderPresent(this->renderer);
 }
 
 void MapDrawer::drawTime() {

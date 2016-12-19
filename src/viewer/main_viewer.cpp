@@ -85,7 +85,12 @@ int main() {
         }
     }
 
-    recv_handler.join();
+    if(recv_handler.joinable())
+        recv_handler.join();
+    else
+        terminate();
+
+    draw_handler.join();
 
     delete drawer;
 
