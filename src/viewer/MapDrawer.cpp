@@ -195,6 +195,8 @@ bool MapDrawer::handleEvents() {
         switch (e.type) {
             case SDL_QUIT:
                 this->quit = true;
+                modifications = true;
+                this->viewerData = std::make_unique<GameStatusData>(GameStatus::EXIT);
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 bool leftPressed = false;
