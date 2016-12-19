@@ -172,6 +172,10 @@ void MapDrawer::drawMap() {
 
         this->drawMenu();
 
+        if((this->bufferReader->time_level_start_ms_ / 1000) != 0) {
+            this->drawTime();
+        }
+
         SDL_RenderPresent(this->renderer);
     }
 }
@@ -710,6 +714,44 @@ void MapDrawer::unloadTextures() {
 
 bool MapDrawer::initSuccessful() {
     return this->initStatus;
+}
+
+void MapDrawer::drawTime() {
+    int init_x = this->width / 2 - 50;
+    int init_y = this->height / 2 - 50;
+
+    SDL_Rect dest;
+
+    // Score text
+    dest.x = init_x;
+    dest.y = init_y;
+    dest.w = 100;
+    dest.h = 100;
+
+    std::string fontPath = this->folderPath + "/fonts/sans.ttf";
+    TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
+    SDL_Color red = {255, 0, 0};
+
+    std::string time_text = std::to_string(this->bufferReader->time_level_start_ms_ / 1000);
+
+    // Score value text
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, time_text.c_str(), red);
+    TTF_CloseFont(sans);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_RenderCopy(this->renderer, message, nullptr, &dest);
+
+    cleanup(message);
 }
 
 void MapDrawer::drawMenu() {

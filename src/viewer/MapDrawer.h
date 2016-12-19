@@ -43,6 +43,7 @@ private:
     bool init();
     bool loadTextures();
     void unloadTextures();
+    void drawTime();
     void drawMenu();
     void drawMenuScore();
     void drawMenuMoney();

@@ -71,7 +71,7 @@ private:
     template<typename Archive>
     void serialize(Archive &archive) {
         archive(player_currency_, bullets_, towers_, monsters_, map_,
-                player_currency_, level_, monsters_left_level_, score_,
+                level_, monsters_left_level_, score_,
                 start_, end_, lives_, time_level_start_ms_);
     }
 };

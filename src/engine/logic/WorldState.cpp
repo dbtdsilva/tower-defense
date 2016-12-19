@@ -300,7 +300,8 @@ void WorldState::serialize_data(ostream& stream) const {
     data_to_serialize.monsters_left_level_ = monsters_left_to_spawn_;
     data_to_serialize.player_currency_ = player_currency_;
     data_to_serialize.lives_ = lives_;
-    data_to_serialize.time_level_start_ms_ = cycle_ms_ * idle_cycles_between_levels_;
+    data_to_serialize.time_level_start_ms_ = time_between_level_ms_ - cycle_ms_ * idle_cycles_between_levels_;
+    std::cout << data_to_serialize.time_level_start_ms_ << std::endl;
 
     data_to_serialize.start_ = start_position;
     data_to_serialize.end_ = end_position;
