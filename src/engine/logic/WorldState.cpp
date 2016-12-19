@@ -98,7 +98,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
     if (monsters_left_to_spawn_ == 0) {
         if (monsters_.empty()) {
             idle_cycles_between_levels_++;
-            if (idle_cycles_between_levels_ > (time_between_level_ms_ / cycle_ms_)) {
+            if (idle_cycles_between_levels_ >= (time_between_level_ms_ / cycle_ms_)) {
                 game_level_++;
                 monsters_left_to_spawn_ = monsters_per_level_;
                 idle_cycles_between_levels_ = 0;
@@ -301,10 +301,11 @@ void WorldState::serialize_data(ostream& stream) const {
     data_to_serialize.player_currency_ = player_currency_;
     data_to_serialize.lives_ = lives_;
     data_to_serialize.time_level_start_ms_ = time_between_level_ms_ - cycle_ms_ * idle_cycles_between_levels_;
-    std::cout << data_to_serialize.time_level_start_ms_ << std::endl;
-
+    data_to_serialize.level_finished_ = idle_cycles_between_levels_ != 0;
     data_to_serialize.start_ = start_position;
     data_to_serialize.end_ = end_position;
+
+    cout << data_to_serialize.time_level_start_ms_ << endl;
 
     cereal::BinaryOutputArchive archive(stream);
     archive(data_to_serialize);

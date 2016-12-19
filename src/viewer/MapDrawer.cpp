@@ -172,7 +172,7 @@ void MapDrawer::drawMap() {
 
         this->drawMenu();
 
-        if((this->bufferReader->time_level_start_ms_ / 1000) != 0) {
+        if((this->bufferReader->time_level_start_ms_ / 1000) != 0 && this->bufferReader->level_finished_) {
             this->drawTime();
         }
 

@@ -61,6 +61,7 @@ public:
     WorldData() {}
 
     unsigned int player_currency_, level_, monsters_left_level_, score_, lives_, time_level_start_ms_;
+    bool level_finished_;
     Position<int> start_, end_;
     std::vector<TowerData> towers_;
     std::vector<MonsterData> monsters_;
@@ -71,7 +72,7 @@ private:
     template<typename Archive>
     void serialize(Archive &archive) {
         archive(player_currency_, bullets_, towers_, monsters_, map_,
-                level_, monsters_left_level_, score_,
+                level_, monsters_left_level_, score_, level_finished_,
                 start_, end_, lives_, time_level_start_ms_);
     }
 };
