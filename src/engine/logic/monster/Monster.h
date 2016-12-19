@@ -6,6 +6,7 @@
 #include <helpers/Position.h>
 #include <helpers/Definitions.h>
 #include <native/types.h>
+#include <random>
 #include "MonsterEye.h"
 #include "MonsterInterface.h"
 
@@ -61,6 +62,9 @@ private:
     std::vector<MonsterRotation> requested_rotations_;
     std::unique_ptr<MonsterInterface> interface_;
     WorldState* world_ref_;
+
+    std::normal_distribution<double> distribution_;
+    std::default_random_engine generator_;
 };
 
 

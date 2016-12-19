@@ -253,7 +253,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
                     new_position_map.get_y() >= 0 && new_position_map.get_y() < height_ &&
                     map_[new_position_map.get_x()][new_position_map.get_y()] == PositionState::PATH) {
                 if (sqrt(pow(new_position.get_x() - (end_position.get_x() + 0.5), 2) +
-                         pow(new_position.get_y() - (end_position.get_y() + 0.5), 2)) < 0.2) {
+                         pow(new_position.get_y() - (end_position.get_y() + 0.5), 2)) < 0.5) {
                     lives_ = lives_ > 0 ? lives_ - 1 : lives_;
                     entity_modifications.push_back(EntityModification(monster->get_interface(),
                                                                       monster->get_identifier(),

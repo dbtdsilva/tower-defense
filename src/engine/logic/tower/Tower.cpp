@@ -1,6 +1,7 @@
 #include "Tower.h"
 
 #include <cmath>
+#include <chrono>
 #include "types/SimpleTower.h"
 #include "types/ComplexTower.h"
 #include "../monster/Monster.h"
@@ -29,7 +30,8 @@ Tower::Tower(WorldState* state, const int& damage, const int& weapon_load_cycles
         damage_(damage), radar_load_time_(radar_load_time), weapon_load_cycles_(weapon_load_cycles), cost_(cost),
         range_(range), rotational_speed_(rotational_speed), pos_(pos), angle_(0), world_ref_(state),
         interface_(make_unique<TowerInterface>(this)), id_(Tower::instance_counter), type_(type),
-        internal_cycle_between_shots_(0)
+        internal_cycle_between_shots_(0), generator_(std::chrono::system_clock::now().time_since_epoch().count()),
+        distribution_(0.0, 1.0)
 {
     Tower::instance_counter++;
 }
@@ -39,7 +41,8 @@ Tower::Tower(Tower&& other)  :
         damage_(other.damage_), radar_load_time_(other.radar_load_time_), angle_(other.angle_), id_(other.id_),
         interface_(std::move(other.interface_)), world_ref_(other.world_ref_), type_(other.type_),
         internal_cycle_between_shots_(other.internal_cycle_between_shots_),
-        weapon_load_cycles_(other.weapon_load_cycles_)
+        weapon_load_cycles_(other.weapon_load_cycles_), generator_(other.generator_),
+        distribution_(other.distribution_)
 {
     interface_->reference_moved(this);
     other.interface_ = nullptr;
@@ -99,13 +102,20 @@ void Tower::shoot() {
     requested_shoots_.push_back(angle_);
 }
 
-const vector<Position<double>> Tower::radar() const {
+const vector<Position<double>> Tower::radar() {
     // Implement a cost function
     world_ref_->simulate_load(radar_load_time_);
 
     // Return the value
-    vector<Position<double>> monsters_in_range;
-    return world_ref_->get_monsters_position(Position<double>(pos_.get_x() + 0.5, pos_.get_y() + 0.5), range_ + 0.5);
+    vector<Position<double>> monsters_in_range = world_ref_->get_monsters_position(
+            Position<double>(pos_.get_x() + 0.5, pos_.get_y() + 0.5), range_ + 0.5);
+#ifdef NOISE
+    for (Position<double>& pos : monsters_in_range) {
+        pos.set_x(pos.get_x() + distribution_(generator_) * NOISE_VALUE);
+        pos.set_y(pos.get_y() + distribution_(generator_) * NOISE_VALUE);
+    }
+#endif
+    return monsters_in_range;
 }
 
 void Tower::rotate(const TowerRotation& rotation) {

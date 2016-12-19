@@ -6,6 +6,7 @@
 #include <helpers/Position.h>
 #include <helpers/Definitions.h>
 #include <native/types.h>
+#include <random>
 #include "TowerInterface.h"
 
 class WorldState;
@@ -35,7 +36,7 @@ public:
     bool able_to_shoot();
 
     void shoot();
-    const std::vector<Position<double>> radar() const;
+    const std::vector<Position<double>> radar();
     void rotate(const TowerRotation& rotation);
     void clear_requests();
 protected:
@@ -45,8 +46,9 @@ protected:
 private:
     static unsigned int instance_counter;
 
+    const RTIME radar_load_time_;
     const unsigned int id_;
-    const int damage_, radar_load_time_, cost_, weapon_load_cycles_;
+    const int damage_, cost_, weapon_load_cycles_;
     const double rotational_speed_, range_;
     const Position<int> pos_;
     const TowerType type_;
@@ -57,6 +59,9 @@ private:
     std::vector<TowerRotation> requested_rotations_;
     std::unique_ptr<TowerInterface> interface_;
     WorldState* world_ref_;
+
+    std::normal_distribution<double> distribution_;
+    std::default_random_engine generator_;
 };
 
 

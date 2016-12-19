@@ -13,7 +13,7 @@ public:
     void reference_moved(Tower* reference);
 
     void shoot();
-    const std::vector<Position<double>> radar() const;
+    const std::vector<Position<double>> radar();
     void rotate(const TowerRotation& rotation);
     const Position<int> get_position() const;
     const double get_angle() const;

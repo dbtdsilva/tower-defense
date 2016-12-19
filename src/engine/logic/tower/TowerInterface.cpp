@@ -15,7 +15,7 @@ void TowerInterface::shoot() {
     tower_reference_->shoot();
 }
 
-const std::vector<Position<double>> TowerInterface::radar() const {
+const std::vector<Position<double>> TowerInterface::radar() {
     return tower_reference_->radar();
 }
 

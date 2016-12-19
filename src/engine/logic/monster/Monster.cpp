@@ -1,6 +1,7 @@
 #include "Monster.h"
 
 #include <cmath>
+#include <chrono>
 #include "types/BasicMonster.h"
 #include "types/InsaneMonster.h"
 
@@ -21,7 +22,8 @@ Monster::Monster(WorldState* state, const int& health, const double& movement_sp
                  const RTIME& eyes_cost_ms, const Position<double>& pos, const MonsterType& type) :
         world_ref_(state), health_(health), movement_speed_(movement_speed), rotational_speed_(rotational_speed),
         pos_(pos), angle_(0), interface_(make_unique<MonsterInterface>(this)), type_(type), eyes_cost_ms_(eyes_cost_ms),
-        id_(Monster::instance_counter)
+        id_(Monster::instance_counter), generator_(std::chrono::system_clock::now().time_since_epoch().count()),
+        distribution_(0.0, 1.0)
 {
     const vector<double> eyes_direction = {M_PI / 3.0, 0.0, -M_PI / 3.0};
     for (double eye_direction : eyes_direction) {
@@ -37,10 +39,15 @@ Monster::Monster(Monster&& other) :
         world_ref_(other.world_ref_), health_(other.health_), movement_speed_(other.movement_speed_),
         rotational_speed_(other.rotational_speed_), pos_(other.pos_), angle_(other.angle_),
         eyes_cost_ms_(other.eyes_cost_ms_), interface_(std::move(other.interface_)), type_(other.type_),
-        id_(other.id_),  monster_eyes_(other.monster_eyes_)
+        id_(other.id_), monster_eyes_(other.monster_eyes_), generator_(other.generator_),
+        distribution_(other.distribution_)
 {
     interface_->reference_moved(this);
     other.interface_ = nullptr;
+
+    long seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine generator(seed);
+    std::normal_distribution<double> distribution (0.0,1.0);
 }
 
 void Monster::set_position(const double& x, const double& y) {
@@ -74,7 +81,11 @@ std::vector<MonsterEye>& Monster::eyes() {
 void Monster::update_eyes() {
     for (MonsterEye& eye : monster_eyes_) {
         double distance = world_ref_->get_wall_distance(pos_, angle_ + eye.direction, 0.01);
+#ifdef NOISE
+        distance += distribution_(generator_) * NOISE_VALUE;
+#endif
         if (distance > 3.0) distance = 3.0;
+        else if (distance < 0.0) distance = 0.0;
         eye.wall_distance = distance;
     }
 }
