@@ -163,7 +163,7 @@ void MapDrawer::drawMap() {
 
         for(std::vector<MonsterData>::iterator it = this->bufferReader->monsters_.begin(); it != this->bufferReader->monsters_.end(); ++it) {
             this->drawMonster(it->position_.get_x(), it->position_.get_y(), this->getDegrees(it->angle_),
-                              (it->type_ == MonsterType::BASIC ? MONSTER_1 : MONSTER_2));
+                              (it->type_ == MonsterType::BASIC ? MONSTER_1 : MONSTER_2), it->health_);
         }
 
         for(std::vector<BulletData>::iterator it = this->bufferReader->bullets_.begin(); it != this->bufferReader->bullets_.end(); ++it) {
@@ -595,7 +595,7 @@ bool MapDrawer::loadTextures() {
     }
 
     // Tower one price text
-    surfaceMessage = TTF_RenderText_Solid(sans, "$050", black);
+    surfaceMessage = TTF_RenderText_Solid(sans, "$100", black);
     if(surfaceMessage == nullptr) {
         std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
         return false;
@@ -611,7 +611,7 @@ bool MapDrawer::loadTextures() {
     }
 
     // Money text
-    surfaceMessage = TTF_RenderText_Solid(sans, "$100", black);
+    surfaceMessage = TTF_RenderText_Solid(sans, "$400", black);
     if(surfaceMessage == nullptr) {
         std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
         return false;
@@ -722,16 +722,16 @@ bool MapDrawer::initSuccessful() {
 }
 
 void MapDrawer::drawTime() {
-    int init_x = this->width / 2 - 50;
-    int init_y = this->height / 2 - 50;
+    int init_x = this->width / 2;
+    int init_y = this->height / 2;
 
     SDL_Rect dest;
 
     // Score text
-    dest.x = init_x;
-    dest.y = init_y;
-    dest.w = 100;
+    dest.w = 70;
     dest.h = 100;
+    dest.x = init_x - dest.w / 2;
+    dest.y = init_y - dest.h / 2;
 
     std::string fontPath = this->folderPath + "/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
@@ -760,16 +760,16 @@ void MapDrawer::drawTime() {
 }
 
 void MapDrawer::drawGameOver() {
-    int init_x = this->width / 2 - 100;
-    int init_y = this->height / 2 - 100;
+    int init_x = this->width / 2;
+    int init_y = this->height / 2;
 
     SDL_Rect dest;
 
     // Score text
-    dest.x = init_x;
-    dest.y = init_y;
-    dest.w = 200;
+    dest.w = 400;
     dest.h = 200;
+    dest.x = init_x - dest.w / 2;
+    dest.y = init_y - dest.h / 2;
 
     std::string fontPath = this->folderPath + "/fonts/sans.ttf";
     TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
@@ -1374,7 +1374,7 @@ void MapDrawer::drawTower(int x, int y, int angle, tower_type tower) {
     }
 }
 
-void MapDrawer::drawMonster(double x, double y, int angle, monster_type monster) {
+void MapDrawer::drawMonster(double x, double y, int angle, monster_type monster, int health) {
     SDL_Rect dest;
 
     int tmp_x = (int) (rint(x * this->tileSize) - this->tileSize / 2);
@@ -1384,13 +1384,18 @@ void MapDrawer::drawMonster(double x, double y, int angle, monster_type monster)
     dest.y = tmp_y;
     dest.w = this->tileSize;
     dest.h = this->tileSize;
+    double max_health = monster == monster_type::MONSTER_1 ? 125.0 : 250.0;
+    int alpha = (int) ((health / max_health) * 255.0);
+    alpha = alpha < 50 ? 50 : alpha;
 
     switch (monster) {
         case MONSTER_1:
+            SDL_SetTextureAlphaMod(this->textures->find("monster_one")->second, alpha);
             SDL_RenderCopyEx(this->renderer, this->textures->find("monster_one")->second, nullptr, &dest, -angle, nullptr,
                              SDL_FLIP_NONE);
             break;
         case MONSTER_2:
+            SDL_SetTextureAlphaMod(this->textures->find("monster_two")->second, alpha);
             SDL_RenderCopyEx(this->renderer, this->textures->find("monster_two")->second, nullptr, &dest, -angle, nullptr,
                              SDL_FLIP_NONE);
             break;

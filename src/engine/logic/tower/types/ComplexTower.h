@@ -10,7 +10,7 @@
 class ComplexTower : public Tower {
 public:
     ComplexTower(WorldState* world_ref, const Position<int>& pos) :
-            Tower(world_ref, 100, 10, 100, 500, 3.0, M_PI / 20.0, pos, TowerType::COMPLEX) {}
+            Tower(world_ref, 100, 10, 100, 400, 3.5, M_PI / 20.0, pos, TowerType::COMPLEX) {}
 };
 
 #endif //TOWERDEFENSE_COMPLEXTOWER_H_H

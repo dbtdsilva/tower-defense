@@ -20,7 +20,7 @@
 
 using namespace std;
 
-#undef DEBUG
+#define DEBUG
 
 #define TASK_MODE               0           // No flags
 #define TASK_STACK_SIZE         0           // Default stack size
@@ -292,12 +292,7 @@ void god_task(void *world_state_void) {
         ostringstream stream_serialize;
         world->serialize_data(stream_serialize);
         serialized_string = "MESSAGE" + stream_serialize.str();
-        ssize_t err = rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
-#ifdef DEBUG
-        if(err < 0) {
-            rt_printf("Error sending world state message (error code = %d)\n", err);
-        }
-#endif
+        rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
     }
 }
 
@@ -358,7 +353,7 @@ int main(int argc, char** argv) {
     mlockall(MCL_CURRENT | MCL_FUTURE);
     int err;
 
-    err = rt_pipe_create(&task_pipe_sender, NULL, 0, 0);
+    err = rt_pipe_create(&task_pipe_sender, "Sender", 0, 1 * 1024 * 1024);         // 1 MBytes
 #ifdef DEBUG
     if (err) {
         rt_printf("Error creating pipe (error code = %d)\n", err);
@@ -367,7 +362,7 @@ int main(int argc, char** argv) {
         rt_printf("Pipe created successfully\n");
     }
 #endif
-    err = rt_pipe_create(&task_pipe_receiver, NULL, 1, 0);
+    err = rt_pipe_create(&task_pipe_receiver, "Receiver", 1, 1 * 1024 * 1024);     // 1 MBytes
 #ifdef DEBUG
     if (err) {
         rt_printf("Error creating pipe (error code = %d)\n", err);

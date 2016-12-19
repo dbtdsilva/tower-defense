@@ -14,7 +14,7 @@ using namespace std;
 WorldState::WorldState(size_t width, size_t height, unsigned int god_task_period_ms, unsigned int time_between_level,
                        unsigned int time_between_monster, unsigned int max_monsters, unsigned int max_towers) :
         width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
-        user_interaction_(this), player_currency_(10000), playing_(true),
+        user_interaction_(this), player_currency_(600), playing_(true),
         game_level_(0), monsters_per_level_(max_monsters), monsters_left_to_spawn_(0), idle_cycles_between_levels_(0),
         idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms),
         score_(0), lives_(10), time_between_level_ms_(time_between_level),
@@ -188,7 +188,7 @@ std::vector<EntityModification> WorldState::update_world_state() {
                             break;
                         case MonsterType::INSANE:
                             score_ += 2;
-                            player_currency_ += 25;
+                            player_currency_ += 20;
                             break;
                     }
                     entity_modifications.push_back(EntityModification(monster->get_interface(),
@@ -304,8 +304,6 @@ void WorldState::serialize_data(ostream& stream) const {
     data_to_serialize.level_finished_ = idle_cycles_between_levels_ != 0;
     data_to_serialize.start_ = start_position;
     data_to_serialize.end_ = end_position;
-
-    cout << data_to_serialize.time_level_start_ms_ << endl;
 
     cereal::BinaryOutputArchive archive(stream);
     archive(data_to_serialize);

@@ -60,7 +60,7 @@ private:
     void drawRoadCorner(int x, int y, corner_side corner);
     void drawInsertPosition(int x, int y, marker_type marker);
     void drawTower(int x, int y, int angle, tower_type tower);
-    void drawMonster(double x, double y, int angle, monster_type monster);
+    void drawMonster(double x, double y, int angle, monster_type monster, int health);
     void drawBullet(double x, double y, bullet_type bullet);
     int getDegrees(double radians);
     std::string getCurrentDir();

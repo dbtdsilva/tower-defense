@@ -8,7 +8,7 @@
 class InsaneMonster : public Monster {
 public:
     InsaneMonster(WorldState* world_ref, const Position<double>& pos) :
-            Monster(world_ref, 200, 0.04, (M_PI / 180.0) * 10.0, 100, pos, MonsterType::INSANE) { };
+            Monster(world_ref, 250, 0.035, (M_PI / 180.0) * 10.0, 100, pos, MonsterType::INSANE) { };
 };
 
 #endif //TOWERDEFENSE_INSANEMONSTER_H
