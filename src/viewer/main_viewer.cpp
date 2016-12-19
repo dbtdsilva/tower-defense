@@ -54,21 +54,7 @@ void recv_message(MapDrawer *drawer) {
     }
 }
 
-void draw_map(MapDrawer *drawer) {
-    while(!drawer->isQuit()) {
-        drawer->drawMap();
-    }
-}
-
-int main() {
-    MapDrawer *drawer = new MapDrawer(SCREEN_WIDTH, SCREEN_HEIGTH);
-
-    if(!drawer->initSuccessful()) 
-        return -1;
-
-    thread recv_handler(recv_message, drawer);
-    thread draw_handler(draw_map, drawer);
-
+void send_message(MapDrawer *drawer) {
     ofstream pipe_1("/dev/rtp1", ios::binary);
     while (!drawer->isQuit()) {
         if (drawer->handleEvents()) {
@@ -84,13 +70,29 @@ int main() {
                 cout << "RT_Pipe 1 error" << endl;
         }
     }
+}
 
-    if(recv_handler.joinable())
-        recv_handler.join();
-    else
-        terminate();
+void draw_map(MapDrawer *drawer) {
+    while(!drawer->isQuit()) {
+        drawer->drawMap();
+    }
+}
 
+int main() {
+    MapDrawer *drawer = new MapDrawer(SCREEN_WIDTH, SCREEN_HEIGTH);
+
+    if(!drawer->initSuccessful()) 
+        return -1;
+
+    thread recv_handler(recv_message, drawer);
+    thread draw_handler(draw_map, drawer);
+    thread send_handler(send_message, drawer);
+
+    while(!drawer->isQuit());
+
+    recv_handler.join();
     draw_handler.join();
+    send_handler.join();
 
     delete drawer;
 

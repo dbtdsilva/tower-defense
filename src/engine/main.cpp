@@ -294,7 +294,7 @@ void god_task(void *world_state_void) {
 #endif
                 rt_task_delete(&user_task_desc.task);
                 rt_sem_delete(&user_task_desc.sem);
-                raise(SIGINT);
+                exit(0);
             }
         }
 

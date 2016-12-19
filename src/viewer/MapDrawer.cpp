@@ -732,7 +732,7 @@ void MapDrawer::drawInitialLogo() {
     SDL_Rect dest;
 
     // Score text
-    dest.w = 400;
+    dest.w = 300;
     dest.h = 200;
     dest.x = init_x - dest.w / 2;
     dest.y = init_y - dest.h / 2;
@@ -1200,8 +1200,7 @@ void MapDrawer::drawMenuPlayButton() {
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
-    if(viewerData->get_type() == ViewerRequest::GAME_STATUS &&
-       dynamic_cast<GameStatusData*>(viewerData.get())->status_ == GameStatus::PLAY)
+    if(this->bufferReader->status_ == GameStatus::PLAY)
         SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
     else
         SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
@@ -1229,8 +1228,7 @@ void MapDrawer::drawMenuPauseButton() {
     dest.w = this->menuWidth - 10;
     dest.h = 50;
 
-    if(viewerData->get_type() == ViewerRequest::GAME_STATUS &&
-       dynamic_cast<GameStatusData*>(viewerData.get())->status_ == GameStatus::PAUSE)
+    if(this->bufferReader->status_ == GameStatus::PAUSE)
         SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255);
     else
         SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
