@@ -172,8 +172,12 @@ void MapDrawer::drawMap() {
 
         this->drawMenu();
 
-        if((this->bufferReader->time_level_start_ms_ / 1000) != 0) {
+        if((this->bufferReader->time_level_start_ms_ / 1000) != 0 && this->bufferReader->lives_ > 0) {
             this->drawTime();
+        }
+
+        if(this->bufferReader->lives_ == 0) {
+            this->drawGameOver();
         }
 
         SDL_RenderPresent(this->renderer);
@@ -733,6 +737,44 @@ void MapDrawer::drawTime() {
     SDL_Color red = {255, 0, 0};
 
     std::string time_text = std::to_string(this->bufferReader->time_level_start_ms_ / 1000);
+
+    // Score value text
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, time_text.c_str(), red);
+    TTF_CloseFont(sans);
+    if(surfaceMessage == nullptr) {
+        std::cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_FreeSurface(surfaceMessage);
+    if(message == nullptr) {
+        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_RenderCopy(this->renderer, message, nullptr, &dest);
+
+    cleanup(message);
+}
+
+void MapDrawer::drawGameOver() {
+    int init_x = this->width / 2 - 100;
+    int init_y = this->height / 2 - 100;
+
+    SDL_Rect dest;
+
+    // Score text
+    dest.x = init_x;
+    dest.y = init_y;
+    dest.w = 200;
+    dest.h = 200;
+
+    std::string fontPath = this->folderPath + "/fonts/sans.ttf";
+    TTF_Font* sans = TTF_OpenFont(fontPath.c_str(), 24);
+    SDL_Color red = {255, 0, 0};
+
+    std::string time_text = "GAME OVER";
 
     // Score value text
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(sans, time_text.c_str(), red);
