@@ -69,6 +69,7 @@ int main() {
     thread recv_handler(recv_message, drawer);
     thread draw_handler(draw_map, drawer);
 
+    ofstream pipe_1("/dev/rtp1", ios::binary);
     while (!drawer->isQuit()) {
         if (drawer->handleEvents()) {
             ostringstream stream_serialize;
@@ -76,11 +77,9 @@ int main() {
             archive(drawer->getViewerData());
 
             string serialized_string = stream_serialize.str();
-            ofstream pipe_1("/dev/rtp1", ios::binary);
 
             if(pipe_1) {
-                pipe_1 << serialized_string << endl;
-                pipe_1.close();
+                pipe_1 << serialized_string << flush;
             } else
                 cout << "RT_Pipe 1 error" << endl;
         }
