@@ -9,7 +9,7 @@ enum class MonsterType { BASIC, INSANE };
 enum class PositionState { EMPTY, PATH, TOWER };
 
 enum class TowerOperation { INSERT, REMOVE };
-enum class GameStatus { PLAY, PAUSE };
+enum class GameStatus { PLAY, PAUSE, EXIT };
 enum class ViewerRequest { GAME_STATUS, TOWER };
 
 #endif //TOWERDEFENSE_DEFINITIONS_H

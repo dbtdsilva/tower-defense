@@ -67,13 +67,14 @@ public:
     std::vector<MonsterData> monsters_;
     std::vector<BulletData> bullets_;
     std::vector<std::vector<PositionState>> map_;
+    GameStatus status_;
 private:
     friend class cereal::access;
     template<typename Archive>
     void serialize(Archive &archive) {
         archive(player_currency_, bullets_, towers_, monsters_, map_,
                 level_, monsters_left_level_, score_, level_finished_,
-                start_, end_, lives_, time_level_start_ms_);
+                start_, end_, lives_, time_level_start_ms_, status_);
     }
 };
 

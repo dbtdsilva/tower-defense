@@ -14,7 +14,7 @@ using namespace std;
 WorldState::WorldState(size_t width, size_t height, unsigned int god_task_period_ms, unsigned int time_between_level,
                        unsigned int time_between_monster, unsigned int max_monsters, unsigned int max_towers) :
         width_(width), height_(height), map_(width, std::vector<PositionState>(height, PositionState::EMPTY)),
-        user_interaction_(this), player_currency_(600), playing_(true),
+        user_interaction_(this), player_currency_(600), playing_(GameStatus::PLAY),
         game_level_(0), monsters_per_level_(max_monsters), monsters_left_to_spawn_(0), idle_cycles_between_levels_(0),
         idle_cycles_before_spawn_(0), start_position(0, 0), end_position(0, 0), cycle_ms_(god_task_period_ms),
         score_(0), lives_(10), time_between_level_ms_(time_between_level),
@@ -36,9 +36,9 @@ WorldState::WorldState(size_t width, size_t height, unsigned int god_task_period
 
 void WorldState::clear_world_requests() {
     requested_user_tower_ = user_interaction_.get_tower_requests();
-    const bool* status = user_interaction_.get_play_request();
+    const GameStatus* status = user_interaction_.get_play_request();
     if (status != nullptr)
-        requested_user_game_status = make_unique<bool>(*status);
+        requested_user_game_status = make_unique<GameStatus>(*status);
     else if (requested_user_game_status.get() != nullptr)
         requested_user_game_status.release();
     user_interaction_.clear_requests();
@@ -92,8 +92,22 @@ std::vector<EntityModification> WorldState::update_world_state() {
     if (requested_user_game_status.get() != nullptr)
         playing_ = *requested_user_game_status;
 
-    if (lives_ == 0 || !playing_)
+    if (lives_ == 0 || playing_ == GameStatus::PAUSE)
         return entity_modifications;
+    else if (playing_ == GameStatus::EXIT) {
+        for (auto tower_iter = towers_.begin(); tower_iter != towers_.end(); ++tower_iter) {
+            Tower * tower = tower_iter->get();
+            entity_modifications.push_back(EntityModification(tower->get_interface(), tower->get_identifier(),
+                                                              EntityAction::REMOVE, EntityType::TOWER));
+        }
+        for (auto monsters_iter = monsters_.begin(); monsters_iter != monsters_.end(); ++monsters_iter) {
+            Monster * monster = monsters_iter->get();
+            entity_modifications.push_back(EntityModification(monster->get_interface(), monster->get_identifier(),
+                                                              EntityAction::REMOVE, EntityType::MONSTER));
+        }
+        entity_modifications.push_back(EntityModification(nullptr, 0, EntityAction::REMOVE, EntityType::USER_INTERACTION));
+        return entity_modifications;
+    }
 
     if (monsters_left_to_spawn_ == 0) {
         if (monsters_.empty()) {
@@ -304,6 +318,7 @@ void WorldState::serialize_data(ostream& stream) const {
     data_to_serialize.level_finished_ = idle_cycles_between_levels_ != 0;
     data_to_serialize.start_ = start_position;
     data_to_serialize.end_ = end_position;
+    data_to_serialize.status_ = playing_;
 
     cereal::BinaryOutputArchive archive(stream);
     archive(data_to_serialize);

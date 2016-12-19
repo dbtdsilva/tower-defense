@@ -31,10 +31,10 @@ void UserInteraction::clear_requests() {
     request_play.release();
 }
 
-void UserInteraction::modify_game_status(const bool& status) {
-    request_play = make_unique<bool>(status);
+void UserInteraction::modify_game_status(const GameStatus& status) {
+    request_play = make_unique<GameStatus>(status);
 }
 
-const bool *UserInteraction::get_play_request() const {
+const GameStatus *UserInteraction::get_play_request() const {
     return request_play.get();
 }

@@ -12,6 +12,6 @@ void UserInteractionInterface::remove_tower(const Position<int>& position) {
     user_interaction_->remove_tower(position);
 }
 
-void UserInteractionInterface::modify_game_status(const bool &status) {
+void UserInteractionInterface::modify_game_status(const GameStatus &status) {
     user_interaction_->modify_game_status(status);
 }

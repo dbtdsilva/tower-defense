@@ -48,7 +48,7 @@ private:
 
     // Request list
     std::vector<TowerRequest> requested_user_tower_;
-    std::unique_ptr<bool> requested_user_game_status;
+    std::unique_ptr<GameStatus> requested_user_game_status;
     std::map<unsigned int, double> requested_tower_shoot_;
     std::map<unsigned int, TowerRotation> requested_tower_rotation_;
     std::map<unsigned int, MonsterRotation> requested_monster_rotation_;
@@ -61,7 +61,7 @@ private:
     unsigned int game_level_, monsters_left_to_spawn_, score_;
     unsigned int idle_cycles_between_levels_, idle_cycles_before_spawn_;
     unsigned int lives_;
-    bool playing_;
+    GameStatus playing_;
 };
 
 

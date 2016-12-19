@@ -202,7 +202,9 @@ void god_task(void *world_state_void) {
     WorldState* world = static_cast<WorldState*>(world_state_void);
     string serialized_string;
 
-    while(!terminate_tasks) {
+    bool exit_request = false;
+
+    while(!terminate_tasks && !exit_request) {
         rt_task_wait_period(NULL);
 
         // Requests are used by every tasks, they are in a critical region
@@ -286,6 +288,13 @@ void god_task(void *world_state_void) {
                     world->delete_tower(change.identifier_);
                     towers_tasks.erase(change.identifier_);
                 }
+            } else if (change.type_ == EntityType::USER_INTERACTION && change.action_ == EntityAction::REMOVE) {
+#ifdef DEBUG
+                rt_printf("Deleting user interaction\n", change.identifier_);
+#endif
+                rt_task_delete(&user_task_desc.task);
+                rt_sem_delete(&user_task_desc.sem);
+                raise(SIGINT);
             }
         }
 
@@ -319,7 +328,7 @@ void user_interaction_task(void *interface) {
             case ViewerRequest::GAME_STATUS: {
                 GameStatusData* game_data = dynamic_cast<GameStatusData*>(viewer.get());
                 rt_sem_p(&user_task_desc.sem, TM_INFINITE);
-                user_interface->modify_game_status(game_data->status_ == GameStatus::PLAY);
+                user_interface->modify_game_status(game_data->status_);
                 rt_sem_v(&user_task_desc.sem);
                 break;
             }
