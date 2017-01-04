@@ -15,4 +15,4 @@ ADD_EXECUTABLE(towerdefense_viewer
 
 TARGET_LINK_LIBRARIES(towerdefense_viewer ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES} Threads::Threads)
 ADD_DEPENDENCIES(towerdefense_viewer cereal)
-SET_TARGET_PROPERTIES(towerdefense_viewer PROPERTIES COMPILE_FLAGS "-std=c++14 -g")
+SET_TARGET_PROPERTIES(towerdefense_viewer PROPERTIES COMPILE_FLAGS "-std=c++14 -g -O3")

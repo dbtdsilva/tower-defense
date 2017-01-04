@@ -1474,7 +1474,7 @@ int MapDrawer::getDegrees(double radians) {
 
 std::string MapDrawer::getCurrentDir() {
     char cwd[1024];
-    getcwd(cwd, sizeof(cwd));
+    char* a = getcwd(cwd, sizeof(cwd));
     std::string path(cwd);
     size_t pos = path.find("/tower-defense");
     return path.substr(0, pos + 15);
