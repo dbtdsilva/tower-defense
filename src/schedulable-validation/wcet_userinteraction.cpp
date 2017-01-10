@@ -26,8 +26,6 @@ using namespace std;
 #define TASK_STACK_SIZE         0           // Default stack size
 
 #define TASK_PRIORITY_USER       80
-#define TASK_PERIOD_MS_USER      25
-
 
 RT_TASK task_desc;
 RT_PIPE task_pipe_sender, task_pipe_receiver;
@@ -57,6 +55,7 @@ void calculate_worst_time_monster(void* world_state_void) {
         world->clear_world_requests();
         auto changes = world->update_world_state();
 
+        // User interaction task flow starts HERE
         // Read data from the pipe
         // The buffer will not vary within the same type of request!!
         ssize_t bytes_read = rt_pipe_read(&task_pipe_receiver, buffer, buffer_size, TM_INFINITE);
@@ -93,6 +92,7 @@ void calculate_worst_time_monster(void* world_state_void) {
                 break;
             }
         }
+        // FLOW ENDS HERE
         rt_printf("Received data in the user interaction!\n");
 
 
