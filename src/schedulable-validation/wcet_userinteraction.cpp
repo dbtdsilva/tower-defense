@@ -25,8 +25,8 @@ using namespace std;
 #define TASK_MODE               0           // No flags
 #define TASK_STACK_SIZE         0           // Default stack size
 
-#define TASK_PRIORITY_TOWER       70
-#define TASK_PERIOD_MS_TOWER      50
+#define TASK_PRIORITY_USER       80
+#define TASK_PERIOD_MS_USER      25
 
 
 RT_TASK task_desc;
@@ -43,86 +43,64 @@ double normalize_angle(const double& angle) {
 
 void calculate_worst_time_monster(void* world_state_void) {
     WorldState* world = static_cast<WorldState*>(world_state_void);
-    UserInteractionInterface* user = world->get_user_interaction_interface();
+    UserInteractionInterface* user_interface = world->get_user_interaction_interface();
+
+    unsigned int buffer_size = 512;
+    char buffer[buffer_size];
+    string raw_received;
 
     string serialized_string;
-    enum Direction { D_STAY, D_LEFT, D_RIGHT };
-    Direction dir = D_STAY;
-    enum Move { M_STAY, M_FRONT };
-    RT_SEM sem_tower;
-
-    vector<MonsterInterface*> monsters_interfaces;
-    TowerInterface* tower = nullptr;
+    RT_SEM sem_user;
 
     Position<double> tower_map;
-    constexpr double limit_angle = (M_PI / 180.0) * 5.0;
-    int monsters_created = 0;
-    double diff = 0;
     while (!terminate_tasks) {
         world->clear_world_requests();
         auto changes = world->update_world_state();
 
-        for (EntityModification& change : changes) {
-            if (change.type_ == EntityType::MONSTER) {
-                MonsterInterface* monster_interface = static_cast<MonsterInterface*>(change.entity_);
-                monsters_interfaces.push_back(monster_interface);
-                monsters_created++;
-            } else if (change.type_ == EntityType::TOWER && tower == nullptr) {
-                tower = static_cast<TowerInterface*>(change.entity_);
-                tower_map.set_x(tower->get_position().get_x() + 0.5);
-                tower_map.set_y(tower->get_position().get_y() + 0.5);
+        // Read data from the pipe
+        // The buffer will not vary within the same type of request!!
+        ssize_t bytes_read = rt_pipe_read(&task_pipe_receiver, buffer, buffer_size, TM_INFINITE);
+        if (bytes_read <= 0)
+            continue;
+        raw_received = string(buffer, bytes_read);
+
+        // Unserialize the data to the ViewerData object
+        unique_ptr<ViewerData> viewer;
+        istringstream file_data(raw_received);
+        cereal::BinaryInputArchive archive(file_data);
+        archive(viewer);
+
+        // Process the data received
+        switch (viewer->get_type()) {
+            case ViewerRequest::GAME_STATUS: {
+                GameStatusData* game_data = dynamic_cast<GameStatusData*>(viewer.get());
+                rt_sem_p(&sem_user, TM_INFINITE);
+                user_interface->modify_game_status(game_data->status_);
+                rt_sem_v(&sem_user);
+                break;
             }
-        }
-
-        // Monsters will appear in the first position and the tower will be placed on the top forcing it to
-        // rotate to the left, which is the worst case!
-        // So they do not need to move!
-        //for (MonsterInterface* monster : monsters) {
-            //monster->move(MonsterMovement::FRONT);
-        //}
-
-        // 10 is the max monsters in the field
-        if (tower != nullptr && monsters_created == 10) {
-            // Tower task lifecycle
-            std::vector<Position<double>> monsters = tower->radar();
-            if (monsters.size() != 0) {
-                // Calculate angle between first monster and tower
-                double opposite = -(monsters[0].get_y() - tower_map.get_y());
-                double adjacent = monsters[0].get_x() - tower_map.get_x();
-
-                double value;
-                if (adjacent == 0) {    // division would be zero
-                    value = opposite > 0 ? M_PI_2 : -M_PI_2;
-                } else {                // tan(theta) = theta + K * M_PI
-                    value = atan(opposite / adjacent);
-                    if (adjacent < 0)
-                        value += M_PI;
+            case ViewerRequest::TOWER: {
+                OperationTowerData* data = dynamic_cast<OperationTowerData*>(viewer.get());
+                if (data->operation_ == TowerOperation::INSERT) {
+                    rt_sem_p(&sem_user, TM_INFINITE);
+                    user_interface->add_tower(data->type_, data->position_);
+                    rt_sem_v(&sem_user);
+                } else {
+                    rt_sem_p(&sem_user, TM_INFINITE);
+                    user_interface->remove_tower(data->position_);
+                    rt_sem_v(&sem_user);
                 }
-                diff = normalize_angle(value - tower->get_angle());
-
-                rt_sem_p(&sem_tower, TM_INFINITE);
-                // Point to the right direction and shoot
-                if (diff < -limit_angle)
-                    tower->rotate(TowerRotation::RIGHT);
-                else if (diff > limit_angle)
-                    tower->rotate(TowerRotation::LEFT);
-
-                if (fabs(diff) < M_PI_4)
-                    tower->shoot();
-                rt_sem_v(&sem_tower);
-            }
-
-            if (monsters.size() != 0 && diff > limit_angle && fabs(diff) < M_PI_4) {
-                rt_printf("This is the worst case scenario and also the worst resource usage\n");
+                break;
             }
         }
+        rt_printf("Received data in the user interaction!\n");
+
 
         ostringstream stream_serialize;
         world->serialize_data(stream_serialize);
         serialized_string = "MESSAGE" + stream_serialize.str();
         rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
     }
-    rt_printf("Tower has finished!\n");
 }
 
 void catch_signal(int) {
@@ -173,7 +151,7 @@ int main(int argc, char** argv) {
 
     /* Create RT task */
     /* Args: descriptor, name, stack size, prioritry [0..99] and mode (flags for CPU, FPU, joinable ...) */
-    err = rt_task_create(&task_desc, "God Task", TASK_STACK_SIZE, TASK_PRIORITY_TOWER, TASK_MODE);
+    err = rt_task_create(&task_desc, "God Task", TASK_STACK_SIZE, TASK_PRIORITY_USER, TASK_MODE);
 #ifdef DEBUG
     if(err) {
         rt_printf("Error creating task a (error code = %d)\n", err);

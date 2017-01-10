@@ -25,11 +25,11 @@ using namespace std;
 #define TASK_MODE               0           // No flags
 #define TASK_STACK_SIZE         0           // Default stack size
 
-#define TASK_PRIORITY_GOD       90
-#define TASK_PERIOD_MS_GOD      25
+#define TASK_PRIORITY_MONSTER       70
+#define TASK_PERIOD_MS_MONSTER      50
 
 
-RT_TASK god_task_desc;
+RT_TASK task_desc;
 RT_PIPE task_pipe_sender, task_pipe_receiver;
 
 bool terminate_tasks = false;
@@ -116,7 +116,7 @@ void calculate_worst_time_monster(void* world_state_void) {
 void catch_signal(int) {
     terminate_tasks = true;
 
-    rt_task_delete(&god_task_desc);
+    rt_task_delete(&task_desc);
 }
 
 void wait_for_ctrl_c(void) {
@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
 
     /* Create RT task */
     /* Args: descriptor, name, stack size, prioritry [0..99] and mode (flags for CPU, FPU, joinable ...) */
-    err = rt_task_create(&god_task_desc, "God Task", TASK_STACK_SIZE, TASK_PRIORITY_GOD, TASK_MODE);
+    err = rt_task_create(&task_desc, "God Task", TASK_STACK_SIZE, TASK_PRIORITY_MONSTER, TASK_MODE);
 #ifdef DEBUG
     if(err) {
         rt_printf("Error creating task a (error code = %d)\n", err);
@@ -179,8 +179,8 @@ int main(int argc, char** argv) {
 #endif
 
     /* Start RT tasks */
-    WorldState world(10, 10, TASK_PERIOD_MS_GOD, 5000, 750, 10, 10);
-    rt_task_start(&god_task_desc, &calculate_worst_time_monster, &world);
+    WorldState world(10, 10, 25, 5000, 750, 10, 10);
+    rt_task_start(&task_desc, &calculate_worst_time_monster, &world);
     //rt_task_start(&user_task_desc.task, &user_interaction_task, user);
     /* wait for termination signal */
     wait_for_ctrl_c();
