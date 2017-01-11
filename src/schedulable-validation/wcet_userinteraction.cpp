@@ -32,6 +32,8 @@ RT_PIPE task_pipe_sender, task_pipe_receiver;
 
 bool terminate_tasks = false;
 
+enum TimerState { BOOTING, NORMAL };
+
 double normalize_angle(const double& angle) {
     double value = angle;
     while (value <= -M_PI) value += M_PI * 2.0;
@@ -51,6 +53,13 @@ void calculate_worst_time_monster(void* world_state_void) {
     RT_SEM sem_user;
 
     Position<double> tower_map;
+
+    static TimerState state = BOOTING; // State initialization
+    static int activ_counter = 0; // Activation counter
+    static long tmaxus, tminus;
+
+    struct timeval tcur, tend, tdif;
+
     while (!terminate_tasks) {
         world->clear_world_requests();
         auto changes = world->update_world_state();

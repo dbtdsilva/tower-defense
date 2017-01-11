@@ -34,6 +34,8 @@ RT_PIPE task_pipe_sender, task_pipe_receiver;
 
 bool terminate_tasks = false;
 
+enum TimerState { BOOTING, NORMAL };
+
 void calculate_worst_time_monster(void* world_state_void) {
     WorldState* world = static_cast<WorldState*>(world_state_void);
     UserInteractionInterface* user = world->get_user_interaction_interface();
@@ -46,7 +48,19 @@ void calculate_worst_time_monster(void* world_state_void) {
     RT_SEM sem_monster;
 
     Direction old_dir;
+
+    static TimerState state = BOOTING; // State initialization
+    static int activ_counter = 0; // Activation counter
+    static long tmaxus, tminus;
+
+    struct timeval tcur, tend, tdif;
+
+    int task_period = TASK_PERIOD_MS_MONSTER * 1000000;
+    rt_task_set_periodic(NULL, TM_NOW, task_period);
+
     while (!terminate_tasks) {
+        rt_task_wait_period(NULL);
+
         world->clear_world_requests();
         auto changes = world->update_world_state();
 

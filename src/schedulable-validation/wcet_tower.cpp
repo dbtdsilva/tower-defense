@@ -34,6 +34,8 @@ RT_PIPE task_pipe_sender, task_pipe_receiver;
 
 bool terminate_tasks = false;
 
+enum TimerState { BOOTING, NORMAL };
+
 double normalize_angle(const double& angle) {
     double value = angle;
     while (value <= -M_PI) value += M_PI * 2.0;
@@ -58,7 +60,18 @@ void calculate_worst_time_monster(void* world_state_void) {
     constexpr double limit_angle = (M_PI / 180.0) * 5.0;
     int monsters_created = 0;
     double diff = 0;
+
+    static TimerState state = BOOTING; // State initialization
+    static int activ_counter = 0; // Activation counter
+    static long tmaxus, tminus;
+
+    struct timeval tcur, tend, tdif;
+
+    int task_period = TASK_PERIOD_MS_TOWER * 1000000;
+    rt_task_set_periodic(NULL, TM_NOW, task_period);
+
     while (!terminate_tasks) {
+        rt_task_wait_period(NULL);
         world->clear_world_requests();
         auto changes = world->update_world_state();
 

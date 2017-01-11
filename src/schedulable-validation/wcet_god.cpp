@@ -1,3 +1,9 @@
+// THIS VERSION SHOULD NOT BE USED FOR DEPLOY.
+// THEY ENTER IN CRITICAL REGION AFTER THE SCHEDULER
+// GIVES THEM THE CPU
+
+// This was done for taking measures
+
 #include <stdlib.h>
 #include <iostream>
 
@@ -11,10 +17,12 @@
 #include <vector>
 #include <map>
 
-#include <rtdk.h> // Provides rt_print functions
+#include <rtdk.h>
 #include <sstream>
 #include <helpers/ViewerDataSerializer.h>
 #include <cmath>
+
+#include <sys/time.h>
 
 #include "../engine/logic/WorldState.h"
 
@@ -48,8 +56,8 @@ map<unsigned int, TASK_SEM> towers_tasks;
 
 RT_PIPE task_pipe_sender, task_pipe_receiver;
 
+enum TimerState { BOOTING, NORMAL };
 bool terminate_tasks = false;
-
 RT_SEM critical_region;
 
 void catch_signal(int) {
@@ -200,6 +208,12 @@ void monster_task(void *interface) {
 }
 
 void god_task(void *world_state_void) {
+    static TimerState state = BOOTING; // State initialization
+    static int activ_counter = 0; // Activation counter
+    static long tmaxus, tminus;
+
+    struct timeval tcur, tend, tdif;
+
     int task_period = TASK_PERIOD_MS_GOD * 1000000;
     int err;
 
@@ -212,15 +226,25 @@ void god_task(void *world_state_void) {
 
     while(!terminate_tasks && !exit_request) {
         rt_task_wait_period(NULL);
+
         rt_sem_p(&critical_region, TM_INFINITE);
+#ifdef WCET
+        gettimeofday(&tcur, NULL);
+#endif
 
         // Requests are used by every tasks, they are in a critical region
         for (auto iterator = towers_tasks.begin(); iterator != towers_tasks.end(); ++iterator)
             rt_sem_p(&iterator->second.sem, TM_INFINITE);
         for (auto iterator = monsters_tasks.begin(); iterator != monsters_tasks.end(); ++iterator)
             rt_sem_p(&iterator->second.sem, TM_INFINITE);
+#ifdef BLOCKING
+        gettimeofday(&tcur, NULL);
+#endif
         // Transfer requests to the World buffer
         world->clear_world_requests();
+#ifdef BLOCKING
+        gettimeofday(&tend, NULL);
+#endif
         // Leave critical region, requests stored in the world buffer
         for (auto iterator = towers_tasks.begin(); iterator != towers_tasks.end(); ++iterator)
             rt_sem_v(&iterator->second.sem);
@@ -238,25 +262,13 @@ void god_task(void *world_state_void) {
                     string task_name("Monster Task " + to_string(change.identifier_));
                     string sem_name("Monster Sem " + to_string(change.identifier_));
                     err = rt_sem_create(&monsters_tasks.find(change.identifier_)->second.sem, sem_name.c_str(), 1, S_FIFO);
-#ifdef DEBUG
-                    if (err) rt_printf("Error creating semaphore monster (error code = %d)\n", err);
-#endif
                     err = rt_task_create(&monsters_tasks.find(change.identifier_)->second.task, task_name.c_str(),
                                          TASK_STACK_SIZE, TASK_PRIORITY_MONSTER, TASK_MODE);
                     if (err) {
-#ifdef DEBUG
-                        rt_printf("Error creating task monster (error code = %d)\n", err);
-#endif
                     } else  {
-#ifdef DEBUG
-                        rt_printf("Task monster %d created successfully\n", change.identifier_);
-#endif
                         rt_task_start(&monsters_tasks.find(change.identifier_)->second.task, &monster_task, change.entity_);
                     }
                 } else {
-#ifdef DEBUG
-                    rt_printf("Deleting task monster with id %d\n", change.identifier_);
-#endif
                     auto task_sem = monsters_tasks.find(change.identifier_);
                     rt_task_delete(&task_sem->second.task);
                     rt_sem_delete(&task_sem->second.sem);
@@ -270,25 +282,13 @@ void god_task(void *world_state_void) {
                     string task_name("Towers Task " + to_string(change.identifier_));
                     string sem_name("Towers Sem " + to_string(change.identifier_));
                     err = rt_sem_create(&towers_tasks.find(change.identifier_)->second.sem, sem_name.c_str(), 1, S_FIFO);
-#ifdef DEBUG
-                    if (err) rt_printf("Error creating semaphore tower (error code = %d)\n", err);
-#endif
                     err = rt_task_create(&towers_tasks.find(change.identifier_)->second.task, task_name.c_str(),
                                          TASK_STACK_SIZE, TASK_PRIORITY_TOWER, TASK_MODE);
                     if(err) {
-#ifdef DEBUG
-                        rt_printf("Error creating task tower (error code = %d)\n", err);
-#endif
                     } else  {
-#ifdef DEBUG
-                        rt_printf("Task tower %d created successfully\n", change.identifier_);
-#endif
                         rt_task_start(&towers_tasks.find(change.identifier_)->second.task, &tower_task, change.entity_);
                     }
                 } else {
-#ifdef DEBUG
-                    rt_printf("Deleting task tower with id %d\n", change.identifier_);
-#endif
                     auto task_sem = towers_tasks.find(change.identifier_);
                     rt_task_delete(&task_sem->second.task);
                     rt_sem_delete(&task_sem->second.sem);
@@ -296,9 +296,6 @@ void god_task(void *world_state_void) {
                     towers_tasks.erase(change.identifier_);
                 }
             } else if (change.type_ == EntityType::USER_INTERACTION && change.action_ == EntityAction::REMOVE) {
-#ifdef DEBUG
-                rt_printf("Deleting user interaction\n", change.identifier_);
-#endif
                 rt_task_delete(&user_task_desc.task);
                 rt_sem_delete(&user_task_desc.sem);
                 exit(0);
@@ -309,6 +306,22 @@ void god_task(void *world_state_void) {
         world->serialize_data(stream_serialize);
         serialized_string = "MESSAGE" + stream_serialize.str();
         rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
+
+#ifdef WCET
+        gettimeofday(&tend, NULL);
+#endif
+        timersub(&tend, &tcur, &tdif);
+        if (state == BOOTING) {
+            activ_counter++;
+            if (activ_counter > 500)
+                state = NORMAL;
+        } if(state == NORMAL) {
+            if (tdif.tv_usec > tmaxus)
+                tmaxus = tdif.tv_usec;
+            if (tdif.tv_usec < tminus)
+                tminus = tdif.tv_usec;
+            printf("Last instance period = %6ld Maximum = %6ld Minumum = %6ld (us), Seconds: \n", tdif.tv_usec, tmaxus, tminus);
+        }
         rt_sem_v(&critical_region);
     }
 }
