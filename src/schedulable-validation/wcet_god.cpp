@@ -17,6 +17,8 @@
 #include <vector>
 #include <map>
 
+#include <iterator>
+#include <fstream>
 #include <rtdk.h>
 #include <sstream>
 #include <helpers/ViewerDataSerializer.h>
@@ -59,6 +61,8 @@ RT_PIPE task_pipe_sender, task_pipe_receiver;
 enum TimerState { BOOTING, NORMAL };
 bool terminate_tasks = false;
 RT_SEM critical_region;
+
+vector<long> god_times;
 
 void catch_signal(int) {
     terminate_tasks = true;
@@ -320,6 +324,7 @@ void god_task(void *world_state_void) {
                 tmaxus = tdif.tv_usec;
             if (tdif.tv_usec < tminus)
                 tminus = tdif.tv_usec;
+            god_times.push_back(tdif.tv_usec);
             printf("Last instance period = %6ld Maximum = %6ld Minumum = %6ld (us), Seconds: \n", tdif.tv_usec, tmaxus, tminus);
         }
         rt_sem_v(&critical_region);
@@ -442,6 +447,12 @@ int main(int argc, char** argv) {
 
     /* wait for termination signal */
     wait_for_ctrl_c();
+
+    std::ofstream output_file("./god_times.txt");
+    for (long& val : god_times) {
+        output_file << val << ";";
+    }
+    output_file.close();
 
     return EXIT_SUCCESS;
 }

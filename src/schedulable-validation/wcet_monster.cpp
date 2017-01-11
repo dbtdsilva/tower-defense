@@ -9,7 +9,7 @@
 #include <native/pipe.h>
 #include <native/sem.h>
 #include <vector>
-#include <map>
+#include <sys/time.h>
 
 #include <rtdk.h> // Provides rt_print functions
 #include <sstream>
@@ -74,6 +74,9 @@ void calculate_worst_time_monster(void* world_state_void) {
         }
 
         if (monster_interface != nullptr){
+#ifdef WCET
+            gettimeofday(&tcur, NULL);
+#endif
             Direction final_dir = D_STAY;
             Move final_move = M_STAY;
             old_dir = dir;
@@ -106,6 +109,9 @@ void calculate_worst_time_monster(void* world_state_void) {
 
             // Action
             rt_sem_p(&sem_monster, TM_INFINITE);
+#ifdef BLOCKING
+            gettimeofday(&tcur, NULL);
+#endif
             if (final_dir == D_RIGHT)
                 monster_interface->rotate(MonsterRotation::RIGHT);
             else if (final_dir == D_LEFT)
@@ -113,7 +119,26 @@ void calculate_worst_time_monster(void* world_state_void) {
 
             if (final_move == M_FRONT)
                 monster_interface->move(MonsterMovement::FRONT);
+#ifdef BLOCKING
+            gettimeofday(&tend, NULL);
+#endif
             rt_sem_v(&sem_monster);
+
+#ifdef WCET
+            gettimeofday(&tend, NULL);
+#endif
+            timersub(&tend, &tcur, &tdif);
+            if (state == BOOTING) {
+                activ_counter++;
+                if (activ_counter > 10)
+                    state = NORMAL;
+            } if(state == NORMAL) {
+                if (tdif.tv_usec > tmaxus)
+                    tmaxus = tdif.tv_usec;
+                if (tdif.tv_usec < tminus)
+                    tminus = tdif.tv_usec;
+                printf("Last instance period = %6ld Maximum = %6ld Minumum = %6ld (us), Seconds: \n", tdif.tv_usec, tmaxus, tminus);
+            }
 
             if (old_dir == D_STAY && dir == D_STAY && final_dir == D_LEFT && final_move == M_FRONT) {
                 rt_printf("Worst case execution time and worst resource usage case!\n");

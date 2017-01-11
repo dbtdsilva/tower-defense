@@ -10,6 +10,7 @@
 #include <native/sem.h>
 #include <vector>
 #include <map>
+#include <sys/time.h>
 
 #include <rtdk.h> // Provides rt_print functions
 #include <sstream>
@@ -70,6 +71,7 @@ void calculate_worst_time_monster(void* world_state_void) {
     int task_period = TASK_PERIOD_MS_TOWER * 1000000;
     rt_task_set_periodic(NULL, TM_NOW, task_period);
 
+    user->add_tower(TowerType::COMPLEX, Position<int>(3, 0));
     while (!terminate_tasks) {
         rt_task_wait_period(NULL);
         world->clear_world_requests();
@@ -80,6 +82,8 @@ void calculate_worst_time_monster(void* world_state_void) {
                 MonsterInterface* monster_interface = static_cast<MonsterInterface*>(change.entity_);
                 monsters_interfaces.push_back(monster_interface);
                 monsters_created++;
+                if (monsters_created > 10)
+                    monsters_created = 1;
             } else if (change.type_ == EntityType::TOWER && tower == nullptr) {
                 tower = static_cast<TowerInterface*>(change.entity_);
                 tower_map.set_x(tower->get_position().get_x() + 0.5);
@@ -95,7 +99,10 @@ void calculate_worst_time_monster(void* world_state_void) {
         //}
 
         // 10 is the max monsters in the field
-        if (tower != nullptr && monsters_created == 10) {
+        if (tower != nullptr) {
+#ifdef WCET
+            gettimeofday(&tcur, NULL);
+#endif
             // Tower task lifecycle
             std::vector<Position<double>> monsters = tower->radar();
             if (monsters.size() != 0) {
@@ -114,6 +121,9 @@ void calculate_worst_time_monster(void* world_state_void) {
                 diff = normalize_angle(value - tower->get_angle());
 
                 rt_sem_p(&sem_tower, TM_INFINITE);
+#ifdef BLOCKING
+                gettimeofday(&tcur, NULL);
+#endif
                 // Point to the right direction and shoot
                 if (diff < -limit_angle)
                     tower->rotate(TowerRotation::RIGHT);
@@ -122,10 +132,29 @@ void calculate_worst_time_monster(void* world_state_void) {
 
                 if (fabs(diff) < M_PI_4)
                     tower->shoot();
+#ifdef BLOCKING
+                gettimeofday(&tend, NULL);
+#endif
                 rt_sem_v(&sem_tower);
             }
 
-            if (monsters.size() != 0 && diff > limit_angle && fabs(diff) < M_PI_4) {
+#ifdef WCET
+            gettimeofday(&tend, NULL);
+#endif
+            timersub(&tend, &tcur, &tdif);
+            if (state == BOOTING) {
+                activ_counter++;
+                if (activ_counter > 10)
+                    state = NORMAL;
+            } if(state == NORMAL) {
+                if (tdif.tv_usec > tmaxus)
+                    tmaxus = tdif.tv_usec;
+                if (tdif.tv_usec < tminus)
+                    tminus = tdif.tv_usec;
+                printf("Last instance period = %6ld Maximum = %6ld Minumum = %6ld (us), Seconds: \n", tdif.tv_usec, tmaxus, tminus);
+            }
+
+            if (monsters.size() != 0 && diff > limit_angle && fabs(diff) < M_PI_4 && monsters_created >= 10) {
                 rt_printf("This is the worst case scenario and also the worst resource usage\n");
             }
         }

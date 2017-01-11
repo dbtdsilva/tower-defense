@@ -9,7 +9,7 @@
 #include <native/pipe.h>
 #include <native/sem.h>
 #include <vector>
-#include <map>
+#include <sys/time.h>
 
 #include <rtdk.h> // Provides rt_print functions
 #include <sstream>
@@ -68,6 +68,9 @@ void calculate_worst_time_monster(void* world_state_void) {
         // Read data from the pipe
         // The buffer will not vary within the same type of request!!
         ssize_t bytes_read = rt_pipe_read(&task_pipe_receiver, buffer, buffer_size, TM_INFINITE);
+#ifdef WCET
+        gettimeofday(&tcur, NULL);
+#endif
         if (bytes_read <= 0)
             continue;
         raw_received = string(buffer, bytes_read);
@@ -83,7 +86,13 @@ void calculate_worst_time_monster(void* world_state_void) {
             case ViewerRequest::GAME_STATUS: {
                 GameStatusData* game_data = dynamic_cast<GameStatusData*>(viewer.get());
                 rt_sem_p(&sem_user, TM_INFINITE);
+#ifdef BLOCKING
+                gettimeofday(&tcur, NULL);
+#endif
                 user_interface->modify_game_status(game_data->status_);
+#ifdef BLOCKING
+                gettimeofday(&tend, NULL);
+#endif
                 rt_sem_v(&sem_user);
                 break;
             }
@@ -91,15 +100,42 @@ void calculate_worst_time_monster(void* world_state_void) {
                 OperationTowerData* data = dynamic_cast<OperationTowerData*>(viewer.get());
                 if (data->operation_ == TowerOperation::INSERT) {
                     rt_sem_p(&sem_user, TM_INFINITE);
+#ifdef BLOCKING
+                    gettimeofday(&tcur, NULL);
+#endif
                     user_interface->add_tower(data->type_, data->position_);
+#ifdef BLOCKING
+                    gettimeofday(&tend, NULL);
+#endif
                     rt_sem_v(&sem_user);
                 } else {
                     rt_sem_p(&sem_user, TM_INFINITE);
+#ifdef BLOCKING
+                    gettimeofday(&tcur, NULL);
+#endif
                     user_interface->remove_tower(data->position_);
+#ifdef BLOCKING
+                    gettimeofday(&tend, NULL);
+#endif
                     rt_sem_v(&sem_user);
                 }
                 break;
             }
+        }
+#ifdef WCET
+        gettimeofday(&tend, NULL);
+#endif
+        timersub(&tend, &tcur, &tdif);
+        if (state == BOOTING) {
+            activ_counter++;
+            if (activ_counter > 5)
+                state = NORMAL;
+        } if(state == NORMAL) {
+            if (tdif.tv_usec > tmaxus)
+                tmaxus = tdif.tv_usec;
+            if (tdif.tv_usec < tminus)
+                tminus = tdif.tv_usec;
+            printf("Last instance period = %6ld Maximum = %6ld Minumum = %6ld (us), Seconds: \n", tdif.tv_usec, tmaxus, tminus);
         }
         // FLOW ENDS HERE
         rt_printf("Received data in the user interaction!\n");
