@@ -23,14 +23,12 @@
 #include <sstream>
 #include <helpers/ViewerDataSerializer.h>
 #include <cmath>
-
+#include <climits>
 #include <sys/time.h>
 
 #include "../engine/logic/WorldState.h"
 
 using namespace std;
-
-#define DEBUG
 
 #define TASK_MODE               0           // No flags
 #define TASK_STACK_SIZE         0           // Default stack size
@@ -214,7 +212,7 @@ void monster_task(void *interface) {
 void god_task(void *world_state_void) {
     static TimerState state = BOOTING; // State initialization
     static int activ_counter = 0; // Activation counter
-    static long tmaxus, tminus;
+    static long tmaxus, tminus = LONG_MAX;
 
     struct timeval tcur, tend, tdif;
 

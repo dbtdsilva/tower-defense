@@ -10,6 +10,7 @@
 #include <native/sem.h>
 #include <vector>
 #include <sys/time.h>
+#include <climits>
 
 #include <rtdk.h> // Provides rt_print functions
 #include <sstream>
@@ -19,8 +20,6 @@
 #include "../engine/logic/WorldState.h"
 
 using namespace std;
-
-#define DEBUG
 
 #define TASK_MODE               0           // No flags
 #define TASK_STACK_SIZE         0           // Default stack size
@@ -53,21 +52,29 @@ void calculate_worst_time_monster(void* world_state_void) {
     RT_SEM sem_user;
 
     Position<double> tower_map;
-
+    int task_period = 25 * 1000000;
+    rt_task_set_periodic(NULL, TM_NOW, task_period);
     static TimerState state = BOOTING; // State initialization
     static int activ_counter = 0; // Activation counter
-    static long tmaxus, tminus;
+    static long tmaxus, tminus = LONG_MAX;
 
     struct timeval tcur, tend, tdif;
 
     while (!terminate_tasks) {
+        rt_task_wait_period(NULL);
+
+        ostringstream stream_serialize;
+        world->serialize_data(stream_serialize);
+        serialized_string = "MESSAGE" + stream_serialize.str();
+        rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
+
         world->clear_world_requests();
         auto changes = world->update_world_state();
 
         // User interaction task flow starts HERE
         // Read data from the pipe
         // The buffer will not vary within the same type of request!!
-        ssize_t bytes_read = rt_pipe_read(&task_pipe_receiver, buffer, buffer_size, TM_INFINITE);
+        ssize_t bytes_read = rt_pipe_read(&task_pipe_receiver, buffer, buffer_size, TM_NONBLOCK);
 #ifdef WCET
         gettimeofday(&tcur, NULL);
 #endif
@@ -139,12 +146,6 @@ void calculate_worst_time_monster(void* world_state_void) {
         }
         // FLOW ENDS HERE
         rt_printf("Received data in the user interaction!\n");
-
-
-        ostringstream stream_serialize;
-        world->serialize_data(stream_serialize);
-        serialized_string = "MESSAGE" + stream_serialize.str();
-        rt_pipe_write(&task_pipe_sender, serialized_string.c_str(), serialized_string.size(), P_NORMAL);
     }
 }
 

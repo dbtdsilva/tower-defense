@@ -1,0 +1,140 @@
+Received data in the user interaction!
+Received data in the user interaction!
+Received data in the user interaction!
+Received data in the user interaction!
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      2 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      2 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      2 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      7 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      5 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      3 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      2 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      1 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      3 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      4 Maximum =      7 Minumum =      1 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =  

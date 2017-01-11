@@ -1,0 +1,73 @@
+Pipe created successfully
+Pipe created successfully
+God task created successfully
+Received data in the user interaction!
+Received data in the user interaction!
+Received data in the user interaction!
+Received data in the user interaction!
+Received data in the user interaction!
+Last instance period =     22 Maximum =     22 Minumum =     22 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      8 Maximum =     22 Minumum =      8 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     29 Maximum =     29 Minumum =      8 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      7 Maximum =     29 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      9 Maximum =     29 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     21 Maximum =     29 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     12 Maximum =     29 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      8 Maximum =     29 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     12 Maximum =     29 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      7 Maximum =     29 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      8 Maximum =     29 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     26 Maximum =     29 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     37 Maximum =     37 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     12 Maximum =     37 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     31 Maximum =     37 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     38 Maximum =     38 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      9 Maximum =     38 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      9 Maximum =     38 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     12 Maximum =     38 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     12 Maximum =     38 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      9 Maximum =     38 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     37 Maximum =     38 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     12 Maximum =     38 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     18 Maximum =     38 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     14 Maximum =     38 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     59 Maximum =     59 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      9 Maximum =     59 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      9 Maximum =     59 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =     11 Maximum =     59 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      9 Maximum =     59 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      8 Maximum =     59 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instance period =      9 Maximum =     59 Minumum =      7 (us), Seconds: 
+Received data in the user interaction!
+Last instan

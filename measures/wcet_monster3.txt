@@ -1,0 +1,1953 @@
+Pipe created successfully
+Pipe created successfully
+God task created successfully
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     21 Maximum =     21 Minumum =     21 (us), Seconds: 
+Last instance period =     19 Maximum =     21 Minumum =     19 (us), Seconds: 
+Last instance period =      9 Maximum =     21 Minumum =      9 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     21 Minumum =      9 (us), Seconds: 
+Last instance period =     17 Maximum =     21 Minumum =      9 (us), Seconds: 
+Last instance period =      7 Maximum =     21 Minumum =      7 (us), Seconds: 
+Last instance period =     17 Maximum =     21 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     21 Minumum =      7 (us), Seconds: 
+Last instance period =     21 Maximum =     21 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     21 Minumum =      7 (us), Seconds: 
+Last instance period =     25 Maximum =     25 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     25 Minumum =      7 (us), Seconds: 
+Last instance period =     17 Maximum =     25 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     22 Maximum =     25 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     25 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     25 Minumum =      7 (us), Seconds: 
+Last instance period =     42 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     13 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     28 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     25 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     14 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     13 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     26 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     29 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     14 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     25 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     26 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     13 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     22 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     12 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     12 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      7 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =     13 Maximum =     42 Minumum =      7 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     13 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     27 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     28 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     28 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     13 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     31 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     15 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     31 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     26 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     25 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     12 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     29 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =      9 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      8 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     41 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     25 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     25 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     26 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     12 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     22 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     34 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      8 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     28 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     29 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     10 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     12 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     25 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      6 (us), Seconds: 
+Last instance period =      5 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     13 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      9 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     11 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     30 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     25 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     10 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     10 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     26 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     40 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     29 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     27 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     31 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     16 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     30 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     27 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     35 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     24 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     23 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     34 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      9 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     25 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     24 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     28 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     30 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     24 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     33 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     34 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     23 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     24 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     29 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     27 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     14 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     31 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     13 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     27 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     24 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     24 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     30 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      5 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      9 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     11 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     41 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     28 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     11 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     29 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     16 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     14 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     10 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     24 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     11 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     10 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     10 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     29 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     13 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     13 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     14 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      9 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     16 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     11 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     27 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     42 Minumum =      5 (us), Seconds: 
+Last instance period =     47 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     27 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     43 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     27 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     13 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     39 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     10 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     47 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     47 Minumum =      5 (us), Seconds: 
+Last instance period =     60 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     60 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     21 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     60 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     60 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =     37 Maximum =     60 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =     26 Maximum =     60 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =     12 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     60 Minumum =      5 (us), Seconds: 
+Last instance period =     67 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     15 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     45 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     37 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     15 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     61 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     10 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      8 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     53 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     23 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     33 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     33 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     29 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      8 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     28 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     43 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     15 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     11 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     31 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     30 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     28 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     12 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     23 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     56 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     29 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     29 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     11 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     14 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     24 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      5 (us), Seconds: 
+Last instance period =      0 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      0 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     52 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     28 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     32 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     11 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     12 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     66 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     46 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     12 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     16 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     11 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     29 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     29 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     63 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     28 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     15 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     15 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     31 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     15 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     29 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     11 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =      5 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     35 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      5 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     52 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     15 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     16 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     30 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     28 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     16 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     11 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     14 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     12 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     37 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     11 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     15 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     16 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     37 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     31 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     29 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     39 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     15 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     16 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     16 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     11 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     28 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     32 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     26 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     24 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     28 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     33 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =      9 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     14 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      8 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     12 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     27 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     25 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     16 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     14 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     26 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     43 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     13 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     12 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      6 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     22 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     21 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      7 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     16 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Worst case execution time and worst resource usage case!
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     23 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     31 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =      5 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     10 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     17 Maximum =     67 Minumum =      0 (us), Seconds: 
+Worst case execution time and worst resource usage case!
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     20 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     18 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     19 Maximum =     67 Minumum =      0 (us), Seconds: 
+Last instance period =     26 Max

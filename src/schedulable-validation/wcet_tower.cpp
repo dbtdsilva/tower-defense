@@ -16,12 +16,11 @@
 #include <sstream>
 #include <helpers/ViewerDataSerializer.h>
 #include <cmath>
+#include <climits>
 
 #include "../engine/logic/WorldState.h"
 
 using namespace std;
-
-#define DEBUG
 
 #define TASK_MODE               0           // No flags
 #define TASK_STACK_SIZE         0           // Default stack size
@@ -64,7 +63,7 @@ void calculate_worst_time_monster(void* world_state_void) {
 
     static TimerState state = BOOTING; // State initialization
     static int activ_counter = 0; // Activation counter
-    static long tmaxus, tminus;
+    static long tmaxus, tminus = LONG_MAX;
 
     struct timeval tcur, tend, tdif;
 
@@ -146,7 +145,7 @@ void calculate_worst_time_monster(void* world_state_void) {
                 activ_counter++;
                 if (activ_counter > 10)
                     state = NORMAL;
-            } if(state == NORMAL) {
+            } if(state == NORMAL && tdif.tv_usec >= 0) {
                 if (tdif.tv_usec > tmaxus)
                     tmaxus = tdif.tv_usec;
                 if (tdif.tv_usec < tminus)
